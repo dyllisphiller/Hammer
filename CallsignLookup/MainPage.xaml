@@ -8,10 +8,29 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBox x:Name="CallsignTextBox" HorizontalAlignment="Left" Margin="64,48,0,0" Text="KOPB" VerticalAlignment="Top" Width="192" TextChanged="CallsignTextBox_TextChanged"/>
-        <Button x:Name="SearchButton" Content="Search for amateur callsign" Margin="64,85,0,0" VerticalAlignment="Top" Click="SearchButton_Click"/>
-        <TextBlock x:Name="LookupResultTextBlock" HorizontalAlignment="Left" Margin="320,48,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="480" Width="640"/>
+    <StackPanel Orientation="Horizontal">
+        <RelativePanel Padding="24" Background="{ThemeResource SystemBaseLowColor}">
+            <TextBox x:Name="CallsignTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" PlaceholderText="W1AW" MinWidth="128"/>
+            <Button x:Name="SearchButton" VerticalAlignment="Top" Click="SearchButton_Click" HorizontalAlignment="Left" RelativePanel.RightOf="CallsignTextBox">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE1A3;"/>
+            </Button>
+        </RelativePanel>
 
-    </Grid>
+        <Grid x:Name="Output" Padding="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock x:Name="CallsignHeaderTextBlock" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <TextBlock x:Name="LookupResultTextBlock" TextWrapping="Wrap"/>
+            </StackPanel>
+        </Grid>
+
+    </StackPanel>
 </Page>

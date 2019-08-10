@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -41,6 +42,7 @@ namespace CallsignLookup
             // Initialize variables
             JObject jResult = null;
             string CallsignTextLowercase = CallsignTextBox.Text.ToLower();
+            string Callsign = CallsignTextBox.Text.ToUpper();
             string ResponseContent = null;
             string CallsignStatus = null;
 
@@ -67,7 +69,8 @@ namespace CallsignLookup
                     jResult = JObject.Parse(ResponseContent);
 
                     // Assign variables from JSON values
-                    CallsignStatus = (string)jResult["status"];
+                    CallsignStatus = (string)jResult["status"] + " CALLSIGN";
+                    CallsignHeaderTextBlock.Text = Callsign;
 
                     // Display the results in their fields
                     LookupResultTextBlock.Text = CallsignStatus;
@@ -81,6 +84,11 @@ namespace CallsignLookup
             {
                 LookupResultTextBlock.Text = $"{response.StatusCode.ToString()} {response.ReasonPhrase}";
             }
+        }
+
+        class Callsign
+        {
+            //private const string callsign = "";
         }
 
         public MainPage()
