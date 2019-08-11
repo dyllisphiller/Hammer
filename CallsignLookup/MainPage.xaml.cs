@@ -41,10 +41,14 @@ namespace CallsignLookup
 
             // Initialize variables
             JObject jResult = null;
-            string CallsignTextLowercase = CallsignTextBox.Text.ToLower();
             string Callsign = CallsignTextBox.Text.ToUpper();
+            string CallsignTextLowercase = CallsignTextBox.Text.ToLower();
             string ResponseContent = null;
             string CallsignStatus = null;
+            string LocationLatitude, LocationLongitude, LocationGridSquare;
+            DateTimeOffset GrantDate, ExpiryDate, LastActionDate;
+            string FRN = null;
+            Uri UlsUrl;
 
             // Reset result fields
             LookupResultTextBlock.Text = "";
@@ -70,10 +74,16 @@ namespace CallsignLookup
 
                     // Assign variables from JSON values
                     CallsignStatus = (string)jResult["status"] + " CALLSIGN";
-                    CallsignHeaderTextBlock.Text = Callsign;
+                    
+
+                    UlsUrl = (Uri)jResult["otherInfo"]["ulsUrl"];
+                    
+
 
                     // Display the results in their fields
                     LookupResultTextBlock.Text = CallsignStatus;
+                    CallsignHeaderTextBlock.Text = Callsign;
+                    //CallsignHeaderTextBlock.Text = UlsUrl.ToString();
                 }
                 catch(Exception ex)
                 {
