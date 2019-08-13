@@ -6,9 +6,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -43,10 +43,10 @@ namespace CallsignLookup
 
             // Initialize variables
             JObject jResult = null;
-            LicenseModel License = new LicenseModel();
+            LicenseModel License = new LicenseModel(jResult);
 
             string Callsign = CallsignTextBox.Text.ToUpper();
-            string CallsignTextLowercase = CallsignTextBox.Text.ToLower();
+            string CallsignLower = CallsignTextBox.Text.ToLower();
             string ResponseContent = null;
 
             // Reset result fields
@@ -55,7 +55,7 @@ namespace CallsignLookup
             // Set the HttpClient instance's base address
             client.BaseAddress = new Uri(EndpointURL);
             // Construct the HTTP request parameters
-            string URLParams = $"{CallsignTextLowercase}/json";
+            string URLParams = $"{CallsignLower}/json";
 
             // Make it clear we really do want JSON.
             // This might be omitted; API requests with /json return JSON
@@ -132,12 +132,24 @@ namespace CallsignLookup
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            ProgressRing.IsActive = true;
-            ProgressRing.Visibility = Visibility.Visible;
-            await RetrieveData();
-            //Thread.Sleep(5000);
-            ProgressRing.Visibility = Visibility.Collapsed;
-            ProgressRing.IsActive = false;
+            Regex _rgx = new Regex(@"[^A-Z0-9]");
+            if (String.IsNullOrWhiteSpace(CallsignTextBox.Text))
+            {
+                throw new ArgumentNullException();
+            }
+            else if (_rgx.IsMatch(CallsignTextBox.Text))
+            {
+                string exception = String.Format("{0} is an invalid callsign.", CallsignTextBox.Text.ToUpper());
+                throw new ApplicationException(exception);
+            }
+            else
+            {
+                ProgressRing.IsActive = true;
+                ProgressRing.Visibility = Visibility.Visible;
+                await RetrieveData();
+                ProgressRing.Visibility = Visibility.Collapsed;
+                ProgressRing.IsActive = false;
+            }
         }
 
     }

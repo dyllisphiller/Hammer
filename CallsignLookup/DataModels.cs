@@ -2,12 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace CallsignLookup
 {
     public class Models
     {
+        public class CallsignModel
+        {
+            string _callsign;
+            public string Callsign
+            {
+                get
+                {
+                    return _callsign;
+                }
+                set
+                {
+                    Regex _rgx = new Regex(@"[^a-zA-Z0-9]");
+
+                    if (String.IsNullOrWhiteSpace(value))
+                    {
+                        throw new ArgumentNullException();
+                    }
+                    else if (_rgx.IsMatch(value))
+                    {
+                        throw new ApplicationException("That is an invalid callsign.");
+                    }
+                    else
+                    {
+                        _callsign = value;
+                    }
+                }
+            }
+        }
         public class AddressModel
         {
             public string Line1 {
@@ -63,6 +93,11 @@ namespace CallsignLookup
                 get;
                 set;
             }
+            public string Type
+            {
+                get;
+                set;
+            }
             public string FRN {
                 get;
                 set;
@@ -90,6 +125,20 @@ namespace CallsignLookup
         public Models.DatesModel Dates {
             get;
             set;
+        }
+
+        public LicenseModel(JObject jsonLicenseData)
+        {
+            Meta = new Models.MetaModel();
+            Address = new Models.AddressModel();
+            Location = new Models.LocationModel();
+            Dates = new Models.DatesModel();
+
+            Meta.Status = (string)jsonLicenseData["status"];
+            Meta.Type = (string)jsonLicenseData["type"];
+            Meta.Callsign = (string)jsonLicenseData["current"]["callsign"];
+            Meta.FRN = (string)jsonLicenseData["frn"];
+            Meta.UlsUrl = (Uri)jsonLicenseData["otherInfo"]["ulsUri"];
         }
     }
 }
