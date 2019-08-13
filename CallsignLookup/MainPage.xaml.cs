@@ -1,10 +1,12 @@
-﻿using System;
+﻿using CallsignLookup;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Foundation;
@@ -41,25 +43,21 @@ namespace CallsignLookup
 
             // Initialize variables
             JObject jResult = null;
+            LicenseModel License = new LicenseModel();
+
             string Callsign = CallsignTextBox.Text.ToUpper();
             string CallsignTextLowercase = CallsignTextBox.Text.ToLower();
             string ResponseContent = null;
-            string CallsignStatus = null;
-            string LocationLatitude, LocationLongitude, LocationGridSquare;
-            DateTimeOffset GrantDate, ExpiryDate, LastActionDate;
-            string FRN = null;
-            Uri UlsUrl;
 
             // Reset result fields
             LookupResultTextBlock.Text = "";
 
+            // Set the HttpClient instance's base address
+            client.BaseAddress = new Uri(EndpointURL);
             // Construct the HTTP request parameters
             string URLParams = $"{CallsignTextLowercase}/json";
 
-            // Set the HttpClient instance's base address
-            client.BaseAddress = new Uri(EndpointURL);
-
-            // Make it clear that we really do want JSON.
+            // Make it clear we really do want JSON.
             // This might be omitted; API requests with /json return JSON
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -72,20 +70,51 @@ namespace CallsignLookup
                     ResponseContent = await response.Content.ReadAsStringAsync();
                     jResult = JObject.Parse(ResponseContent);
 
-                    // Assign variables from JSON values
-                    CallsignStatus = (string)jResult["status"] + " CALLSIGN";
-                    
+                    if ((string)jResult["status"] == "VALID")
+                    {
 
-                    UlsUrl = (Uri)jResult["otherInfo"]["ulsUrl"];
-                    
+                        // Assign variables from JSON values
+                        License.Meta.Callsign = (string)jResult["callsign"];
+                        License.Meta.Status = (string)jResult["status"];
+                        License.Meta.FRN = (string)jResult["otherInfo"]["frn"];
+                        License.Meta.UlsUrl = (Uri)jResult["otherInfo"]["ulsUrl"];
 
+                        License.Address.Line1 = (string)jResult["address"]["line1"];
+                        License.Address.Line2 = (string)jResult["address"]["line2"];
+                        License.Address.Attn = (string)jResult["address"]["attn"];
 
-                    // Display the results in their fields
-                    LookupResultTextBlock.Text = CallsignStatus;
-                    CallsignHeaderTextBlock.Text = Callsign;
-                    //CallsignHeaderTextBlock.Text = UlsUrl.ToString();
+                        License.Location.Latitude = (double)jResult["location"]["latitude"];
+                        License.Location.Longitude = (double)jResult["location"]["longitude"];
+                        License.Location.GridSquare = (string)jResult["location"]["gridsquare"];
+
+                        // Wrangle and assign the dates
+                        License.Dates.Grant = DateTimeOffset.Parse(
+                            (string)jResult["otherInfo"]["grantDate"],
+                            System.Globalization.CultureInfo.InvariantCulture);
+                        License.Dates.Expiry = DateTimeOffset.Parse(
+                            (string)jResult["otherInfo"]["expiryDate"],
+                            System.Globalization.CultureInfo.InvariantCulture);
+                        License.Dates.LastAction = DateTimeOffset.Parse(
+                            (string)jResult["otherInfo"]["lastActionDate"],
+                            System.Globalization.CultureInfo.InvariantCulture);
+
+                        // Display the results in their fields
+                        LookupResultTextBlock.Text = License.Meta.Status + " CALLSIGN";
+                        CallsignHeaderTextBlock.Text = Callsign;
+                        //CallsignHeaderTextBlock.Text = UlsUrl.ToString();
+                    }
+                    else if ((string)jResult["status"] == "UPDATING")
+                    {
+                        LookupResultTextBlock.Text = "License data is being gathered from the FCC by the callook.info API. This may take some time.";
+                        //throw new ApplicationException();
+                    }
+                    else
+                    {
+                        LookupResultTextBlock.Text = "Either the callsign is invalid or something unexpected happened. Try again?";
+                        //throw new ApplicationException();
+                    }
                 }
-                catch(Exception ex)
+                    catch (Exception ex)
                 {
                     LookupResultTextBlock.Text = $"{ex.Message}";
                 }
@@ -96,11 +125,6 @@ namespace CallsignLookup
             }
         }
 
-        class Callsign
-        {
-            //private const string callsign = "";
-        }
-
         public MainPage()
         {
             this.InitializeComponent();
@@ -108,7 +132,12 @@ namespace CallsignLookup
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            ProgressRing.IsActive = true;
+            ProgressRing.Visibility = Visibility.Visible;
             await RetrieveData();
+            //Thread.Sleep(5000);
+            ProgressRing.Visibility = Visibility.Collapsed;
+            ProgressRing.IsActive = false;
         }
 
     }

@@ -27,8 +27,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel>
+                <ProgressRing x:Name="ProgressRing" IsActive="False" Visibility="Collapsed"/>
                 <TextBlock x:Name="CallsignHeaderTextBlock" Style="{StaticResource HeaderTextBlockStyle}"/>
-                <TextBlock x:Name="LookupResultTextBlock" TextWrapping="Wrap"/>
+                <TextBlock x:Name="LookupResultTextBlock" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>
 
