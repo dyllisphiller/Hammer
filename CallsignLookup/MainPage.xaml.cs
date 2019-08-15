@@ -42,12 +42,12 @@ namespace CallsignLookup
             var client = new HttpClient();
 
             // Initialize variables
-            JObject jResult = null;
-            LicenseModel License = new LicenseModel(jResult);
+            JObject jResult;
+            string ResponseContent;
+            LicenseModel License = new LicenseModel();
 
-            string Callsign = CallsignTextBox.Text.ToUpper();
-            string CallsignLower = CallsignTextBox.Text.ToLower();
-            string ResponseContent = null;
+            string Callsign = CallsignSearchBox.Text.ToUpper();
+            string CallsignLower = CallsignSearchBox.Text.ToLower();
 
             // Reset result fields
             LookupResultTextBlock.Text = "";
@@ -69,10 +69,11 @@ namespace CallsignLookup
                 {
                     ResponseContent = await response.Content.ReadAsStringAsync();
                     jResult = JObject.Parse(ResponseContent);
+                    License.TryParse(jResult);
 
-                    if ((string)jResult["status"] == "VALID")
+                    if (License.Meta.Status == "VALID")
                     {
-
+                        /*
                         // Assign variables from JSON values
                         License.Meta.Callsign = (string)jResult["callsign"];
                         License.Meta.Status = (string)jResult["status"];
@@ -87,20 +88,16 @@ namespace CallsignLookup
                         License.Location.Longitude = (double)jResult["location"]["longitude"];
                         License.Location.GridSquare = (string)jResult["location"]["gridsquare"];
 
-                        // Wrangle and assign the dates
-                        License.Dates.Grant = DateTimeOffset.Parse(
-                            (string)jResult["otherInfo"]["grantDate"],
-                            System.Globalization.CultureInfo.InvariantCulture);
-                        License.Dates.Expiry = DateTimeOffset.Parse(
-                            (string)jResult["otherInfo"]["expiryDate"],
-                            System.Globalization.CultureInfo.InvariantCulture);
-                        License.Dates.LastAction = DateTimeOffset.Parse(
-                            (string)jResult["otherInfo"]["lastActionDate"],
-                            System.Globalization.CultureInfo.InvariantCulture);
-
+                        */
                         // Display the results in their fields
-                        LookupResultTextBlock.Text = License.Meta.Status + " CALLSIGN";
                         CallsignHeaderTextBlock.Text = Callsign;
+                        LookupResultTextBlock.Text = String.Format(
+                            "{0} CALLSIGN: {1}",
+                            License.Meta.Status,
+                            License.Meta.Type);
+                        AddressAttnTextBlock.Text = License.Address.Attn;
+                        AddressLine1TextBlock.Text = License.Address.Line1;
+                        AddressLine2TextBlock.Text = License.Address.Line2;
                         //CallsignHeaderTextBlock.Text = UlsUrl.ToString();
                     }
                     else if ((string)jResult["status"] == "UPDATING")
@@ -130,27 +127,46 @@ namespace CallsignLookup
             this.InitializeComponent();
         }
 
-        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        /*private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            Regex _rgx = new Regex(@"[^A-Z0-9]");
-            if (String.IsNullOrWhiteSpace(CallsignTextBox.Text))
+            await CallsignSearch();
+        }*/
+
+        public async Task CallsignSearch()
+        {
+            // Spinny blade wall! Actually it's just a spinner.
+            // Can we call it a fidget spinner? Can computers fidget?
+            // This needs to be a thing for generalized AI. Occasional fidgeting.
+            // Imagine it pinging a random host for funsies. Toggling the power light.
+            // Or if the machine is old, opening and closing the optical drive tray.
+            // ...but I digress...
+            // Activate **the spinnerizer**!
+            ProgressRing.IsActive = true;
+            ProgressRing.Visibility = Visibility.Visible;
+
+            Regex _rgx = new Regex(@"[a-zA-Z0-9]{3,12}");
+            if (String.IsNullOrWhiteSpace(CallsignSearchBox.Text))
             {
                 throw new ArgumentNullException();
             }
-            else if (_rgx.IsMatch(CallsignTextBox.Text))
+            else if (_rgx.IsMatch(CallsignSearchBox.Text) == false)
             {
-                string exception = String.Format("{0} is an invalid callsign.", CallsignTextBox.Text.ToUpper());
+                string exception = String.Format("The query '{0}' does not appear to be a invalid callsign.", CallsignSearchBox.Text.ToUpper());
                 throw new ApplicationException(exception);
             }
             else
             {
-                ProgressRing.IsActive = true;
-                ProgressRing.Visibility = Visibility.Visible;
                 await RetrieveData();
-                ProgressRing.Visibility = Visibility.Collapsed;
-                ProgressRing.IsActive = false;
             }
+
+            // All done. Nothing to see here.
+            ProgressRing.Visibility = Visibility.Collapsed;
+            ProgressRing.IsActive = false;
         }
 
+        private async void CallsignSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            await CallsignSearch();
+        }
     }
 }

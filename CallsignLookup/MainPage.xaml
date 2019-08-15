@@ -10,10 +10,10 @@
 
     <StackPanel Orientation="Horizontal">
         <RelativePanel Padding="24" Background="{ThemeResource SystemBaseLowColor}">
-            <TextBox x:Name="CallsignTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" PlaceholderText="W1AW" MinWidth="128"/>
-            <Button x:Name="SearchButton" VerticalAlignment="Top" Click="SearchButton_Click" HorizontalAlignment="Left" RelativePanel.RightOf="CallsignTextBox">
+            <AutoSuggestBox x:Name="CallsignSearchBox" HorizontalAlignment="Left" VerticalAlignment="Top" PlaceholderText="W1AW" MinWidth="128" QueryIcon="Find" QuerySubmitted="CallsignSearchBox_QuerySubmitted"/>
+            <!--<Button x:Name="SearchButton" VerticalAlignment="Top" Click="SearchButton_Click" HorizontalAlignment="Left" RelativePanel.RightOf="CallsignSearchTextBox">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE1A3;"/>
-            </Button>
+            </Button>-->
         </RelativePanel>
 
         <Grid x:Name="Output" Padding="24">
@@ -27,9 +27,12 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel>
-                <ProgressRing x:Name="ProgressRing" IsActive="False" Visibility="Collapsed"/>
-                <TextBlock x:Name="CallsignHeaderTextBlock" Style="{StaticResource HeaderTextBlockStyle}"/>
-                <TextBlock x:Name="LookupResultTextBlock" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap"/>
+                <ProgressRing x:Name="ProgressRing" IsActive="False"/>
+                <TextBlock x:Name="CallsignHeaderTextBlock" Text="Callsign block" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <TextBlock x:Name="LookupResultTextBlock" Text="Status block" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                <TextBlock x:Name="AddressAttnTextBlock" Text="Attention line" Style="{StaticResource BodyTextBlockStyle}"/>
+                <TextBlock x:Name="AddressLine1TextBlock" Text="First line" Style="{StaticResource BodyTextBlockStyle}"/>
+                <TextBlock x:Name="AddressLine2TextBlock" Text="Second line" Style="{StaticResource BodyTextBlockStyle}"/>
             </StackPanel>
         </Grid>
 
