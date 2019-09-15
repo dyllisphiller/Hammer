@@ -1,0 +1,109 @@
+﻿<Page
+    x:Class="Hammer.Views.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Hammer.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="SearchResults">
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>-->
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>-->
+
+        <Grid.Transitions>
+            <TransitionCollection>
+                <RepositionThemeTransition />
+            </TransitionCollection>
+        </Grid.Transitions>
+
+        <ProgressRing x:Name="SearchProgressRing"
+                          IsActive="False"
+                          Visibility="Collapsed"
+                      Height="120"
+                      Width="120"/>
+
+        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Collapsed">
+
+            <TextBox x:Name="TemporarySearchTextBox"
+                     PlaceholderText="Search.."/>
+
+            <Button x:Name="TemporarySearchButton"
+                    Content="Search??"
+                    Margin="0,24,0,0"
+                    Click="TemporarySearchButton_Click"/>
+
+            <TextBlock x:Name="SearchHeaderField"
+                       Text="Search"
+                       Style="{StaticResource HeaderTextBlockStyle}"/>
+
+            <!--Style="{StaticResource CaptionTextBlockStyle}"-->
+            <TextBox x:Name="RegistrantTypeField"
+                     Header="Status"
+                     TextWrapping="Wrap"
+                     Margin="0,24,0,0"
+                     Text="Registrant Type"/>
+
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                       Text="Location"
+                       Margin="0,24,0,0"/>
+
+            <!--Style="{StaticResource BodyTextBlockStyle}"-->
+            <TextBlock x:Name="AddressLine1Field"
+                           Text="123 W Main St"
+                           Margin="0,12,0,0"/>
+            <TextBlock x:Name="AddressLine2Field"
+                           Text="123 W Main St"
+                           Margin="0,12,0,0"/>
+            <TextBlock x:Name="AddressAttnField"
+                           Margin="0,12,0,0"/>
+            <!--<TextBox x:Name="AddressLine2Field"
+                         PlaceholderText="Anytown, OR 97301"
+                         Margin="0,24,0,0"/>
+            <TextBox x:Name="AddressAttnField"
+                         Margin="0,24,0,0"
+                         Visibility="Collapsed"/>-->
+
+            <!--<TextBlock Style="{StaticResource CaptionTextBlockStyle}">Coordinates</TextBlock>-->
+            <TextBox x:Name="LocationCoordinatesField"
+                       PlaceholderText="45.0, -123.0"
+                       Header="Latitude"
+                       Margin="0,24,0,0"/>
+
+            <TextBox x:Name="GridSquareField"
+                     Header="Grid Square"
+                     Margin="0,24,0,0"/>
+
+            <!--Style="{StaticResource CaptionTextBlockStyle}"-->
+            <TextBox x:Name="DateGrantedField"
+                         PlaceholderText="Granted"
+                         Header="Date Granted"
+                         Margin="0,24,0,0"/>
+            <TextBox x:Name="DateLastActionField"
+                         PlaceholderText="Last action"
+                         Header="Last Action"
+                         Margin="0,24,0,0"/>
+            <TextBox x:Name="DateExpiryField"
+                         PlaceholderText="Expires"
+                         Header="Expires"
+                         Margin="0,24,0,0"/>
+
+            <TextBox x:Name="UlsUriField"
+                         PlaceholderText=""
+                         Header="FCC Universal Licensing System URI"
+                         Margin="0,24,0,0"/>
+
+            <HyperlinkButton x:Name="UlsUriButton"
+                             Content="View on ULS"
+                             Margin="0,12,0,0"/>
+        </StackPanel>
+    </Grid>
+</Page>
