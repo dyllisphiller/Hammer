@@ -142,13 +142,15 @@ namespace Hammer.Models
                 Callsign = (string)json["current"]["callsign"];
                 OperatorClass = (string)json["current"]["operClass"];
                 FRN = (string)json["frn"];
-                UlsUri = (Uri)json["otherInfo"]["ulsUri"];
+                UlsUri = (Uri)json["otherInfo"]["ulsUrl"];
 
                 if (!String.IsNullOrEmpty((string)json["trustee"]["callsign"]))
                 {
-                    License Trustee = new License();
-                    Trustee.Callsign = (string)json["trustee"]["callsign"];
-                    Trustee.Name = (string)json["trustee"]["name"];
+                    License Trustee = new License
+                    {
+                        Callsign = (string)json["trustee"]["callsign"],
+                        Name = (string)json["trustee"]["name"]
+                    };
                 }
 
                 AddressLine1 = (string)json["address"]["line1"];
@@ -192,7 +194,7 @@ namespace Hammer.Models
 
     public class LicenseViewModel
     {
-        private License defaultLicense = new License();
+        private readonly License defaultLicense = new License();
         public License DefaultLicense { get => defaultLicense; }
     }
 }

@@ -1,16 +1,18 @@
 ﻿using Hammer.Models;
 using Hammer.Callsigns;
-using Hammer.Callsigns.Search;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.Web.Http;
-using Windows.Web.Http.Headers;
 using Windows.UI.Xaml.Navigation;
+using Windows.Devices.Geolocation;
+using Windows.Services.Maps;
+using Windows.System;
+using Windows.UI.Xaml.Media;
+using Windows.Foundation;
 
 namespace Hammer.Views
 {
@@ -42,12 +44,15 @@ namespace Hammer.Views
         // If anyone there is reading this: thanks!
         const string EndpointURL = "https://callook.info/";
 
+        readonly License LicenseSearchResult = new License();
+        Geopoint licensePlacecardGeopoint;
+
+
         public async Task RetrieveData(string callsign)
         {
             // Initialize variables
             JObject jResult;
             string result;
-            License License = new License();
 
             string ErrorMessage = "";
             string CallsignUpper = callsign.ToUpperInvariant();
@@ -56,7 +61,7 @@ namespace Hammer.Views
             // LookupResultField.Text = "";
 
             // assemble the address
-            Uri requestUri = new Uri(EndpointURL + $"{CallsignUpper}/json");
+            Uri.TryCreate($"{EndpointURL}{CallsignUpper}/json", UriKind.Absolute, out Uri requestUri);
 
             using (var client = new HttpClient())
             {
@@ -69,8 +74,9 @@ namespace Hammer.Views
                     httpResponse.EnsureSuccessStatusCode();
                     result = await httpResponse.Content.ReadAsStringAsync();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
                     throw;
                 }
             }
@@ -78,33 +84,34 @@ namespace Hammer.Views
             try
             {
                 jResult = JObject.Parse(result);
-                License.TryParse(jResult);
-                
+                LicenseSearchResult.TryParse(jResult);
 
-                switch (License.Status)
+                switch (LicenseSearchResult.Status)
                 {
                     case "VALID":
                         // Display the results in their fields
-                        SearchHeaderField.Text = CallsignUpper;
-                        RegistrantTypeField.Text = License.Type;
-                        AddressAttnField.Text = License.AddressAttn;
-                        AddressLine1Field.Text = License.AddressLine1;
-                        AddressLine2Field.Text = License.AddressLine2;
+                        //SearchHeaderField.Text = CallsignUpper;
+                        SearchResultPivot.Title = CallsignUpper;
+                        RegistrantTypeField.Text = LicenseSearchResult.Type;
+                        AddressAttnField.Text = LicenseSearchResult.AddressAttn;
+                        AddressLine1Field.Text = LicenseSearchResult.AddressLine1;
+                        AddressLine2Field.Text = LicenseSearchResult.AddressLine2;
 
-                        LocationCoordinatesField.Text = License.Location.Coordinates;
-                        GridSquareField.Text = License.GridSquare;
+                        LocationCoordinatesField.Text = LicenseSearchResult.Location.Coordinates;
+                        GridSquareField.Text = LicenseSearchResult.GridSquare;
 
-                        DateGrantedField.Text = License.GrantDate.ToString("d");
-                        DateExpiryField.Text = License.ExpiryDate.ToString("d");
-                        DateLastActionField.Text = License.LastActionDate.ToString("d");
+                        DateGrantedField.Text = LicenseSearchResult.GrantDate.ToString("d");
+                        DateExpiryField.Text = LicenseSearchResult.ExpiryDate.ToString("d");
+                        DateLastActionField.Text = LicenseSearchResult.LastActionDate.ToString("d");
 
-                        UlsUriField.Text = License.UlsUri.ToString();
-                        UlsUriButton.NavigateUri = License.UlsUri;
+                        UlsUriField.Text = LicenseSearchResult.UlsUri.ToString();
+
+                        licensePlacecardGeopoint = new Geopoint(new BasicGeoposition { Latitude = LicenseSearchResult.Location.Latitude, Longitude = LicenseSearchResult.Location.Longitude });
 
                         break;
 
                     case "UPDATING":
-                        throw new Exception(message: "Callook is getting the latest license data from the FCC. This might take a bit. Please try again later.");
+                        throw new Exception(message: "The data source is getting the latest license data from the FCC. This might take a bit. Please try again later.");
 
                     default:
                         throw new Exception(message: "Either the callsign is invalid or something unexpected happened. Try again?");
@@ -156,9 +163,34 @@ namespace Hammer.Views
             }
         }
 
-        private async void TemporarySearchButton_Click(object sender, RoutedEventArgs e)
+        private void ShowMapButton_Click(object sender, RoutedEventArgs e)
         {
-            await CallsignSearch(TemporarySearchTextBox.Text).ConfigureAwait(true);
+            PlaceInfoCreateOptions options = new PlaceInfoCreateOptions
+            {
+                DisplayAddress = $"{LicenseSearchResult.AddressLine1}, {LicenseSearchResult.AddressLine2}",
+                DisplayName = $"{LicenseSearchResult.Callsign}"
+            };
+
+            PlaceInfo licensePlaceInfo = PlaceInfo.Create(licensePlacecardGeopoint, options);
+
+            FrameworkElement targetElement = (FrameworkElement)sender;
+
+            GeneralTransform generalTransform =
+                targetElement.TransformToVisual((FrameworkElement)targetElement.Parent);
+
+            Rect rectangle = generalTransform.TransformBounds(new Rect(new Point
+                (targetElement.Margin.Left, targetElement.Margin.Top), targetElement.RenderSize));
+
+            licensePlaceInfo.Show(rectangle, Windows.UI.Popups.Placement.Below);
+        }
+
+        private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
+        {
+            //var options = new Windows.System.LauncherOptions();
+            //options.TreatAsUntrusted = true;
+
+            //await Launcher.LaunchUriAsync(LicenseSearchResult.UlsUri, options);
+            await Launcher.LaunchUriAsync(LicenseSearchResult.UlsUri);
         }
     }
 }

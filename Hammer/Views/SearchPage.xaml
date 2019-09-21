@@ -1,10 +1,11 @@
 ﻿<Page
-    x:Class="Hammer.Views.SearchPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Hammer.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Custom="using:Windows.UI.Xaml.Controls.Maps"
+    x:Class="Hammer.Views.SearchPage"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -33,77 +34,106 @@
 
         <StackPanel x:Name="SearchResultsStackPanel" Visibility="Collapsed">
 
-            <TextBox x:Name="TemporarySearchTextBox"
-                     PlaceholderText="Search.."/>
+            <Pivot x:Name="SearchResultPivot" Margin="0,0,0,0">
+                <PivotItem Header="Organization">
+                    <TextBlock>
+                        <Run Text="This should only appear if the callsign is registered to an organization."/>
+                    </TextBlock>
+                </PivotItem>
 
-            <Button x:Name="TemporarySearchButton"
-                    Content="Search??"
-                    Margin="0,24,0,0"
-                    Click="TemporarySearchButton_Click"/>
+                <PivotItem Header="Location">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-            <TextBlock x:Name="SearchHeaderField"
+                        <StackPanel Margin="0,0,24,0">
+                            <!--<TextBox x:Name="AddressLine2Field"
+                             PlaceholderText="Anytown, OR 97301"
+                             Margin="0,24,0,0"/>
+                            <TextBox x:Name="AddressAttnField"
+                             Margin="0,24,0,0"
+                             Visibility="Collapsed"/>-->
+                            <!--Style="{StaticResource BodyTextBlockStyle}"-->
+                            <TextBlock x:Name="AddressLine1Field"
+                                       Text="123 W Main St"
+                                       Margin="0,12,0,0"/>
+                            <TextBlock x:Name="AddressLine2Field"
+                                       Text="Anytown, US 00000"
+                                       Margin="0,6,0,0"/>
+                            <TextBlock x:Name="AddressAttnField"
+                                       Text="Attn: Test Field"
+                                       Margin="0,6,0,0"/>
+                        </StackPanel>
+
+                        <Button x:Name="ShowMapButton" Click="ShowMapButton_Click" HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <SymbolIcon Symbol="Map" Margin="0,0,6,0"/>
+                                <TextBlock>Map</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </PivotItem>
+
+                <PivotItem Header="Trustee">
+                    <TextBlock><Run Text="This should only appear if the callsign is registered to an organization."/></TextBlock>
+                </PivotItem>
+            </Pivot>
+
+            <StackPanel>
+                <TextBlock x:Name="SearchHeaderField"
                        Text="Search"
                        Style="{StaticResource HeaderTextBlockStyle}"/>
 
-            <!--Style="{StaticResource CaptionTextBlockStyle}"-->
-            <TextBox x:Name="RegistrantTypeField"
+                <!--Style="{StaticResource CaptionTextBlockStyle}"-->
+                <TextBox x:Name="RegistrantTypeField"
                      Header="Status"
                      TextWrapping="Wrap"
                      Margin="0,24,0,0"
                      Text="Registrant Type"/>
 
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}"
                        Text="Location"
                        Margin="0,24,0,0"/>
 
-            <!--Style="{StaticResource BodyTextBlockStyle}"-->
-            <TextBlock x:Name="AddressLine1Field"
-                           Text="123 W Main St"
-                           Margin="0,12,0,0"/>
-            <TextBlock x:Name="AddressLine2Field"
-                           Text="123 W Main St"
-                           Margin="0,12,0,0"/>
-            <TextBlock x:Name="AddressAttnField"
-                           Margin="0,12,0,0"/>
-            <!--<TextBox x:Name="AddressLine2Field"
-                         PlaceholderText="Anytown, OR 97301"
-                         Margin="0,24,0,0"/>
-            <TextBox x:Name="AddressAttnField"
-                         Margin="0,24,0,0"
-                         Visibility="Collapsed"/>-->
-
-            <!--<TextBlock Style="{StaticResource CaptionTextBlockStyle}">Coordinates</TextBlock>-->
-            <TextBox x:Name="LocationCoordinatesField"
+                <!--<TextBlock Style="{StaticResource CaptionTextBlockStyle}">Coordinates</TextBlock>-->
+                <TextBox x:Name="LocationCoordinatesField"
                        PlaceholderText="45.0, -123.0"
                        Header="Latitude"
                        Margin="0,24,0,0"/>
 
-            <TextBox x:Name="GridSquareField"
+                <TextBox x:Name="GridSquareField"
                      Header="Grid Square"
                      Margin="0,24,0,0"/>
 
-            <!--Style="{StaticResource CaptionTextBlockStyle}"-->
-            <TextBox x:Name="DateGrantedField"
+                <!--Style="{StaticResource CaptionTextBlockStyle}"-->
+                <TextBox x:Name="DateGrantedField"
                          PlaceholderText="Granted"
                          Header="Date Granted"
                          Margin="0,24,0,0"/>
-            <TextBox x:Name="DateLastActionField"
+                <TextBox x:Name="DateLastActionField"
                          PlaceholderText="Last action"
                          Header="Last Action"
                          Margin="0,24,0,0"/>
-            <TextBox x:Name="DateExpiryField"
+                <TextBox x:Name="DateExpiryField"
                          PlaceholderText="Expires"
                          Header="Expires"
                          Margin="0,24,0,0"/>
 
-            <TextBox x:Name="UlsUriField"
-                         PlaceholderText=""
+                <TextBox x:Name="UlsUriField"
+                         PlaceholderText="FCC ULS URI"
                          Header="FCC Universal Licensing System URI"
                          Margin="0,24,0,0"/>
 
-            <HyperlinkButton x:Name="UlsUriButton"
-                             Content="View on ULS"
-                             Margin="0,12,0,0"/>
+                <Button x:Name="UlsUriButton"
+                        Content="View on ULS"
+                        Margin="0,12,0,0"
+                        Click="UlsUriButton_Click"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>
