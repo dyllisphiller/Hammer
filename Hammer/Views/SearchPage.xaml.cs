@@ -45,7 +45,7 @@ namespace Hammer.Views
         // If anyone there is reading this: thanks!
         const string EndpointURL = "https://callook.info/";
 
-        readonly License LicenseSearchResult = new License();
+        private License LicenseSearchResult = new License();
         Geopoint licensePlacecardGeopoint;
 
 
@@ -85,18 +85,27 @@ namespace Hammer.Views
             try
             {
                 jResult = JObject.Parse(result);
-                LicenseSearchResult.TryParse(jResult);
+                LicenseSearchResult.TryParse(jResult, out LicenseSearchResult);
 
                 switch (LicenseSearchResult.Status)
                 {
                     case "VALID":
                         // Display the results in their fields
-                        //SearchHeaderField.Text = CallsignUpper;
-                        SearchResultPivot.Title = CallsignUpper;
-                        RegistrantTypeField.Text = LicenseSearchResult.Type;
-                        AddressAttnField.Text = LicenseSearchResult.AddressAttn;
-                        AddressLine1Field.Text = LicenseSearchResult.AddressLine1;
-                        AddressLine2Field.Text = LicenseSearchResult.AddressLine2;
+                        SearchResultPivot.Title = $"{CallsignUpper}: {LicenseSearchResult.Name}";
+                        //RegistrantTypeField.Text = LicenseSearchResult.Type;
+
+                        AddressAttnField.Text = 
+                            CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
+                                LicenseSearchResult.AddressAttn.ToLower(CultureInfo.CurrentCulture)
+                            );
+                        AddressLine1Field.Text =
+                            CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
+                                LicenseSearchResult.AddressLine1.ToLower(CultureInfo.CurrentCulture)
+                            );
+                        AddressLine2Field.Text =
+                            CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
+                                LicenseSearchResult.AddressLine2.ToLower(CultureInfo.CurrentCulture)
+                            );
 
                         LocationCoordinatesField.Text = LicenseSearchResult.Location.Coordinates;
                         GridSquareField.Text = LicenseSearchResult.GridSquare;
@@ -105,7 +114,7 @@ namespace Hammer.Views
                         DateExpiryField.Text = LicenseSearchResult.ExpiryDate.ToString("d");
                         DateLastActionField.Text = LicenseSearchResult.LastActionDate.ToString("d");
 
-                        UlsUriField.Text = LicenseSearchResult.UlsUri.ToString();
+                        //UlsUriField.Text = LicenseSearchResult.UlsUri.ToString();
 
                         licensePlacecardGeopoint = new Geopoint(new BasicGeoposition { Latitude = LicenseSearchResult.Location.Latitude, Longitude = LicenseSearchResult.Location.Longitude });
 
@@ -192,6 +201,12 @@ namespace Hammer.Views
 
             //await Launcher.LaunchUriAsync(LicenseSearchResult.UlsUri, options);
             await Launcher.LaunchUriAsync(LicenseSearchResult.UlsUri);
+        }
+
+        private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Null reference exception.
+            //await CallsignSearch(LicenseSearchResult.Trustee.Callsign).ConfigureAwait(true);
         }
     }
 }
