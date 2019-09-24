@@ -1,18 +1,19 @@
-﻿using Hammer.Models;
-using Hammer.Callsigns;
+﻿using Hammer.Callsigns;
+using Hammer.Models;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.Web.Http;
-using Windows.UI.Xaml.Navigation;
 using Windows.Devices.Geolocation;
+using Windows.Foundation;
 using Windows.Services.Maps;
 using Windows.System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.Foundation;
+using Windows.UI.Xaml.Navigation;
+using Windows.Web.Http;
 
 namespace Hammer.Views
 {
