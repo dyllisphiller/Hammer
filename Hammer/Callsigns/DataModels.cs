@@ -103,7 +103,7 @@ namespace Hammer.Models
         public string FRN { get => frn; set => frn = value; }
         public Uri UlsUri { get => ulsUri; set => ulsUri = value; }
         public DateTimeOffset GrantDate { get => grantDate; set => grantDate = value; }
-        public DateTimeOffset ExpiryDate { get => expiryDate; set => lastActionDate = value; }
+        public DateTimeOffset ExpiryDate { get => expiryDate; set => expiryDate = value; }
         public DateTimeOffset LastActionDate { get => lastActionDate; set => lastActionDate = value; }
         public GeographicPoint Location { get => location; set => location = value; }
         public string GridSquare { get => gridSquare; set => gridSquare = value; }
@@ -133,12 +133,13 @@ namespace Hammer.Models
 
         //public void TryParse(string callsign, string name, string status, string type, string operatorClass, string frn, string ulsUri, DateTimeOffset grantDate, DateTimeOffset expiryDate, DateTimeOffset lastActionDate)
 
-        public void TryParse(JObject json)
+        public void TryParse(JObject json, out License license)
         {
             if (json != null)
             {
                 Status = (string)json["status"];
                 Type = (string)json["type"];
+                Name = (string)json["name"];
                 Callsign = (string)json["current"]["callsign"];
                 OperatorClass = (string)json["current"]["operClass"];
                 FRN = (string)json["frn"];
@@ -151,6 +152,10 @@ namespace Hammer.Models
                         Callsign = (string)json["trustee"]["callsign"],
                         Name = (string)json["trustee"]["name"]
                     };
+                }
+                else
+                {
+                    Trustee = null;
                 }
 
                 AddressLine1 = (string)json["address"]["line1"];
@@ -170,7 +175,6 @@ namespace Hammer.Models
                         System.Globalization.CultureInfo.InvariantCulture);
                 }
 
-
                 if (!String.IsNullOrEmpty((string)json["otherInfo"]["expiryDate"]))
                 {
                     ExpiryDate = DateTimeOffset.Parse(
@@ -189,6 +193,7 @@ namespace Hammer.Models
             {
                 throw new ArgumentNullException(nameof(json), $"{nameof(TryParse)} must have one JObject argument");
             }
+            license = this;
         }
     }
 
