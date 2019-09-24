@@ -125,6 +125,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Clipboard.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Callsigns\Parsers.cs" />
     <Compile Include="ParserClass.cs" />
