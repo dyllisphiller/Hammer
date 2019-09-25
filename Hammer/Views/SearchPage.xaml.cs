@@ -9,6 +9,7 @@ using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Services.Maps;
 using Windows.System;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -34,7 +35,15 @@ namespace Hammer.Views
         {
             if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
             {
-                await CallsignSearch((string)e.Parameter).ConfigureAwait(true);
+                try
+                {
+                    await CallsignSearch((string)e.Parameter).ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    var messageDialog = new MessageDialog(ex.Message);
+                    await messageDialog.ShowAsync();
+                }
             }
         }
 
@@ -51,18 +60,29 @@ namespace Hammer.Views
 
         public async Task RetrieveData(string callsign)
         {
+            string CallsignClean;
+
+            // Clean the callsign
+            if (!String.IsNullOrEmpty(callsign))
+            {
+                CallsignClean = Regex.Replace(callsign.ToUpperInvariant(), @"[^\p{Lu}\p{Nd}]", "");
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(callsign), "Callsign must not be null or empty.");
+            }
+
             // Initialize variables
             JObject jResult;
             string result;
 
             string ErrorMessage = "";
-            string CallsignUpper = callsign.ToUpperInvariant();
 
             // TODO: Reset result fields
             // LookupResultField.Text = "";
 
             // assemble the address
-            Uri.TryCreate($"{EndpointURL}{CallsignUpper}/json", UriKind.Absolute, out Uri requestUri);
+            Uri.TryCreate($"{EndpointURL}{CallsignClean}/json", UriKind.Absolute, out Uri requestUri);
 
             using (var client = new HttpClient())
             {
@@ -91,8 +111,11 @@ namespace Hammer.Views
                 {
                     case "VALID":
                         // Display the results in their fields
-                        SearchResultPivot.Title = $"{CallsignUpper}: {LicenseSearchResult.Name}";
-                        //RegistrantTypeField.Text = LicenseSearchResult.Type;
+                        SearchResultsHeader.Text = CallsignClean;
+                        SearchResultsSubheader.Text = $"{LicenseSearchResult.Name}";
+
+                        if (String.IsNullOrEmpty(LicenseSearchResult.Trustee.Callsign))
+                        SearchTrusteeButton.Content = $"{LicenseSearchResult.Trustee.Callsign}";
 
                         AddressAttnField.Text = 
                             CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
@@ -107,12 +130,15 @@ namespace Hammer.Views
                                 LicenseSearchResult.AddressLine2.ToLower(CultureInfo.CurrentCulture)
                             );
 
-                        LocationCoordinatesField.Text = LicenseSearchResult.Location.Coordinates;
+                        LocationLatitudeField.Text = LicenseSearchResult.Location.Latitude.ToString();
+                        LocationLongitudeField.Text = LicenseSearchResult.Location.Longitude.ToString();
                         GridSquareField.Text = LicenseSearchResult.GridSquare;
 
                         DateGrantedField.Text = LicenseSearchResult.GrantDate.ToString("d");
                         DateExpiryField.Text = LicenseSearchResult.ExpiryDate.ToString("d");
                         DateLastActionField.Text = LicenseSearchResult.LastActionDate.ToString("d");
+
+                        UlsUriHyperlinkButton.NavigateUri = LicenseSearchResult.UlsUri;
 
                         //UlsUriField.Text = LicenseSearchResult.UlsUri.ToString();
 

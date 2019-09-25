@@ -27,103 +27,143 @@
         </Grid.Transitions>
 
         <ProgressRing x:Name="SearchProgressRing"
-                          IsActive="False"
-                          Visibility="Collapsed"
+                      IsActive="False"
+                      Visibility="Collapsed"
                       Height="120"
                       Width="120"/>
 
-        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Visible" Margin="0,0,0,0">
-
-            <Pivot x:Name="SearchResultPivot">
-                <PivotItem Header="Club" x:Name="MainDetailsPivotItem">
-                    <StackPanel>
-                        <Button x:Name="UlsUriButton"
-                                        Content="View on ULS"
-                                        Margin="0,12,0,0"
-                                        Click="UlsUriButton_Click"/>
-
-                        <Button x:Name="SearchTrusteeButton"
-                                        Content="View on ULS"
-                                        Margin="0,12,0,0"
-                                        Click="SearchTrusteeButton_Click"/>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-
-                            <StackPanel Margin="0,0,24,0">
-                                <!--<TextBox x:Name="AddressLine2Field"
-                                 PlaceholderText="Anytown, OR 97301"
-                                 Margin="0,24,0,0"/>
-                                <TextBox x:Name="AddressAttnField"
-                                 Margin="0,24,0,0"
-                                 Visibility="Collapsed"/>-->
-                                <!--Style="{StaticResource BodyTextBlockStyle}"-->
-                                <TextBlock x:Name="NameField"
-                                           Text="Johnny Appleseed"
-                                           Margin="0,6,0,0"/>
-                                <TextBlock x:Name="AddressAttnField"
-                                           Text="Attn: Test Field"
-                                           Margin="0,6,0,0"/>
-                                <TextBlock x:Name="AddressLine1Field"
-                                           Text="123 W Main St"
-                                           Margin="0,12,0,0"/>
-                                <TextBlock x:Name="AddressLine2Field"
-                                           Text="Anytown, US 00000"
-                                           Margin="0,6,0,0"/>
-                            </StackPanel>
-
-                            <Button x:Name="ShowMapButton" Click="ShowMapButton_Click" HorizontalAlignment="Right">
-                                <StackPanel Orientation="Horizontal">
-                                    <SymbolIcon Symbol="Map" Margin="0,0,6,0"/>
-                                    <TextBlock>Map</TextBlock>
-                                </StackPanel>
-                            </Button>
-                        </Grid>
-                        <!--<TextBlock Style="{StaticResource CaptionTextBlockStyle}">Coordinates</TextBlock>-->
-                        <TextBox x:Name="LocationCoordinatesField"
-                                     PlaceholderText="45.0, -123.0"
-                                     Header="Coordinates"
-                                     Margin="0,24,0,0"/>
-
-                        <TextBox x:Name="GridSquareField"
-                                     Header="Grid Square"
-                                     Margin="0,24,0,0"/>
-                    </StackPanel>
-                </PivotItem>
-
-                <PivotItem Header="Trustee" x:Name="TrusteeDetailsPivotItem">
-                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
-                        <Run Text="This should only appear if the callsign is registered to an organization."/>
-                    </TextBlock>
-                </PivotItem>
-            </Pivot>
-
+        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Visible" Margin="0,12,0,0">
+            <TextBlock x:Name="SearchResultsHeader" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <TextBlock x:Name="SearchResultsSubheader" Style="{StaticResource SubtitleTextBlockStyle}"/>
             <StackPanel>
-                <!--Style="{StaticResource CaptionTextBlockStyle}"-->
-                <TextBox x:Name="DateGrantedField"
-                         PlaceholderText="Granted"
-                         Header="Date Granted"
-                         Margin="0,24,0,0"/>
-                <TextBox x:Name="DateLastActionField"
-                         PlaceholderText="Last action"
-                         Header="Last Action"
-                         Margin="0,24,0,0"/>
-                <TextBox x:Name="DateExpiryField"
-                         PlaceholderText="Expires"
-                         Header="Expires"
-                         Margin="0,24,0,0"/>
+                <Button x:Name="SearchTrusteeButton"
+                            Content="View Trustee"
+                            Margin="0,12,0,0"
+                            Click="SearchTrusteeButton_Click"/>
 
-                <!--<TextBox x:Name="UlsUriField"
-                         PlaceholderText="FCC ULS URI"
-                         Header="FCC Universal Licensing System URI"
-                         Margin="0,24,0,0"/>-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Margin="0,0,24,0">
+                        <!--<TextBox x:Name="AddressLine2Field"
+                                PlaceholderText="Anytown, OR 97301"
+                                Margin="0,24,0,0"/>
+                            <TextBox x:Name="AddressAttnField"
+                                Margin="0,24,0,0"
+                                Visibility="Collapsed"/>-->
+                        <!--Style="{StaticResource BodyTextBlockStyle}"-->
+                        <TextBlock x:Name="NameField"
+                                        Text="Johnny Appleseed"
+                                        Margin="0,6,0,0"/>
+                        <TextBlock x:Name="AddressAttnField"
+                                        Text="Attn: Test Field"
+                                        Margin="0,6,0,0"/>
+                        <TextBlock x:Name="AddressLine1Field"
+                                        Text="123 W Main St"
+                                        Margin="0,12,0,0"/>
+                        <TextBlock x:Name="AddressLine2Field"
+                                        Text="Anytown, US 00000"
+                                        Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <Button x:Name="ShowMapButton" Click="ShowMapButton_Click" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="Map" Margin="0,0,6,0"/>
+                            <TextBlock>Map</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,48,0,12">Location</TextBlock>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="Latitude"
+                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                    <TextBlock x:Name="LocationLatitudeField"
+                                    Grid.Row="1"
+                                    Grid.Column="0"/>
+
+                    <TextBlock Grid.Row="0"
+                                    Grid.Column="1"
+                                    Text="Longitude"
+                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                    <TextBlock x:Name="LocationLongitudeField"
+                                    Grid.Row="1"
+                                    Grid.Column="1"/>
+
+                    <TextBlock Grid.Row="0"
+                                    Grid.Column="2"
+                                    Text="Grid Square"
+                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                    <TextBlock x:Name="GridSquareField"
+                                    Grid.Row="1"
+                                    Grid.Column="2"/>
+                </Grid>
+
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,48,0,12">Chronology</TextBlock>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           Text="Granted"/>
+                    <TextBlock x:Name="DateGrantedField"
+                           Grid.Row="1"
+                           Grid.Column="0"
+                           Text="1969-12-31"/>
+
+                    <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           Text="Updated"/>
+                    <TextBlock x:Name="DateLastActionField"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           Text="1969-12-31"/>
+
+                    <TextBlock Grid.Row="0"
+                           Grid.Column="2"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           Text="Expires"/>
+                    <TextBlock x:Name="DateExpiryField"
+                           Grid.Row="1"
+                           Grid.Column="2"
+                           Text="1969-12-31"/>
+                </Grid>
+
+
+                <HyperlinkButton x:Name="UlsUriHyperlinkButton"
+                                    Content="View on FCC ULS"
+                                    Margin="0,12,0,0"/>
             </StackPanel>
         </StackPanel>
     </Grid>
