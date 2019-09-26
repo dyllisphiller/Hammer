@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace Hammer.Models
+namespace Hammer.Licenses
 {
     /// <summary>
     /// Represents a point on Earth in degrees latitude and longitude.
@@ -59,7 +59,7 @@ namespace Hammer.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of the Hammer.Models.GeographicPoint class with coordinates of (0.0, 0.0).
+        /// Initializes a new instance of the Hammer.Licenses.GeographicPoint class with coordinates of (0.0, 0.0).
         /// </summary>
         public GeographicPoint()
         {
@@ -68,7 +68,7 @@ namespace Hammer.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of the Hammer.Models.GeographicPoint class for the specified latitude and longitude.
+        /// Initializes a new instance of the Hammer.Licenses.GeographicPoint class for the specified latitude and longitude.
         /// </summary>
         /// <param name="latitude">Latitude in degrees from -90.0 to 90.0 (inclusive).</param>
         /// <param name="longitude">Longitude in degrees from -180.0 to 180.0 (inclusive).</param>

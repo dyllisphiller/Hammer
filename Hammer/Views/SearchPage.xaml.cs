@@ -1,5 +1,5 @@
 ﻿using Hammer.Callsigns;
-using Hammer.Models;
+using Hammer.Licenses;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
