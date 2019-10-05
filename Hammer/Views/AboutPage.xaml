@@ -9,6 +9,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <StackPanel>
+            <TextBlock x:Name="AboutPage_Header" Style="{ThemeResource HeaderTextBlockStyle}"/>
+        </StackPanel>
     </Grid>
 </Page>
