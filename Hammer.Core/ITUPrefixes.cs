@@ -209,7 +209,80 @@ namespace Hammer.Core.Callsigns
             // GD - Grenada
             { @"^J3", "gd" },
 
-            // 
+            // GE - Georgia
+            { @"^4L", "ge" },
+
+            // GH - Ghana
+            { @"^9G", "gh" },
+
+            // GM - The Gambia
+            { @"^C5", "gm" },
+
+            // GN - Guinea
+            { @"^3X", "gn" },
+
+            // GQ - Equatorial Guinea
+            { @"^3C", "gq" },
+
+            // GR - Greece
+            { @"^((J4)|(S[V-Z]))", "gr" },
+
+            // GT - Guatemala
+            { @"^T[DG]", "gt" },
+
+            // GW - Guinea-Bissau
+            { @"^J5", "gw" },
+
+            // GY - Guyana
+            { @"^8R", "gy" },
+
+            // HK - Hong Kong
+            { @"^VR", "hk" },
+
+            // HN - Honduras
+            { @"^H[QR]", "hn" },
+
+            // HR - Croatia
+            { @"^9A", "hr" },
+
+            // HT - Haiti
+            { @"^(HH|4V)", "ht" },
+
+            // HU - Hungary
+            { @"^H[AG]", "hu" },
+
+            // ID - Indonesia
+            { @"^((JZ)|(P[K-O])|(Y[B-H])|([78][A-I]))", "id" },
+
+            // IE - Ireland
+            { @"^E[IJ]", "ie" },
+
+            // IL - Israel
+            { @"^4[XZ]", "il" },
+
+            // IN - India
+            { @"^(([AV][T-W])|(8[T-Y]))", "in" },
+
+            // IQ - Iraq
+            { @"^((HN)|(YI))", "iq" },
+
+            // IR - Iran
+            { @"^((E[PQ])|(9[B-D]))", "ir" },
+
+            // IS - Iceland
+            { @"^TF", "is" },
+
+            // IT - Italy
+            { @"^I", "it" },
+
+            // JM - Jamaica
+            { @"^6Y", "jm" },
+
+            // JO - Jordan
+            { @"^JY", "jo" },
+
+            // JP - Japan
+            { @"^((J[A-S])|([78][J-N]))", "jp" },
 
             // US - United States
             { @"^[KN].*", "us" },
