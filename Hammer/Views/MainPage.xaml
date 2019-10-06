@@ -1,8 +1,8 @@
 ﻿<Page
-    x:Class="Hammer.MainPage"
+    x:Class="Hammer.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Hammer"
+    xmlns:local="using:Hammer.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -16,8 +16,8 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Tag="home" Icon="Home" Content="Home"/>
                 <NavigationViewItem Tag="search" Icon="Find" Content="Search"/>
+                <NavigationViewItem Tag="people" Icon="People" Content="People"/>
                 <NavigationViewItem Tag="about" Icon="View" Content="About"/>
-                <NavigationViewItem Tag="help" Icon="Help" Content="Help"/>
             </NavigationView.MenuItems>
 
             <NavigationView.AutoSuggestBox>

@@ -1,8 +1,9 @@
-﻿using Windows.ApplicationModel.DataTransfer;
+﻿using Hammer.Core.Helpers;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace Hammer
 {
-    class Clipboard
+    class Clipboard : IClipboard
     {
         private readonly DataPackage dataPackage = new DataPackage();
         public void SetContent(string text)

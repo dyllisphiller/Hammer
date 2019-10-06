@@ -1,25 +1,24 @@
 ﻿using Hammer.Callsigns;
-using Hammer.Licenses;
+using Hammer.Core.Licenses;
+using Hammer.Core.Helpers;
+using Hammer.Helpers.Cartography;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
-using Windows.Foundation;
-using Windows.Services.Maps;
 using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
 namespace Hammer.Views
 {
     /// <summary>
-    /// The callsign SERP, meant to be navigated to within a Frame.
+    /// The license search result page, meant to be navigated to within a Frame.
     /// </summary>
     public sealed partial class SearchPage : Page
     {
@@ -28,7 +27,10 @@ namespace Hammer.Views
         public SearchPage()
         {
             this.InitializeComponent();
-            this.ViewModel = new LicenseViewModel();
+            if (this.ViewModel == null)
+            {
+                this.ViewModel = new LicenseViewModel();
+            }
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -54,9 +56,8 @@ namespace Hammer.Views
         // If anyone there is reading this: thanks!
         const string EndpointURL = "https://callook.info/";
 
-        private License LicenseSearchResult = new License();
-        Geopoint licensePlacecardGeopoint;
-
+        private License licenseSearchResult = new License();
+        Geopoint licenseGeopoint;
 
         public async Task RetrieveData(string callsign)
         {
@@ -105,44 +106,44 @@ namespace Hammer.Views
             try
             {
                 jResult = JObject.Parse(result);
-                LicenseSearchResult.TryParse(jResult, out LicenseSearchResult);
+                License.TryParse(jResult, out licenseSearchResult);
 
-                switch (LicenseSearchResult.Status)
+                switch (licenseSearchResult.Status)
                 {
                     case "VALID":
                         // Display the results in their fields
                         SearchResultsHeader.Text = CallsignClean;
-                        SearchResultsSubheader.Text = $"{LicenseSearchResult.Name}";
+                        SearchResultsSubheader.Text = $"{licenseSearchResult.Name}";
 
-                        if (String.IsNullOrEmpty(LicenseSearchResult.Trustee.Callsign))
-                        SearchTrusteeButton.Content = $"{LicenseSearchResult.Trustee.Callsign}";
+                        if (String.IsNullOrEmpty(licenseSearchResult.Trustee.Callsign))
+                        SearchTrusteeButton.Content = $"{licenseSearchResult.Trustee.Callsign}";
 
                         AddressAttnField.Text = 
                             CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
-                                LicenseSearchResult.AddressAttn.ToLower(CultureInfo.CurrentCulture)
+                                licenseSearchResult.AddressAttn.ToLower(CultureInfo.CurrentCulture)
                             );
                         AddressLine1Field.Text =
                             CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
-                                LicenseSearchResult.AddressLine1.ToLower(CultureInfo.CurrentCulture)
+                                licenseSearchResult.AddressLine1.ToLower(CultureInfo.CurrentCulture)
                             );
                         AddressLine2Field.Text =
                             CultureInfo.InvariantCulture.TextInfo.ToTitleCase(
-                                LicenseSearchResult.AddressLine2.ToLower(CultureInfo.CurrentCulture)
+                                licenseSearchResult.AddressLine2.ToLower(CultureInfo.CurrentCulture)
                             );
 
-                        LocationLatitudeField.Text = LicenseSearchResult.Location.Latitude.ToString();
-                        LocationLongitudeField.Text = LicenseSearchResult.Location.Longitude.ToString();
-                        GridSquareField.Text = LicenseSearchResult.GridSquare;
+                        LocationLatitudeField.Text = licenseSearchResult.Location.Latitude.ToString();
+                        LocationLongitudeField.Text = licenseSearchResult.Location.Longitude.ToString();
+                        GridSquareField.Text = licenseSearchResult.GridSquare;
 
-                        DateGrantedField.Text = LicenseSearchResult.GrantDate.ToString("d");
-                        DateExpiryField.Text = LicenseSearchResult.ExpiryDate.ToString("d");
-                        DateLastActionField.Text = LicenseSearchResult.LastActionDate.ToString("d");
+                        DateGrantedField.Text = licenseSearchResult.GrantDate.ToString("d");
+                        DateExpiryField.Text = licenseSearchResult.ExpiryDate.ToString("d");
+                        DateLastActionField.Text = licenseSearchResult.LastActionDate.ToString("d");
 
-                        UlsUriHyperlinkButton.NavigateUri = LicenseSearchResult.UlsUri;
+                        UlsUriHyperlinkButton.NavigateUri = licenseSearchResult.UlsUri;
 
-                        //UlsUriField.Text = LicenseSearchResult.UlsUri.ToString();
+                        //UlsUriField.Text = licenseSearchResult.UlsUri.ToString();
 
-                        licensePlacecardGeopoint = new Geopoint(new BasicGeoposition { Latitude = LicenseSearchResult.Location.Latitude, Longitude = LicenseSearchResult.Location.Longitude });
+                        licenseGeopoint = new Geopoint(new BasicGeoposition { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude });
 
                         break;
 
@@ -175,7 +176,7 @@ namespace Hammer.Views
             }
             else if (!_rgx.IsMatch(callsign))
             {
-                string exception = $"'{callsign.ToUpperInvariant()}' does not appear to be a valid callsign.";
+                string exception = $"'{callsign}' does not appear to be a valid callsign.";
                 throw new ApplicationException(exception);
             }
             else if (Parser.IsCallsignIssuedByUnitedStates(callsign))
@@ -185,6 +186,7 @@ namespace Hammer.Views
                 // This needs to be a thing for generalized AI. Occasional fidgeting.
                 // Imagine it pinging a random host for funsies. Toggling the power light.
                 // Or, if the machine is old, opening and closing the optical drive tray.
+                // TODO: Trigger these with events instead of synchronously?
                 SearchResultsStackPanel.Visibility = Visibility.Collapsed;
                 SearchProgressRing.IsActive = true;
                 SearchProgressRing.Visibility = Visibility.Visible;
@@ -195,44 +197,31 @@ namespace Hammer.Views
                 SearchProgressRing.Visibility = Visibility.Collapsed;
                 SearchProgressRing.IsActive = false;
                 SearchResultsStackPanel.Visibility = Visibility.Visible;
-
             }
         }
 
         private void ShowMapButton_Click(object sender, RoutedEventArgs e)
         {
-            PlaceInfoCreateOptions options = new PlaceInfoCreateOptions
-            {
-                DisplayAddress = $"{LicenseSearchResult.AddressLine1}, {LicenseSearchResult.AddressLine2}",
-                DisplayName = $"{LicenseSearchResult.Callsign}"
-            };
-
-            PlaceInfo licensePlaceInfo = PlaceInfo.Create(licensePlacecardGeopoint, options);
-
-            FrameworkElement targetElement = (FrameworkElement)sender;
-
-            GeneralTransform generalTransform =
-                targetElement.TransformToVisual((FrameworkElement)targetElement.Parent);
-
-            Rect rectangle = generalTransform.TransformBounds(new Rect(new Point
-                (targetElement.Margin.Left, targetElement.Margin.Top), targetElement.RenderSize));
-
-            licensePlaceInfo.Show(rectangle, Windows.UI.Popups.Placement.Below);
+            Placecard.ShowPlacecard(sender,
+                                    licenseGeopoint,
+                                    licenseSearchResult.Callsign,
+                                    licenseSearchResult.AddressLine1,
+                                    licenseSearchResult.AddressLine2);
         }
 
         private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
         {
-            //var options = new Windows.System.LauncherOptions();
-            //options.TreatAsUntrusted = true;
+            var options = new Windows.System.LauncherOptions();
+            options.TreatAsUntrusted = true;
 
-            //await Launcher.LaunchUriAsync(LicenseSearchResult.UlsUri, options);
-            await Launcher.LaunchUriAsync(LicenseSearchResult.UlsUri);
+            await Launcher.LaunchUriAsync(licenseSearchResult.UlsUri, options);
+            //await Launcher.LaunchUriAsync(licenseSearchResult.UlsUri);
         }
 
         private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
         {
             // Null reference exception.
-            //await CallsignSearch(LicenseSearchResult.Trustee.Callsign).ConfigureAwait(true);
+            //await CallsignSearch(licenseSearchResult.Trustee.Callsign).ConfigureAwait(true);
         }
     }
 }

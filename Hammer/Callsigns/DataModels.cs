@@ -1,83 +1,12 @@
 ﻿using Hammer.Callsigns;
+using Hammer.Core.Cartography;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
 namespace Hammer.Licenses
 {
-    /// <summary>
-    /// Represents a point on Earth in degrees latitude and longitude.
-    /// </summary>
-    public class GeographicPoint
-    {
-        private double latitude;
-        private double longitude;
-
-        /// <summary>
-        /// The latitude in degrees, between -90.0 and 90.0 (inclusive).
-        /// </summary>
-        public double Latitude
-        {
-            get => latitude;
-            set
-            {
-                if (value >= -90.0 && value <= 90.0)
-                {
-                    latitude = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(Latitude)} must be between -90.0 and 90.0.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// The longitude in degrees, between -180.0 and 180.0 (inclusive).
-        /// </summary>
-        public double Longitude
-        {
-            get => longitude;
-            set
-            {
-                if (value >= -180.0 && value <= 180.0)
-                {
-                    longitude = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(Longitude)} must be between -180.0 and 180.0.");
-                }
-            }
-        }
-        public string Coordinates
-        {
-            get
-            {
-                return $"{Latitude}, {Longitude}";
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Hammer.Licenses.GeographicPoint class with coordinates of (0.0, 0.0).
-        /// </summary>
-        public GeographicPoint()
-        {
-            Latitude = 0.0;
-            Longitude = 0.0;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Hammer.Licenses.GeographicPoint class for the specified latitude and longitude.
-        /// </summary>
-        /// <param name="latitude">Latitude in degrees from -90.0 to 90.0 (inclusive).</param>
-        /// <param name="longitude">Longitude in degrees from -180.0 to 180.0 (inclusive).</param>
-        public GeographicPoint(double latitude, double longitude)
-        {
-            Latitude = latitude;
-            Longitude = longitude;
-        }
-    }
+    
 
     public class License
     {
@@ -132,6 +61,11 @@ namespace Hammer.Licenses
         //}
 
         //public void TryParse(string callsign, string name, string status, string type, string operatorClass, string frn, string ulsUri, DateTimeOffset grantDate, DateTimeOffset expiryDate, DateTimeOffset lastActionDate)
+
+        private void TryParse(JObject json)
+        {
+            // only from an instance
+        }
 
         public void TryParse(JObject json, out License license)
         {
