@@ -52,7 +52,7 @@ namespace Hammer.Core.Callsigns
             // BA - Bosnia and Herzagovina
             { @"^E7", "ba" },
 
-            // TODO: BB
+            // BB - Barbados
             { @"^8P", "bb" },
 
             // BD - Bangladesh
@@ -70,7 +70,7 @@ namespace Hammer.Core.Callsigns
             // BH - Bahrain
             { @"^A9", "bh" },
 
-            // TODO: BI
+            // BI - Burundi
             { @"^9U", "bi" },
 
             // BJ - Benin
@@ -284,14 +284,363 @@ namespace Hammer.Core.Callsigns
             // JP - Japan
             { @"^((J[A-S])|([78][J-N]))", "jp" },
 
-            // US - United States
-            { @"^[KN].*", "us" },
+            // KE - Kenya
+            { @"^5[YZ]", "ke" },
 
-            // Arbitrary prefixes and/or country codes
+            // KG - Kyrgyzstan
+            { @"^EX", "kg" },
+
+            // KH - Cambodia
+            { @"^XU", "kh" },
+
+            // KI - Kiribati
+            { @"^T3", "ki" },
+
+            // KM - Comoros
+            { @"^D6", "km" },
+
+            // KN - Saint Kitts and Nevis
+            { @"^V4", "kn" },
+
+            // KP - North Korea
+            { @"^((HM)|(P[5-9]))", "kp" },
+
+            // KR - South Korea
+            { @"^((D[ST7-9])|(HL)|(6[K-N]))", "kr" },
+
+            // KW - Kuwait
+            { @"^9K", "kw" },
+
+            // KZ - Kazakhstan
+            { @"U[N-Q]", "kz" },
+
+            // LA - Laos
+            { @"^XW", "la" },
+
+            // LB - Lebanon
+            { @"^LB", "lb" },
+
+            // LC - Saint Lucia
+            { @"^J6", "lc" },
+
+            // LI - Liechtenstein
+            { @"^HB(0|(3Y)|L)", "li" },
+
+            // LK - Sri Lanka
+            { @"^4[P-S]", "lk" },
+
+            // LR - Liberia
+            { @"^((A8)|(D5)|(EL)|(5[LM])|(6Z))", "lr" },
+
+            // LS - Lesotho
+            { @"^7P", "ls" },
+
+            // LT - Lithuania
+            { @"^LY", "lt" },
+
+            // LU - Luxembourg
+            { @"^LX", "lu" },
+
+            // LV - Latvia
+            { @"^YL", "lv" },
+
+            // LY - Libya
+            { @"^5A", "ly" },
+
+            // MA - Morocco
+            { @"^((CN)|(5[C-G]))", "ma" },
+
+            // MC - Monaco
+            { @"^3A", "mc" },
+
+            // MD - Moldova
+            { @"^ER", "md" },
+
+            // ME - Montenegro
+            { @"^4O", "me" },
+
+            // MG - Mongolia
+            { @"^((J[TUV])|(5[RS])|(6X))", "mg" },
+
+            // MH - Marshall Islands
+            { @"^V7", "mh" },
+
+            // MK - North Macedonia
+            { @"^Z3", "mk" },
+
+            // ML - Mali
+            { @"^TZ", "ml" },
+
+            // MM - Myanmar
+            { @"^X[YZ]", "mm" },
+
+            // MO - Macao
+            { @"^XX", "mo" },
+
+            // MR - Mauritania
+            { @"^5T", "mr" },
+
+            // MT - Malta
+            { @"^9H", "mt" },
+
+            // MU - Mauritius
+            { @"^3B", "mu" },
+
+            // MV - Maldives
+            { @"^8Q", "mv" },
+
+            // MW - Malawi
+            { @"^7Q", "mw" },
+
+            // MX - Mexico
+            { @"^((X[A-I])|(4[A-C])|(6[D-J]))", "mx" },
+
+            // MY - Malaysia
+            { @"^9[MW]", "my" },
+
+            // MZ - Mozambique
+            { @"^C[89]", "mz" },
+
+            // NA - Namibia
+            { @"^V5", "na" },
+
+            // NE - Niger
+            { @"^5U", "ne" },
+
+            // NG - Nigeria
+            { @"^5[NO]", "ng" },
+
+            // NI - Nicaragua
+            { @"^((H[T67])|(YN))", "ni" },
+
+            // NL - Netherlands
+            { @"^P[A-I]", "nl" },
+
+            // NO - Norway
+            { @"^((J[WX])|(L[A-N])|(3Y))", "no" },
+
+            // NP - Nepal
+            { @"^9N", "np" },
+
+            // NR - Nauru
+            { @"^C2", "nr" },
+
+            // NU - Niue
+            { @"^E6", "nu" },
+
+            // NZ - New Zealand
+            { @"^Z[K-M]", "nz" },
+
+            // OM - Oman
+            { @"^A4", "om" },
+
+            // PA - Panama
+            { @"^((H[OP389])|(3[EF]))", "pa" },
+
+            // PE - Peru
+            { @"^((O[A-C])|(4T))", "pe" },
+
+            // PG - Papua New Guinea
+            { @"^P2", "pg" },
+
+            // PH - Philippines
+            { @"((D[U-Z])|(4[D-I]))", "ph" },
+
+            // PK - Pakistan
+            { @"^((A[P-R])|(6[P-S]))", "pk" },
+
+            // PL - Poland
+            { @"^((HF)|(S[N-R])|(3Z))", "pl" },
+
+            // PS - Palestinian Authority
+            { @"^E4", "ps" },
+
+            // PT - Portugal
+            { @"^C[Q-U)", "pt" },
+
+            // PW - Palau
+            { @"^T8", "pw" },
+
+            // PY - Paraguay
+            { @"^ZP", "py" },
+
+            // QA - Qatar
+            { @"^A7", "qa" },
+
+            // RO - Romania
+            { @"^Y[O-R]", "ro" },
+
+            // RS - Serbia
+            { @"^Y[TU]", "rs" },
+
+            // RU - Russia
+            { @"^(R|(U[A-I]))", "ru" },
+
+            // RW - Rwanda
+            { @"^9X", "rw" },
+
+            // SA - Saudi Arabia
+            { @"^[H78]Z", "sa" },
+
+            // SB - Solomon Islands
+            { @"^H4", "sb" },
+
+            // SC - Seychelles
+            { @"^S7", "sc" },
+
+            // SD - Sudan
+            { @"^S((S[N-Z])|T|(6[TU]))", "sd" },
+
+            // SE - Sweden
+            { @"^((S[A-M])|([78]S))", "se" },
+
+            // SG - Singapore
+            { @"^(S6|9V)", "sg" },
+
+            // SI - Slovenia
+            { @"^S5", "si" },
+
+            // SK - Slovakia
+            { @"^OM", "sk" },
+
+            // SL - Sierra Leone
+            { @"^9L", "sl" },
+
+            // SM - San Marino
+            { @"^T7", "sm" },
+
+            // SN - Senegal
+            { @"^6[VW]", "sn" },
+
+            // SO - Somalia
+            { @"^(T5|6O)", "so" },
+
+            // SR - Suriname
+            { @"^PZ", "sr" },
+
+            // SS - South Sudan
+            { @"^Z8", "ss" },
+
+            // ST - São Tomé and Príncipe
+            { @"^S9", "st" },
+
+            // SV - El Salvador
+            { @"^(HU|YS)", "sv" },
+
+            // SY - Syria
+            { @"^(YK|6C)", "sy" },
+
+            // SZ - Eswatini
+            { @"^3D[A-M]", "sz" },
+
+            // TD - Chad
+            { @"^TT", "td" },
+
+            // TG - Togo
+            { @"^5V", "tg" },
+
+            // TH - Thailand
+            { @"^(E2|HS)", "th" },
+
+            // TJ - Tajikistan
+            { @"^EY", "tj" },
+
+            // TL - Timor-Leste
+            { @"^4W", "tl" },
+
+            // TM - Turkmenistan
+            { @"^EZ", "tm" },
+
+            // TN - Tunisia
+            { @"^(TS|3V)", "tn" },
+
+            // TO - Tonga
+            { @"^A3", "to" },
+
+            // TR - Turkey
+            { @"^((T[A-C])|YM)","tr" },
+
+            // TT - Trinidad and Tobago
+            { @"^9[YZ]", "tt" },
+
+            // TV - Tuvalu
+            { @"^T2", "tv" },
+
+            // TW - Taiwan/Republic of China
+            { @"^B[M-QU-X]", "tw" },
+
+            // TZ - Tanzania, United Republic of
+            { @"^5[HI]", "tz" },
+
+            // UA - Ukraine
+            { @"^((E[MNO])|(U[R-Z]))", "ua" },
+
+            // UG - Uganda
+            { @"^5X", "ug" },
+
+            // US - United States
+            { @"^((A[A-L])|[KNW])", "us" },
+
+            // UY - Uruguay
+            { @"^C[V-X]", "uy" },
+
+            // UZ - Uzbekistan
+            { @"^U[J-M]", "uz" },
+
+            // VA - Vatican City
+            { @"^HV", "va" },
+            // FATHER DE HVPONTIFF K
+            // Anyone else imagining the Pope as a ham?
+
+            // VC - Saint Vincent and the Grenadines
+            { @"^J8", "vc" },
+
+            // VE - Venezuela
+            { @"^((Y[V-Y])|4M)", "ve" },
+
+            // VN - Vietnam
+            { @"^(XV|3W)", "vn" },
+
+            // VU - Vanuatu
+            { @"^YJ", "vu" },
+
+            // WS - Samoa
+            { @"^5W", "ws" },
+
+            // YE - Yemen
+            { @"^7O", "ye" },
+
+            // ZA - South Africa
+            { @"^(S8|(Z[R-U]))", "za" },
+
+            // ZM - Zambia
+            { @"^9[IJ]", "zm" },
+
+            // ZW - Zimbabwe
+            { @"^Z2", "zw" },
+
+            // These are international orgs with their own allocations
+            // XA - ICAO/International Civil Aviation Organization
+            { @"^4Y", "xa" },
+
+            // XM - World Meteorological Organization
+            { @"^C7", "xm" },
+
+            // XU - UN/United Nations
+            { @"^4U", "xu" },
+
+            // Unofficial prefixes used in disputed territories
+            // or in nation states without an ITU prefix.
+            // ITU does not issue prefixes containing 0 or 1 (zero or one).
+
             // OOKM - Sovereign Military Order of Malta/Knights of Malta
             { @"^1A", "ookm" },
-            // OOLL Liberland
+            
+            // OOLL - Liberland
             { @"^1L", "ooll" },
+
+            // OOWS - Western Sahara
+            { @"^S0", "oows" },
         };
 
         /// <summary>
@@ -315,7 +664,7 @@ namespace Hammer.Core.Callsigns
                 
                 if (!prefixRegexCache.TryGetValue(prefix, out regex))
                 {
-                    regex = new Regex(prefix, RegexOptions.Compiled);
+                    regex = new Regex(prefix, RegexOptions.Compiled | RegexOptions.IgnoreCase);
                     prefixRegexCache.Add(prefix, regex);
                 }
 
