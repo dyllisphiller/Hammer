@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Hammer.Core.Callsigns
 {
+    /// <summary>
+    /// Provides a set of methods for identifying a callsign's issuer by prefix.
+    /// </summary>
     public static class Prefixes
     {
         private static IDictionary<string, string> RawPrefixes = new Dictionary<string, string>
@@ -663,6 +667,9 @@ namespace Hammer.Core.Callsigns
 
         public static void TryGetRegion(string callsign, out string region)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             string _output = null;
 
             foreach (KeyValuePair<string, string> rawPrefixPair in RawPrefixes)
@@ -688,6 +695,13 @@ namespace Hammer.Core.Callsigns
             }
 
             region = _output;
+
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
         }
 
         //public static string GetRegion(string callsign)
