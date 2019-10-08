@@ -183,7 +183,7 @@ namespace Hammer.Core.Callsigns
             { @"^E3", "er" },
 
             // ES - Spain
-            { @"^((A[MNO])|(E[A-H])", "es" },
+            { @"^((A[MNO])|(E[A-H]))", "es" },
 
             // ET - Ethiopia
             { @"^ET", "et" },
@@ -198,7 +198,7 @@ namespace Hammer.Core.Callsigns
             { @"^FM", "fm" },
 
             // FR - France
-            { @"^(F|(H[W-Y])|(T[HKMO-QV-X])", "fr" },
+            { @"^(F|(H[W-Y])|(T[HKMO-QV-X]))", "fr" },
 
             // GA - Gabon
             { @"^TR", "ga" },
@@ -456,7 +456,7 @@ namespace Hammer.Core.Callsigns
             { @"^E4", "ps" },
 
             // PT - Portugal
-            { @"^C[Q-U)", "pt" },
+            { @"^C[Q-U]", "pt" },
 
             // PW - Palau
             { @"^T8", "pw" },
@@ -619,7 +619,7 @@ namespace Hammer.Core.Callsigns
             // ZW - Zimbabwe
             { @"^Z2", "zw" },
 
-            // These are international orgs with their own allocations
+            // International organizations with their own allocations
             // XA - ICAO/International Civil Aviation Organization
             { @"^4Y", "xa" },
 
@@ -633,6 +633,15 @@ namespace Hammer.Core.Callsigns
             // or in nation states without an ITU prefix.
             // ITU does not issue prefixes containing 0 or 1 (zero or one).
 
+            /*
+             * Because ISO 3166-1 alpha-2 doesn't specify all of these regions,
+             * these regions are specified by the arbitrary-use codes.
+             * These codes (minus what ITU uses for the ICAO (XA), the World
+             * Meteorological Organization (XM), and the UN (XU)) are AA,
+             * Q[M-Z], X[B-LN-TV-Z], and ZZ. In addition, "OO" (two "O" U+004F or "o" U+004F) is available
+             * as an escape code to specify existing two-letter combinations, like OOUS or oo.
+             */
+
             // OOKM - Sovereign Military Order of Malta/Knights of Malta
             { @"^1A", "ookm" },
             
@@ -644,9 +653,10 @@ namespace Hammer.Core.Callsigns
         };
 
         /// <summary>
-        /// string1: prefix pattern string
-        /// string2: ISO 3166-1 alpha-2 country code
+        /// A cache of the compiled prefix patterns so it doesn't have to recompile on each call.
         /// </summary>
+        // string: prefix pattern string
+        // Regex: compiled pattern string
         private static IDictionary<string, Regex> prefixRegexCache = new Dictionary<string, Regex>();
 
         // "Borrows" some implementation from https://stackoverflow.com/a/11608874
