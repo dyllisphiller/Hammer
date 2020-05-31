@@ -1,4 +1,5 @@
-﻿using Hammer.Core;
+using Hammer.Core;
+using Hammer.Core.Helpers;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace Hammer.Helpers

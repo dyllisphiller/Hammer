@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,9 +22,7 @@ using Windows.UI.Xaml.Resources;
 using Windows.System;
 using Windows.Storage;
 
-// Project started with Microsoft's Blank Page template https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
-namespace Hammer
+namespace Hammer.Views
 {
     /// <summary>
     /// The callsign lookup page.
@@ -39,13 +35,17 @@ namespace Hammer
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
+        private IList<string> autoSuggestHistory = new List<string>
+        {
+            "W1AW",
+        };
+
         // List of ValueTuple holding the Navigation Tag and the relative Navigation Page
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
-            ("home", typeof(Views.HomePage)),
-            ("search", typeof(Views.SearchPage)),
-            ("about", typeof(Views.AboutPage)),
-            ("help", typeof(Views.HelpPage)),
+            ("home", typeof(HomePage)),
+            ("search", typeof(SearchPage)),
+            //("people", typeof(Views.PeoplePage)),
         };
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
@@ -61,7 +61,7 @@ namespace Hammer
             NavView_Navigate("home", new EntranceNavigationTransitionInfo());
 
             // Add keyboard accelerators for backwards navigation.
-            var goBack = new KeyboardAccelerator { Key = VirtualKey.GoBack };
+            KeyboardAccelerator goBack = new KeyboardAccelerator { Key = VirtualKey.GoBack };
             goBack.Invoked += BackInvoked;
             this.KeyboardAccelerators.Add(goBack);
 
@@ -128,10 +128,10 @@ namespace Hammer
             if (!ContentFrame.CanGoBack)
                 return false;
 
-            // Don't go back if the nav pane is overlayed.
+            // Don't go back if the nav pane is overlaid.
             if (NavView.IsPaneOpen &&
-                (NavView.DisplayMode == NavigationViewDisplayMode.Compact ||
-                 NavView.DisplayMode == NavigationViewDisplayMode.Minimal))
+               (NavView.DisplayMode == NavigationViewDisplayMode.Compact ||
+                NavView.DisplayMode == NavigationViewDisplayMode.Minimal))
                 return false;
 
             ContentFrame.GoBack();
@@ -173,6 +173,8 @@ namespace Hammer
         public MainPage()
         {
             this.InitializeComponent();
+
+            NavViewSearchBox.ItemsSource = autoSuggestHistory;
         }
 
         private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -183,12 +185,18 @@ namespace Hammer
             }
             else
             {
-                ContentFrame.Navigate(typeof(Views.SearchPage), args.QueryText);
+                ContentFrame.Navigate(typeof(SearchPage), args.QueryText);
             }
             NavView.SelectedItem = NavView.MenuItems[1];
             //await Views.SearchPage.RetrieveData(NavViewSearchBox.Text.ToUpperInvariant()).ConfigureAwait(true);
             //Task SearchTask = new Views.SearchPage.RetrieveData();
             //await SearchTask.ConfigureAwait(true);
+        }
+
+        private void KeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            NavViewSearchBox.Focus(FocusState.Programmatic);
+            args.Handled = true;
         }
     }
 }
