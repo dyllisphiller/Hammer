@@ -5,7 +5,7 @@ using System.Text;
 namespace Hammer.Core.Adapters
 {
     /// <summary>
-    /// Provides adapters for API ➡ License.
+    /// Provides adapters for API → License.
     /// </summary>
     public partial class LicenseLookupAdapter : ILicenseLookupAdapter
     {
