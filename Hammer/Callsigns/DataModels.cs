@@ -55,21 +55,19 @@ namespace Hammer.Licenses
         /// </summary>
         public string Country { get; set; }
 
-        //public TryParse()
-        //{
-        //    Location = new GeographicPoint();
-        //}
-
-        //public void TryParse(string callsign, string name, string status, string type, string operatorClass, string frn, string ulsUri, DateTimeOffset grantDate, DateTimeOffset expiryDate, DateTimeOffset lastActionDate)
-
-        private void TryParse(JObject json)
+        /// <summary>
+        /// Tries to parse a JObject into the properties of the License instance. This method must be called from a class instance.
+        /// </summary>
+        /// <param name="json">The JObject to parse.</param>
+        /// <returns>true if successful; otherwise, false</returns>
+        public bool TryParse(JObject json)
         {
-            // only from an instance
-        }
-
-        public void TryParse(JObject json, out License license)
-        {
-            if (json != null)
+            if (json == null)
+            {
+                return false;
+                throw new ArgumentNullException(nameof(json), $"{nameof(TryParse)} must have one JObject argument");
+            }
+            else
             {
                 Status = (string)json["status"];
                 Type = (string)json["type"];
@@ -86,10 +84,6 @@ namespace Hammer.Licenses
                         Callsign = (string)json["trustee"]["callsign"],
                         Name = (string)json["trustee"]["name"]
                     };
-                }
-                else
-                {
-                    Trustee = null;
                 }
 
                 AddressLine1 = (string)json["address"]["line1"];
@@ -123,11 +117,7 @@ namespace Hammer.Licenses
                         System.Globalization.CultureInfo.InvariantCulture);
                 }
             }
-            else
-            {
-                throw new ArgumentNullException(nameof(json), $"{nameof(TryParse)} must have one JObject argument");
-            }
-            license = this;
+            return true;
         }
     }
 

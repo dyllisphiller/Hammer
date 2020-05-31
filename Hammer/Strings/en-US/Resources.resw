@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutPage_Header.Text" xml:space="preserve">
-    <value>About</value>
-    <comment>Heading for the About page.</comment>
-  </data>
   <data name="AddressField.Header" xml:space="preserve">
     <value>Address</value>
   </data>
@@ -151,6 +147,17 @@
   <data name="ErrorUnknown.Text" xml:space="preserve">
     <value>Oops. There was an unknown error. Try again later, or if the problem persists, file a bug report.</value>
   </data>
+  <data name="NavViewItem_Home.AccessKey" xml:space="preserve">
+    <value>H</value>
+    <comment>The access key for the NavigationView's Home page item</comment>
+  </data>
+  <data name="NavViewItem_Home.Content" xml:space="preserve">
+    <value>Home</value>
+    <comment>The name displayed on the NavigationView's Home page item.</comment>
+  </data>
+  <data name="NavViewItem_Search.AccessKey" xml:space="preserve">
+    <value>S</value>
+  </data>
   <data name="OKButton.Content" xml:space="preserve">
     <value>OK</value>
     <comment>Confirmation Button text (should reflect system default for locale)</comment>
@@ -158,5 +165,9 @@
   <data name="SearchField.PlaceholderText" xml:space="preserve">
     <value>W1AW</value>
     <comment>The placeholder text in the NavigationView's AutoSuggestBox</comment>
+  </data>
+  <data name="SettingsPage_Header.Text" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Heading for the Settings page.</comment>
   </data>
 </root>

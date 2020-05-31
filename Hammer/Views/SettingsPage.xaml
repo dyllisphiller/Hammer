@@ -5,10 +5,14 @@
     xmlns:local="using:Hammer.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Style="{StaticResource PageStyle}"
+    mc:Ignorable="d">
 
     <Grid>
+        <StackPanel>
+            <TextBlock x:Name="SettingsPage_Header" Style="{ThemeResource HeaderTextBlockStyle}"/>
 
+            <ToggleSwitch Header="Wi-Fi"/>
+        </StackPanel>
     </Grid>
 </Page>

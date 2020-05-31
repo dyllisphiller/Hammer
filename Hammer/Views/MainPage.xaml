@@ -14,10 +14,21 @@
                         SelectionChanged="NavView_SelectionChanged"
                         BackRequested="NavView_BackRequested">
             <NavigationView.MenuItems>
-                <NavigationViewItem Tag="home" Icon="Home" Content="Home"/>
-                <NavigationViewItem Tag="search" Icon="Find" Content="Search"/>
-                <NavigationViewItem Tag="people" Icon="People" Content="People"/>
-                <NavigationViewItem Tag="about" Icon="View" Content="About"/>
+                <NavigationViewItem Tag="home"
+                                    Icon="Home"
+                                    x:Uid="NavViewItem_Home"/>
+                <NavigationViewItem Tag="search"
+                                    Icon="Find"
+                                    Content="Search"
+                                    AccessKey="S"/>
+                <NavigationViewItem Tag="people"
+                                    Icon="People"
+                                    Content="People"
+                                    AccessKey="P"/>
+                <NavigationViewItem Tag="about"
+                                    Icon="View"
+                                    Content="About"
+                                    AccessKey="A"/>
             </NavigationView.MenuItems>
 
             <NavigationView.AutoSuggestBox>
@@ -26,8 +37,11 @@
                                 VerticalAlignment="Center"
                                 QueryIcon="Find"
                                 QuerySubmitted="NavViewSearchBox_QuerySubmitted"
-                                Margin="0"/>
-                <!--MinWidth="128"-->
+                                Margin="0">
+                    <AutoSuggestBox.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="E" Modifiers="Control" Invoked="KeyboardAccelerator_Invoked"/>
+                    </AutoSuggestBox.KeyboardAccelerators>
+                </AutoSuggestBox>
             </NavigationView.AutoSuggestBox>
 
             <ScrollViewer>

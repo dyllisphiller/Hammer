@@ -10,9 +10,13 @@ namespace Hammer.Core.Callsigns
     /// <summary>
     /// Provides a set of methods for identifying a callsign's issuer by prefix.
     /// </summary>
+    /// <remarks>
+    /// Region strings MUST be 2 or 4 lowercase Latin letters. If the string is
+    /// 4 letters, it MUST begin with the characters "oo".
+    /// </remarks>
     public static class Prefixes
     {
-        private static IDictionary<string, string> RawPrefixes = new Dictionary<string, string>
+        internal static IDictionary<string, string> RawPrefixes = new Dictionary<string, string>
         {
             // AD - Andorra
             { @"^C3", "ad" },
@@ -623,7 +627,10 @@ namespace Hammer.Core.Callsigns
             // ZW - Zimbabwe
             { @"^Z2", "zw" },
 
-            // International organizations with their own allocations
+            /* 
+             * International organizations with their own allocations
+             */
+
             // XA - ICAO/International Civil Aviation Organization
             { @"^4Y", "xa" },
 
@@ -633,17 +640,18 @@ namespace Hammer.Core.Callsigns
             // XU - UN/United Nations
             { @"^4U", "xu" },
 
-            // Unofficial prefixes used in disputed territories
-            // or in nation states without an ITU prefix.
-            // ITU does not issue prefixes containing 0 or 1 (zero or one).
+            // These prefixes are used in regions that are disputed or just
+            // don't have an assigned ITU prefix. ITU does not issue prefixes
+            // containing 0 or 1.
 
             /*
-             * Because ISO 3166-1 alpha-2 doesn't specify all of these regions,
-             * these regions are specified by the arbitrary-use codes.
-             * These codes (minus what ITU uses for the ICAO (XA), the World
-             * Meteorological Organization (XM), and the UN (XU)) are AA,
-             * Q[M-Z], X[B-LN-TV-Z], and ZZ. In addition, "OO" (two "O" U+004F or "o" U+004F) is available
-             * as an escape code to specify existing two-letter combinations, like OOUS or oo.
+             * ISO 3166-1 alpha-2 doesn't have codes for every callsign issuer.
+             * Those regions are assigned codes in the standard's arbitrary use
+             * range. The codes available for use are AA, Q[M-Z], X[B-LN-TV-Z],
+             * and ZZ. XA, XM, and XU are already used by ITU for the ICAO,
+             * World Meteorological Organization, and the UN, respectively. In
+             * addition, "OO" escapes existing two-letter combinations, adding
+             * 676 more region codes.
              */
 
             // OOKM - Sovereign Military Order of Malta/Knights of Malta
@@ -661,15 +669,18 @@ namespace Hammer.Core.Callsigns
         /// </summary>
         // string: prefix pattern string
         // Regex: compiled pattern string
-        private static IDictionary<string, Regex> prefixRegexCache = new Dictionary<string, Regex>();
+        internal static IDictionary<string, Regex> prefixRegexCache = new Dictionary<string, Regex>();
 
         // "Borrows" some implementation from https://stackoverflow.com/a/11608874
 
-        public static void TryGetRegion(string callsign, out string region)
+        // TODO: Method documentation
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callsign"></param>
+        /// <param name="region"></param>
+        public static bool TryGetRegion(string callsign, out string region)
         {
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
-
             string _output = null;
 
             foreach (KeyValuePair<string, string> rawPrefixPair in RawPrefixes)
@@ -678,7 +689,7 @@ namespace Hammer.Core.Callsigns
                 string cc = rawPrefixPair.Value;
 
                 Regex regex;
-                
+
                 if (!prefixRegexCache.TryGetValue(prefix, out regex))
                 {
                     regex = new Regex(prefix, RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -694,25 +705,16 @@ namespace Hammer.Core.Callsigns
                 }
             }
 
-            region = _output;
-
-            stopWatch.Stop();
-            TimeSpan ts = stopWatch.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
-            Console.WriteLine("RunTime " + elapsedTime);
+            if (string.IsNullOrEmpty(_output))
+            {
+                region = null;
+                return false;
+            }
+            else
+            {
+                region = _output;
+                return true;
+            }
         }
-
-        //public static string GetRegion(string callsign)
-        //{
-        //    foreach (KeyValuePair<string, string> prefix in RawStringPrefixes)
-        //    {
-        //        if (callsign.StartsWith(prefix.Key))
-        //        {
-        //            return prefix.Value;
-        //        }
-        //    }
-        //}
     }
 }

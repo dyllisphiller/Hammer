@@ -13,24 +13,24 @@ namespace Hammer.Core.Licenses
     /// </remarks>
     public class LicenseField
     {
-        private string fieldKey;
         private string fieldType;
+        private string fieldKey;
         private string fieldValue;
+
+        /// <summary>
+        /// The type of the field; string, int, double, and so on.
+        /// </summary>
+        public string Type { get => fieldType; set => fieldType = value; }
 
         /// <summary>
         /// The name of the field.
         /// </summary>
-        public string FieldKey { get => fieldKey; set => fieldKey = value; }
-
-        /// <summary>
-        /// The type of the field as one of string, int, double, 
-        /// </summary>
-        public string FieldType { get => fieldType; set => fieldType = value; }
+        public string Key { get => fieldKey; set => fieldKey = value; }
 
         /// <summary>
         /// The value of the field.
         /// </summary>
-        public string FieldValue { get => fieldValue; set => fieldValue = value; }
+        public string Value { get => fieldValue; set => fieldValue = value; }
     }
 
     public class License
@@ -63,7 +63,7 @@ namespace Hammer.Core.Licenses
         /// <summary>
         /// The callsign this license represents.
         /// </summary>
-        public string Callsign { get; set; }
+        public string Callsign { get => callsign; set => callsign = value; }
 
         /// <summary>
         /// A list of arbitrary LicenseField-encapsulated data points.
@@ -204,11 +204,6 @@ namespace Hammer.Core.Licenses
             Country = System.Globalization.CultureInfo.CurrentCulture.Name.Substring(3, 2);
         }
 
-        //public void TryParse(JObject json)
-        //{
-
-        //}
-
         // TODO: Adapt this to use an, er, adapter so that other search providers can be dropped in.
         public static void TryParse(JObject json, out License license)
         {
@@ -276,6 +271,8 @@ namespace Hammer.Core.Licenses
                     AddressLine1 = (string)json["address"]["line1"],
                     AddressLine2 = (string)json["address"]["line2"],
                     AddressAttn = (string)json["address"]["attn"],
+
+                    Location = _geographicPoint,
 
                     GridSquare = (string)json["location"]["gridsquare"],
 

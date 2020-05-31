@@ -11,12 +11,12 @@ using Windows.Services.Maps;
 
 namespace Hammer.Helpers.Cartography
 {
-    class Placecard
+    public static class Placecard
     {
         public static void ShowPlacecard(object sender, Geopoint geopoint, string callsign, string addressLine1, string addressLine2)
         {
-            var theoptions = new PlaceInfoCreateOptions();
-            theoptions.DisplayName = callsign;
+            var _options = new PlaceInfoCreateOptions();
+            _options.DisplayName = callsign;
 
             PlaceInfoCreateOptions options = new PlaceInfoCreateOptions
             {
@@ -24,26 +24,28 @@ namespace Hammer.Helpers.Cartography
                 DisplayName = callsign
             };
 
-            PlaceInfo licensePlaceInfo;
+            PlaceInfo licensePlaceInfo = PlaceInfo.Create(geopoint, options);
+
+            if (sender == null) { throw new ArgumentNullException(nameof(sender), "Hammer.Helpers.Cartography.Placecard.ShowPlacecard() parameter 'sender' must not be null."); }
+
+
+            FrameworkElement targetElement = (FrameworkElement)sender;
+
+
+            GeneralTransform generalTransform =
+                    targetElement.TransformToVisual((FrameworkElement)targetElement.Parent);
+
+            Rect rectangle = generalTransform.TransformBounds(new Rect(new Point
+                (targetElement.Margin.Left, targetElement.Margin.Top), targetElement.RenderSize));
 
             try
             {
-                licensePlaceInfo = PlaceInfo.Create(geopoint, options);
+                licensePlaceInfo.Show(rectangle, Windows.UI.Popups.Placement.Below);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
-
-            FrameworkElement targetElement = (FrameworkElement)sender;
-
-            GeneralTransform generalTransform =
-                targetElement.TransformToVisual((FrameworkElement)targetElement.Parent);
-
-            Rect rectangle = generalTransform.TransformBounds(new Rect(new Point
-                (targetElement.Margin.Left, targetElement.Margin.Top), targetElement.RenderSize));
-
-            //licensePlaceInfo.Show(rectangle, Windows.UI.Popups.Placement.Below);
         }
     }
 }

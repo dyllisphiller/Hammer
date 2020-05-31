@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,8 +22,6 @@ using Windows.UI.Xaml.Resources;
 using Windows.System;
 using Windows.Storage;
 
-// Project started with Microsoft's Blank Page template https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace Hammer.Views
 {
     /// <summary>
@@ -39,13 +35,17 @@ namespace Hammer.Views
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
+        private IList<string> autoSuggestHistory = new List<string>
+        {
+            "W1AW",
+        };
+
         // List of ValueTuple holding the Navigation Tag and the relative Navigation Page
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
-            ("home", typeof(Views.HomePage)),
-            ("search", typeof(Views.SearchPage)),
-            ("about", typeof(Views.AboutPage)),
-            ("people", typeof(Views.PeoplePage)),
+            ("home", typeof(HomePage)),
+            ("search", typeof(SearchPage)),
+            //("people", typeof(Views.PeoplePage)),
         };
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
@@ -61,7 +61,7 @@ namespace Hammer.Views
             NavView_Navigate("home", new EntranceNavigationTransitionInfo());
 
             // Add keyboard accelerators for backwards navigation.
-            var goBack = new KeyboardAccelerator { Key = VirtualKey.GoBack };
+            KeyboardAccelerator goBack = new KeyboardAccelerator { Key = VirtualKey.GoBack };
             goBack.Invoked += BackInvoked;
             this.KeyboardAccelerators.Add(goBack);
 
@@ -173,10 +173,9 @@ namespace Hammer.Views
         public MainPage()
         {
             this.InitializeComponent();
-            // TODO: Add KeyboardAccelerator for search box (Ctrl+F)
-        }
 
-        
+            NavViewSearchBox.ItemsSource = autoSuggestHistory;
+        }
 
         private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
@@ -192,6 +191,12 @@ namespace Hammer.Views
             //await Views.SearchPage.RetrieveData(NavViewSearchBox.Text.ToUpperInvariant()).ConfigureAwait(true);
             //Task SearchTask = new Views.SearchPage.RetrieveData();
             //await SearchTask.ConfigureAwait(true);
+        }
+
+        private void KeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            NavViewSearchBox.Focus(FocusState.Programmatic);
+            args.Handled = true;
         }
     }
 }

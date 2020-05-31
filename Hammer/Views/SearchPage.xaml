@@ -29,29 +29,25 @@
         <ProgressRing x:Name="SearchProgressRing"
                       IsActive="False"
                       Visibility="Collapsed"
-                      Height="120"
-                      Width="120"/>
+                      Height="60"
+                      Width="60"/>
 
-        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Visible" Margin="0,12,0,0">
+        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Collapsed" Margin="0,12,0,0">
             <TextBlock x:Name="SearchResultsHeader" Style="{StaticResource HeaderTextBlockStyle}"/>
             <TextBlock x:Name="SearchResultsSubheader" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            
             <StackPanel>
-                <Button x:Name="SearchTrusteeButton"
-                            Content="View Trustee"
-                            Margin="0,12,0,0"
-                            Click="SearchTrusteeButton_Click"/>
-
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Margin="0,0,24,0">
+                    <StackPanel Margin="0,12,24,0">
                         <!--<TextBox x:Name="AddressLine2Field"
                                 PlaceholderText="Anytown, OR 97301"
                                 Margin="0,24,0,0"/>
@@ -59,29 +55,35 @@
                                 Margin="0,24,0,0"
                                 Visibility="Collapsed"/>-->
                         <!--Style="{StaticResource BodyTextBlockStyle}"-->
-                        <TextBlock x:Name="NameField"
-                                        Text="Johnny Appleseed"
-                                        Margin="0,6,0,0"/>
-                        <TextBlock x:Name="AddressAttnField"
-                                        Text="Attn: Test Field"
-                                        Margin="0,6,0,0"/>
                         <TextBlock x:Name="AddressLine1Field"
-                                        Text="123 W Main St"
-                                        Margin="0,12,0,0"/>
+                                   Text="123 W Main St"
+                                   Margin="0,6,0,0"/>
                         <TextBlock x:Name="AddressLine2Field"
-                                        Text="Anytown, US 00000"
-                                        Margin="0,6,0,0"/>
+                                   Text="Anytown, US 00000"
+                                   Margin="0,6,0,0"/>
+                        <TextBlock x:Name="AddressAttnField"
+                                   Text="Attn: Test Field"
+                                   Margin="0,6,0,0"/>
                     </StackPanel>
 
                     <Button x:Name="ShowMapButton" Click="ShowMapButton_Click" HorizontalAlignment="Right">
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Map" Margin="0,0,6,0"/>
+                            <SymbolIcon Symbol="Map" Margin="0,0,8,0"/>
                             <TextBlock>Map</TextBlock>
                         </StackPanel>
                     </Button>
                 </Grid>
 
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,48,0,12">Location</TextBlock>
+                <Button x:Name="SearchTrusteeButton"
+                        Click="SearchTrusteeButton_Click"
+                        Margin="0,12,0,6">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Find" Margin="0,0,6,0"/>
+                        <TextBlock x:Name="SearchTrusteeButtonText">Trustee</TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,12">Location</TextBlock>
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -119,7 +121,7 @@
                                     Grid.Column="2"/>
                 </Grid>
 
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,48,0,12">Chronology</TextBlock>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,12">Chronology</TextBlock>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -160,10 +162,9 @@
                            Text="1969-12-31"/>
                 </Grid>
 
-
-                <HyperlinkButton x:Name="UlsUriHyperlinkButton"
-                                    Content="View on FCC ULS"
-                                    Margin="0,12,0,0"/>
+                <HyperlinkButton x:Name="LicenseExternalUriButton"
+                                 Content="View on FCC ULS"
+                                 Margin="0,12,0,0"/>
             </StackPanel>
         </StackPanel>
     </Grid>
