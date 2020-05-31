@@ -1,11 +1,12 @@
-﻿using Windows.ApplicationModel.DataTransfer;
+﻿using Hammer.Core;
+using Windows.ApplicationModel.DataTransfer;
 
-namespace Hammer
+namespace Hammer.Helpers
 {
-    class Clipboard
+    public class Clipboard : IClipboard
     {
         private readonly DataPackage dataPackage = new DataPackage();
-        public void SetContent(string text)
+        public void Copy(string text)
         {
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
             dataPackage.SetText(text);
