@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hammer.Core.Helpers
 {
@@ -7,10 +8,9 @@ namespace Hammer.Core.Helpers
     {
         /// <summary>
         /// A dictionary with char A-Z as keys and their equivalent Unicode
-        /// Regional Indicator Symbols as values; the latter are represented as 
-        /// integers of the UTF-32 code points.
+        /// Regional Indicator Symbols’ UTF-32 representations as values.
         /// </summary>
-        public static IDictionary<char, int> SymbolPairs { get; } = new Dictionary<char, int>
+        internal static IDictionary<char, int> SymbolPairs { get; } = new Dictionary<char, int>
         {
             { 'A', 0x1F1E6 },
             { 'B', 0x1F1E7 },
@@ -50,37 +50,33 @@ namespace Hammer.Core.Helpers
         /// There is no region AA, but the method will return its Regional Indicator Symbol equivalent anyway.
         /// </remarks>
         /// <returns>true if successful; otherwise, false.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">region is not two letters.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
+        /// <exception cref="ArgumentOutOfRangeException">region is not two letters.</exception>
         public static bool TryGetIndicatorPair(string region, out string indicator)
         {
-            char[] letters = (region.Length == 2) ?
-                region.ToUpperInvariant().ToCharArray()
-                : throw new ArgumentOutOfRangeException(nameof(region), "TryGetIndicatorPair(): region must be two letters.");
+            if (string.IsNullOrEmpty(region) || region.Length != 2)
+            {
+                indicator = null;
+                return false;
+            }
 
-            // the method-internal representation of `indicator`;
-            // all code paths must set indicator = _indicator
+            char[] letters = region.ToUpperInvariant().ToCharArray();
+
+            // the method-internal representation of `indicator`
             string _indicator = null;
 
-            foreach (char letter in letters)
+            foreach (char c in letters)
             {
-                int codepoint;
-                string symbol;
+                // get the Regional Indicator pair from the dictionary
+                KeyValuePair<char, int> codepoint = SymbolPairs.FirstOrDefault(s => s.Key == c);
 
-                // get the Regional Indicator equivalent of the letter from the dictionary
-                SymbolPairs.TryGetValue(letter, out codepoint);
-
-                // make this a character instead of its UTF-32 integer equivalent
-                symbol = Char.ConvertFromUtf32(codepoint);
+                // convert the UTF-32 integer to a character
+                string symbol = char.ConvertFromUtf32(codepoint.Value);
 
                 // append the character to _indicator
                 _indicator += symbol;
             }
 
-            // pass the method-internal _indicator string to the output indicator string
             indicator = _indicator;
-
-            // if things haven't exploded by now, indicate success
             return true;
         }
     }
