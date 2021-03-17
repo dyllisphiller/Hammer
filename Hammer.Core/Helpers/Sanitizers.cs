@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Hammer.Core.Helpers
 {
-    public static class DataSanity
+    public static partial class Sanitizers
     {
         public static string SanitizeCallsign(string callsign)
         {
