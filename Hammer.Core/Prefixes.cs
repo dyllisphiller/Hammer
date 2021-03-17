@@ -16,7 +16,7 @@ namespace Hammer.Core.Callsigns
     /// </remarks>
     public static class Prefixes
     {
-        internal static IDictionary<string, string> RawPrefixes = new Dictionary<string, string>
+        internal static IDictionary<string, string> ITUPrefixes = new Dictionary<string, string>
         {
             // AD - Andorra
             { @"^C3", "ad" },
@@ -665,56 +665,59 @@ namespace Hammer.Core.Callsigns
         };
 
         /// <summary>
-        /// A cache of the compiled prefix patterns so it doesn't have to recompile on each call.
+        /// Tries to get the region of the specified callsign.
         /// </summary>
-        // string: prefix pattern string
-        // Regex: compiled pattern string
-        internal static IDictionary<string, Regex> prefixRegexCache = new Dictionary<string, Regex>();
-
-        // "Borrows" some implementation from https://stackoverflow.com/a/11608874
-
-        // TODO: Method documentation
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="callsign"></param>
-        /// <param name="region"></param>
+        /// <param name="callsign">The callsign.</param>
+        /// <param name="region">When this method returns, the region associated with the specified callsign, if found; otherwise, leaves parameter string uninitialized.</param>
         public static bool TryGetRegion(string callsign, out string region)
         {
-            string _output = null;
-
-            foreach (KeyValuePair<string, string> rawPrefixPair in RawPrefixes)
-            {
-                string prefix = rawPrefixPair.Key;
-                string cc = rawPrefixPair.Value;
-
-                Regex regex;
-
-                if (!prefixRegexCache.TryGetValue(prefix, out regex))
+            KeyValuePair<string, string> _ituPrefix = ITUPrefixes.FirstOrDefault(
+                p =>
                 {
-                    regex = new Regex(prefix, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                    prefixRegexCache.Add(prefix, regex);
+                    Regex _regex = new Regex(p.Key, RegexOptions.IgnoreCase);
+                    return _regex.Match(callsign).Success;
                 }
+            );
 
-                prefixRegexCache.TryGetValue(prefix, out regex);
-
-                if (regex.Match(callsign).Success)
-                {
-                    _output = cc;
-                    break;
-                }
-            }
-
-            if (string.IsNullOrEmpty(_output))
+            if (!string.IsNullOrEmpty(_ituPrefix.Value))
             {
-                region = null;
-                return false;
-            }
-            else
-            {
-                region = _output;
+                region = _ituPrefix.Value;
                 return true;
             }
+
+            else
+            {
+                region = "";
+                return false;
+            }
+
+            //foreach (KeyValuePair<string, string> p in IssuerPrefixes)
+            //{
+            //    string prefix = p.Key;
+
+            //    string rawPrefixRegex;
+
+                //if (!prefixRegexCache.TryGetValue(prefix, out regex))
+                //{
+                //    regex = new Regex(prefix, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                //    prefixRegexCache.Add(prefix, regex);
+                //}
+
+                //if (IssuerPrefixes.TryGetValue(prefix, out rawPrefixRegex))
+                //{
+                //    regex = new Regex(rawPrefixRegex, RegexOptions.IgnoreCase);
+                //    if (regex.Match(callsign).Success)
+                //    {
+                //        _output = p.Value;
+                //    }
+                //}
+
+                //if (regex.Match(callsign).Success)
+                //{
+                //    _output = cc;
+                //    break;
+                //}
+            //}
         }
     }
 }
