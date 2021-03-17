@@ -14,45 +14,25 @@ namespace Hammer.Settings
     public class Roaming
     {
         /// <summary>
-        /// The name of the container within the roaming app data store.
+        /// The name of the roaming app data store container.
         /// </summary>
-        static string containerName = "settings";
+        static readonly string containerName = "settings";
 
         /// <summary>
-        /// The application settings container in the roaming app data store.
+        /// The roaming app data store settings container.
         /// </summary>
-        static ApplicationDataContainer roamingSettings = ApplicationData.Current.RoamingSettings;
+        static readonly ApplicationDataContainer roamingSettings = ApplicationData.Current.RoamingSettings;
 
-        // Creates the container specified by containerName if it does not already exist.
-        ApplicationDataContainer makeContainer =
-            roamingSettings.CreateContainer(containerName, ApplicationDataCreateDisposition.Always);
+        static void SetSetting(string settingKey, string settingValue) => roamingSettings.Values[settingKey] = settingValue;
 
-        public static void SetSetting(Tuple<string, string> settingTuple)
-        {
-            Contract.Requires<ArgumentNullException>(settingTuple != null, "settingTuple");
-            string key = settingTuple.Item1;
-            string value = settingTuple.Item2;
-            roamingSettings.Containers[containerName].Values[key] = value;
-        }
         /// <summary>
         /// Gets a setting by key from the roaming settings container.
         /// </summary>
-        /// <param name="key">The key of the setting to return.</param>
-        public static string GetSetting(string key)
+        /// <param name="settingKey">The key of the setting to return.</param>
+        /// <param name="settingValue">If it exists, the value of the setting as an object; otherwise, null.</param>
+        static bool TryGetSetting(string settingKey, out object settingValue)
         {
-            bool hasKey = roamingSettings.Containers[containerName].Values.ContainsKey(key);
-            string settingValue;
-
-            if (hasKey)
-            {
-                settingValue = roamingSettings.Containers[containerName].Values[key].ToString();
-                //Containers[roamingSettingsContainerName].Values.ContainsKey[key];
-                return settingValue;
-            }
-            else
-            {
-                throw new ArgumentException($"The specified key \"{key}\" does not exist.");
-            }
+            return roamingSettings.Values.TryGetValue(settingKey, out settingValue);
         }
     }
 }
