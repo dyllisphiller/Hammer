@@ -1,6 +1,7 @@
 ﻿using Hammer.Callsigns;
 using Hammer.Core.Cartography;
 using Newtonsoft.Json.Linq;
+using System.Text.Json;
 using System;
 using System.Collections.Generic;
 
@@ -65,7 +66,6 @@ namespace Hammer.Licenses
             if (json == null)
             {
                 return false;
-                throw new ArgumentNullException(nameof(json), $"{nameof(TryParse)} must have one JObject argument");
             }
             else
             {
@@ -77,7 +77,7 @@ namespace Hammer.Licenses
                 FRN = (string)json["frn"];
                 UlsUri = (Uri)json["otherInfo"]["ulsUrl"];
 
-                if (!String.IsNullOrEmpty((string)json["trustee"]["callsign"]))
+                if (!string.IsNullOrEmpty((string)json["trustee"]["callsign"]))
                 {
                     License Trustee = new License
                     {
