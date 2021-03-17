@@ -2,6 +2,6 @@
 {
     public interface IClipboard
     {
-        void SetContent(string text);
+        void Copy(string text);
     }
 }
