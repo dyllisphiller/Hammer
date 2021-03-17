@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace Hammer.Core.Licenses
+namespace Hammer.Core.Models
 {
     /// <summary>
     /// Encapsulates arbitrary key/value fields for non-universal licensee data.

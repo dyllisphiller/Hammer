@@ -1,10 +1,11 @@
 ﻿using Hammer.Callsigns;
 using Hammer.Core.Callsigns;
 using Hammer.Core.Helpers;
-using Hammer.Core.Licenses;
+using Hammer.Core.Models;
 using Hammer.Core.WebServices;
 using Hammer.Helpers.Cartography;
 using Newtonsoft.Json.Linq;
+using System.Text.Json;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -34,11 +35,11 @@ namespace Hammer.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
+            if (e.Parameter is string p && !string.IsNullOrWhiteSpace(p))
             {
                 try
                 {
-                    await CallsignSearch((string)e.Parameter).ConfigureAwait(true);
+                    await CallsignSearch(p).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
@@ -48,8 +49,8 @@ namespace Hammer.Views
             }
             if (string.IsNullOrWhiteSpace((string)e.Parameter))
             {
-                MessageDialog dialog = new MessageDialog("Hammer would try to find that callsign, but the void remains unlicensed.", "The void is not a valid callsign");
-                dialog.ShowAsync();
+                //MessageDialog dialog = new MessageDialog("Hammer would try to find that callsign, but the void remains unlicensed.", "The void is not a valid callsign");
+                //dialog.ShowAsync();
             }
         }
 
@@ -72,7 +73,7 @@ namespace Hammer.Views
             SearchProgressRing.Visibility = Visibility.Visible;
 
             // Clean the callsign
-            callsign = DataSanity.SanitizeCallsign(callsign);
+            callsign = Sanitizers.SanitizeCallsign(callsign);
 
             if (string.IsNullOrEmpty(callsign))
             {
@@ -83,8 +84,7 @@ namespace Hammer.Views
             }
 
             // Make sure it's a US callsign.
-            string region;
-            Prefixes.TryGetRegion(callsign, out region);
+            Prefixes.TryGetRegion(callsign, out string region);
 
             if (region != "us")
             {
@@ -95,8 +95,7 @@ namespace Hammer.Views
             }
 
             // Get the API endpoint URI for the callsign
-            Uri uri;
-            APIs.TryMakeUri(region, callsign, out uri);
+            APIs.TryMakeUri(region, callsign, out Uri uri);
 
             // Parse JObject from API payload
             JObject jResult;
@@ -178,8 +177,10 @@ namespace Hammer.Views
 
         private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
         {
-            var options = new Windows.System.LauncherOptions();
-            options.TreatAsUntrusted = true;
+            var options = new LauncherOptions
+            {
+                TreatAsUntrusted = true
+            };
 
             await Launcher.LaunchUriAsync(licenseSearchResult.UlsUri, options);
         }
