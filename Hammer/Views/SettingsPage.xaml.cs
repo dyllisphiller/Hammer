@@ -26,5 +26,10 @@ namespace Hammer.Views
         {
             this.InitializeComponent();
         }
+
+        private void KeepSearchHistory_Toggled(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
