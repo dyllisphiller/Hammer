@@ -2,6 +2,6 @@
 {
     interface ILicenseLookupAdapter
     {
-        
+        void TryParseLicense();
     }
 }

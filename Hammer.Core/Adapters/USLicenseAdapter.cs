@@ -13,5 +13,10 @@ namespace Hammer.Core.Adapters
         {
 
         }
+
+        public void TryParseLicense()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
