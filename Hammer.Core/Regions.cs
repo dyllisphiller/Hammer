@@ -9,7 +9,7 @@ namespace Hammer.Core.Globalization
     {
         public static RegionInfo GetRegionInfo(string lang, string region)
         {
-            if (String.IsNullOrWhiteSpace(region) || !String.IsNullOrWhiteSpace(lang))
+            if (string.IsNullOrWhiteSpace(region) || !string.IsNullOrWhiteSpace(lang))
             {
                 throw new ArgumentNullException();
             }
