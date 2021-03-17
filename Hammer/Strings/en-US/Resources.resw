@@ -140,10 +140,6 @@
     <value>That doesn't seem to be a valid callsign.</value>
     <comment>Error message for invalid callsigns</comment>
   </data>
-  <data name="ErrorTryParseRequiresJObject" xml:space="preserve">
-    <value>Method TryParse() requires a JObject</value>
-    <comment>Error for method TryParse when an argument is missing</comment>
-  </data>
   <data name="ErrorUnknown.Text" xml:space="preserve">
     <value>Oops. There was an unknown error. Try again later, or if the problem persists, file a bug report.</value>
   </data>
