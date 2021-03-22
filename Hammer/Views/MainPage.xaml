@@ -39,7 +39,7 @@
                                 QuerySubmitted="NavViewSearchBox_QuerySubmitted"
                                 Margin="0">
                     <AutoSuggestBox.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="E" Modifiers="Control" Invoked="KeyboardAccelerator_Invoked"/>
+                        <KeyboardAccelerator Key="E" Modifiers="Control" Invoked="NavViewSearchBoxAccelerator_Invoked"/>
                     </AutoSuggestBox.KeyboardAccelerators>
                 </AutoSuggestBox>
             </NavigationView.AutoSuggestBox>

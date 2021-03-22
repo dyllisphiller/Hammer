@@ -193,7 +193,7 @@ namespace Hammer.Views
             //await SearchTask.ConfigureAwait(true);
         }
 
-        private void KeyboardAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        private void NavViewSearchBoxAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
         {
             NavViewSearchBox.Focus(FocusState.Programmatic);
             args.Handled = true;
