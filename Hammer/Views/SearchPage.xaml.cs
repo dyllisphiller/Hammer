@@ -3,7 +3,7 @@ using Hammer.Core.Callsigns;
 using Hammer.Core.Helpers;
 using Hammer.Core.Models;
 using Hammer.Core.WebServices;
-using Hammer.Helpers.Cartography;
+using Hammer.Helpers.Maps;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using System;

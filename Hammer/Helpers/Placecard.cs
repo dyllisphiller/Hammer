@@ -9,7 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.Services.Maps;
 
-namespace Hammer.Helpers.Cartography
+namespace Hammer.Helpers.Maps
 {
     public static class Placecard
     {
