@@ -3,8 +3,6 @@
     interface ICallsignParser
     {
         string GetCountryOfOrigin();
-        string ToCharArray();
+        char[] ToCharArray();
     }
-
-
 }
