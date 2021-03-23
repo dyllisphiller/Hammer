@@ -6,15 +6,27 @@ namespace Hammer.Core.Models
 {
     public class Callsign
     {
-        public string Sign { get; private set; }
-        public Callsign()
-        {
+        private string sign;
 
+        public string Sign
+        {
+            get => sign;
+
+            private set
+            {
+                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException($"{nameof(Sign)} cannot be null or whitespace.", nameof(Sign));
+                sign = value;
+            }
         }
 
         public Callsign(string sign)
         {
             Sign = sign;
+        }
+
+        public override string ToString()
+        {
+            return Sign;
         }
     }
 }
