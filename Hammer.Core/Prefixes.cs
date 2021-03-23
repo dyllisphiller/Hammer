@@ -11,8 +11,8 @@ namespace Hammer.Core.Callsigns
     /// Provides a set of methods for identifying a callsign's issuer by prefix.
     /// </summary>
     /// <remarks>
-    /// Region strings MUST be 2 or 4 lowercase Latin letters. If the string is
-    /// 4 letters, it MUST begin with the characters "oo".
+    /// Region strings must be 2 or 4 lowercase Latin letters. If the string is
+    /// 4 letters, it must begin with the characters "oo".
     /// </remarks>
     public static class Prefixes
     {
