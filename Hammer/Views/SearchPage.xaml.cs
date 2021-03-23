@@ -80,12 +80,12 @@ namespace Hammer.Views
 
             if (string.IsNullOrEmpty(callsign))
             {
-                dialog.ShowAsync();
                 dialog = new ContentDialog()
                 {
                     Title = "A void is not a valid callsign",
                     Content = "Hammer would try to find that callsign, but the void remains unlicensed. (The search field cannot be empty.)",
                 };
+                await dialog.ShowAsync();
                 throw new ApplicationException(ex);
             }
 
@@ -94,11 +94,11 @@ namespace Hammer.Views
 
             if (region != "us")
             {
-                dialog.ShowAsync();
                 dialog = new ContentDialog() {
                     Title = $"{callsign} is not a US callsign",
                     Content = $"{callsign} was not issued by the FCC, so Hammer can't look it up its license. Hammer doesn't yet support non-US callsigns.",
                 };
+                await dialog.ShowAsync();
                 string ex = "Can't look up non-FCC callsigns.";
                 throw new ApplicationException(ex);
             }
@@ -159,20 +159,20 @@ namespace Hammer.Views
                     break;
 
                 case "UPDATING":
-                    dialog.ShowAsync();
                     dialog = new ContentDialog()
                     {
                         Title = "Updating license data",
                         Content = "The data source is updating their license data from the FCC. This might take a bit. Please try again later.",
                     };
+                    await dialog .ShowAsync();
                     break;
 
                 default:
-                    dialog.ShowAsync();
                     dialog = new ContentDialog()
                     {
                         Title = "Either the callsign is invalid or something unexpected happened. Try again?",
                     };
+                    await dialog.ShowAsync();
                     break;
             }
 
@@ -204,7 +204,7 @@ namespace Hammer.Views
         private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
         {
             string trusteeCallsign = licenseSearchResult.Trustee.Callsign;
-            CallsignSearch(trusteeCallsign);
+            await CallsignSearch(trusteeCallsign);
         }
     }
 }
