@@ -43,8 +43,11 @@ namespace Hammer.Views
                 }
                 catch (Exception ex)
                 {
-                    MessageDialog messageDialog = new MessageDialog(ex.Message);
-                    await messageDialog.ShowAsync();
+                    ContentDialog contentDialog = new ContentDialog()
+                    {
+                        Title = ex.Message,
+                    };
+                    await contentDialog.ShowAsync();
                 }
             }
             if (string.IsNullOrWhiteSpace((string)e.Parameter))
@@ -56,7 +59,7 @@ namespace Hammer.Views
 
         License licenseSearchResult = new License();
         Geopoint licenseGeopoint;
-        MessageDialog dialog;
+        ContentDialog dialog;
 
         private async Task CallsignSearch(string callsign)
         {
@@ -77,9 +80,12 @@ namespace Hammer.Views
 
             if (string.IsNullOrEmpty(callsign))
             {
-                dialog = new MessageDialog("Hammer would try to find that callsign, but the void remains unlicensed.", "The void is not a valid callsign");
                 dialog.ShowAsync();
-                string ex = "Callsign field must not be empty.";
+                dialog = new ContentDialog()
+                {
+                    Title = "A void is not a valid callsign",
+                    Content = "Hammer would try to find that callsign, but the void remains unlicensed. (The search field cannot be empty.)",
+                };
                 throw new ApplicationException(ex);
             }
 
@@ -88,8 +94,11 @@ namespace Hammer.Views
 
             if (region != "us")
             {
-                dialog = new MessageDialog($"{callsign} was not issued by the FCC, so Hammer can't look it up its license. Hammer doesn't yet support non-US callsigns.", $"{callsign} is not a US callsign");
                 dialog.ShowAsync();
+                dialog = new ContentDialog() {
+                    Title = $"{callsign} is not a US callsign",
+                    Content = $"{callsign} was not issued by the FCC, so Hammer can't look it up its license. Hammer doesn't yet support non-US callsigns.",
+                };
                 string ex = "Can't look up non-FCC callsigns.";
                 throw new ApplicationException(ex);
             }
@@ -150,13 +159,20 @@ namespace Hammer.Views
                     break;
 
                 case "UPDATING":
-                    dialog = new MessageDialog("The data source is updating their license data from the FCC. This might take a bit. Please try again later.", "Updating license data");
                     dialog.ShowAsync();
+                    dialog = new ContentDialog()
+                    {
+                        Title = "Updating license data",
+                        Content = "The data source is updating their license data from the FCC. This might take a bit. Please try again later.",
+                    };
                     break;
 
                 default:
-                    dialog = new MessageDialog("Either the callsign is invalid or something unexpected happened. Try again?");
                     dialog.ShowAsync();
+                    dialog = new ContentDialog()
+                    {
+                        Title = "Either the callsign is invalid or something unexpected happened. Try again?",
+                    };
                     break;
             }
 
