@@ -1,4 +1,3 @@
-﻿using Hammer.Callsigns;
 using Hammer.Core.Callsigns;
 using Hammer.Core.Helpers;
 using Hammer.Core.Models;

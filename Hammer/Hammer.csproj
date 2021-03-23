@@ -120,7 +120,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helpers\Clipboard.cs" />
-    <Compile Include="Licenses\Parsers.cs" />
     <Compile Include="Helpers\Placecard.cs" />
     <Compile Include="Dialogs\ErrorAPIUpdating.xaml.cs">
       <DependentUpon>ErrorAPIUpdating.xaml</DependentUpon>
