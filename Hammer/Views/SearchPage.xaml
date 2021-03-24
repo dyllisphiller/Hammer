@@ -55,21 +55,14 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Margin="0,12,24,0">
-                        <!--<TextBox x:Name="AddressLine2Field"
-                                PlaceholderText="Anytown, OR 97301"
-                                Margin="0,24,0,0"/>
-                            <TextBox x:Name="AddressAttnField"
-                                Margin="0,24,0,0"
-                                Visibility="Collapsed"/>-->
-                        <!--Style="{StaticResource BodyTextBlockStyle}"-->
+                        <TextBlock x:Name="AddressAttnField"
+                                   Text="Attn: Test Field"
+                                   Margin="0,6,0,0"/>
                         <TextBlock x:Name="AddressLine1Field"
                                    Text="123 W Main St"
                                    Margin="0,6,0,0"/>
                         <TextBlock x:Name="AddressLine2Field"
-                                   Text="Anytown, US 00000"
-                                   Margin="0,6,0,0"/>
-                        <TextBlock x:Name="AddressAttnField"
-                                   Text="Attn: Test Field"
+                                   Text="Anytown, US 54321"
                                    Margin="0,6,0,0"/>
                     </StackPanel>
 
