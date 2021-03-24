@@ -1,13 +1,13 @@
-using Hammer.Core.Callsigns;
+﻿using Hammer.Core.Callsigns;
 using Hammer.Core.Helpers;
 using Hammer.Core.Models;
 using Hammer.Core.WebServices;
 using Hammer.Helpers.Maps;
 using Newtonsoft.Json.Linq;
-using System.Text.Json;
 using System;
 using System.Globalization;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
@@ -15,6 +15,7 @@ using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
@@ -50,10 +51,10 @@ namespace Hammer.Views
                     await contentDialog.ShowAsync();
                 }
             }
+            // this means the page was navigated to without a search parameter, so it should show a search box instead
             if (string.IsNullOrWhiteSpace((string)e.Parameter))
             {
-                //MessageDialog dialog = new MessageDialog("Hammer would try to find that callsign, but the void remains unlicensed.", "The void is not a valid callsign");
-                //dialog.ShowAsync();
+                SearchPageDefaultHeader.Visibility = Visibility.Visible;
             }
         }
 
@@ -76,7 +77,7 @@ namespace Hammer.Views
             SearchProgressRing.Visibility = Visibility.Visible;
 
             // Clean the callsign
-            callsign = Sanitizers.SanitizeCallsign(callsign);
+            //callsign = Sanitizers.SanitizeCallsign(callsign);
 
             if (string.IsNullOrEmpty(callsign))
             {
@@ -86,34 +87,38 @@ namespace Hammer.Views
                     Content = "Hammer would try to find that callsign, but the void remains unlicensed. (The search field cannot be empty.)",
                 };
                 await dialog.ShowAsync();
+                string ex = "Search field must not be empty.";
                 throw new ApplicationException(ex);
             }
 
             // Make sure it's a US callsign.
-            Prefixes.TryGetRegion(callsign, out string region);
+            //Prefixes.TryGetRegion(callsign, out string region);
 
-            if (region != "us")
-            {
-                dialog = new ContentDialog() {
-                    Title = $"{callsign} is not a US callsign",
-                    Content = $"{callsign} was not issued by the FCC, so Hammer can't look it up its license. Hammer doesn't yet support non-US callsigns.",
-                };
-                await dialog.ShowAsync();
-                string ex = "Can't look up non-FCC callsigns.";
-                throw new ApplicationException(ex);
-            }
+            //if (region != "us")
+            //{
+            //    dialog = new ContentDialog() {
+            //        Title = $"{callsign} is not a US callsign",
+            //        Content = $"{callsign} was not issued by the FCC, so Hammer can't look it up its license. Hammer doesn't yet support non-US callsigns.",
+            //    };
+            //    await dialog.ShowAsync();
+            //    string ex = "Can't look up non-FCC callsigns.";
+            //    throw new ApplicationException(ex);
+            //}
 
             // Get the API endpoint URI for the callsign
-            APIs.TryMakeUri(region, callsign, out Uri uri);
+            //APIs.TryMakeUri(region, callsign, out Uri uri);
+
 
             // Parse JObject from API payload
-            JObject jResult;
-            jResult = await APIs.GetLicenseJObjectAsync(uri);
+            //JObject jResult;
+            //jResult = await APIs.GetLicenseJObjectAsync(uri);
 
             // Parse new License from JObject
-            License.TryParse(jResult, out licenseSearchResult);
+            //License.TryParse(jResult, out licenseSearchResult);
 
-            switch (licenseSearchResult.Status)
+            License licenseSearchResult = await Parsers.GetLicenseFromJsonAsync(callsign);
+
+            /*switch (licenseSearchResult.Status)
             {
                 case "VALID":
                     // Display the results in their fields
@@ -146,6 +151,13 @@ namespace Hammer.Views
                     LocationLongitudeField.Text = licenseSearchResult.Location.Longitude.ToString(CultureInfo.InvariantCulture);
                     GridSquareField.Text = licenseSearchResult.GridSquare;
 
+                    // Creating the basic geoposition may not be necessary here, not sure
+                    //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
+                    //Geopoint mapPositionCenter = new Geopoint(mapPosition);
+                    //LicenseLocationMapControl.Center = mapPositionCenter;
+                    //LicenseLocationMapControl.ZoomLevel = 12;
+                    //LicenseLocationMapControl.LandmarksVisible = true;
+
                     DateGrantedField.Text = licenseSearchResult.GrantDate.ToString("d", CultureInfo.InvariantCulture);
                     DateExpiryField.Text = licenseSearchResult.ExpiryDate.ToString("d", CultureInfo.InvariantCulture);
                     DateLastActionField.Text = licenseSearchResult.LastActionDate.ToString("d", CultureInfo.InvariantCulture);
@@ -174,7 +186,7 @@ namespace Hammer.Views
                     };
                     await dialog.ShowAsync();
                     break;
-            }
+            }*/
 
             // All done. Nothing to see here.
             SearchProgressRing.Visibility = Visibility.Collapsed;
