@@ -14,7 +14,6 @@ namespace Hammer.CLI
 
         static void Main(string[] args)
         {
-            bool isSilent = args.Contains("-s");
             Commands command;
             string callsign;
 
