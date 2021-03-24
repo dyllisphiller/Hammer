@@ -97,28 +97,28 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Latitude"
-                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                        Grid.Column="0"
+                        Text="Latitude"
+                        Style="{StaticResource BaseTextBlockStyle}"/>
                     <TextBlock x:Name="LocationLatitudeField"
-                                    Grid.Row="1"
-                                    Grid.Column="0"/>
+                        Grid.Row="1"
+                        Grid.Column="0"/>
 
                     <TextBlock Grid.Row="0"
-                                    Grid.Column="1"
-                                    Text="Longitude"
-                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                        Grid.Column="1"
+                        Text="Longitude"
+                        Style="{StaticResource BaseTextBlockStyle}"/>
                     <TextBlock x:Name="LocationLongitudeField"
-                                    Grid.Row="1"
-                                    Grid.Column="1"/>
+                        Grid.Row="1"
+                        Grid.Column="1"/>
 
                     <TextBlock Grid.Row="0"
-                                    Grid.Column="2"
-                                    Text="Grid Square"
-                                    Style="{StaticResource BaseTextBlockStyle}"/>
+                        Grid.Column="2"
+                        Text="Grid Square"
+                        Style="{StaticResource BaseTextBlockStyle}"/>
                     <TextBlock x:Name="GridSquareField"
-                                    Grid.Row="1"
-                                    Grid.Column="2"/>
+                        Grid.Row="1"
+                        Grid.Column="2"/>
 
                     <Maps:MapControl x:Name="LicenseLocationMapControl"
                                      ZoomInteractionMode="GestureAndControl"
