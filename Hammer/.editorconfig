@@ -9,3 +9,4 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
+dotnet_code_quality.CA1303.excluded_type_names_with_derived_types = M:System.Exception
