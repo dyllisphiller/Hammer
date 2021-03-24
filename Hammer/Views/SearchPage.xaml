@@ -4,7 +4,7 @@
     xmlns:local="using:Hammer.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Custom="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     x:Class="Hammer.Views.SearchPage"
     mc:Ignorable="d">
 
@@ -118,6 +118,11 @@
                     <TextBlock x:Name="GridSquareField"
                                     Grid.Row="1"
                                     Grid.Column="2"/>
+
+                    <Maps:MapControl x:Name="LicenseLocationMapControl"
+                                     ZoomInteractionMode="GestureAndControl"
+                                     TiltInteractionMode="GestureAndControl"
+                                     Visibility="Collapsed"/>
                 </Grid>
 
                 <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,12">Chronology</TextBlock>
