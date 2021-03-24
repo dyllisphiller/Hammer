@@ -31,6 +31,14 @@
                       Height="60"
                       Width="60"/>
 
+        <StackPanel x:Name="SearchPageDefault" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock
+                x:Name="SearchPageDefaultHeader"
+                Style="{StaticResource SubheaderTextBlockStyle}"
+                Text="Look up a callsign using the search field"
+                Visibility="Collapsed"/>
+        </StackPanel>
+        
         <StackPanel x:Name="SearchResultsStackPanel" Visibility="Collapsed" Margin="0,12,0,0">
             <TextBlock x:Name="SearchResultsHeader" Style="{StaticResource HeaderTextBlockStyle}"/>
             <TextBlock x:Name="SearchResultsSubheader" Style="{StaticResource SubtitleTextBlockStyle}"/>
