@@ -49,6 +49,31 @@ namespace Hammer.CLI
         static void Lookup(string callsign)
         {
             Console.WriteLine($"Callsign Lookup → {callsign}\n");
+
+            License.GetLicenseByCallsign(callsign, out License license);
+
+            license.Callsign = callsign;
+            license.Name = "JOHNNY APPLESEED";
+            license.FRN = "1234567";
+            license.OperatorClass = "Extra";
+
+            Console.WriteLine("=== LICENSE RECORD BEGINS ===");
+            Console.WriteLine($"{license.Callsign} licensed to:");
+            Console.WriteLine($"{license.Name}\n(FRN {license.FRN})");
+            Console.WriteLine($"Amateur {license.OperatorClass}");
+            Console.WriteLine(
+                "ADDRESS:\n" +
+                "\t1234 Anystreet Ave.\n" +
+                "\tBrooklyn\tNY\t10001\n" +
+                "\tUnited States\n\n" +
+                "NO TRUSTEE\n" +
+                "EXPIRES IN 2 YEARS"
+                );
+        }
+
+        static void ExtendedLookup(string callsign)
+        {
+            Lookup(callsign);
         }
     }
 }
