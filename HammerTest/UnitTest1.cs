@@ -12,8 +12,7 @@ namespace HammerTests
         public void TestTryGetRegionUS()
         {
             const string Expected = "us";
-            string actual;
-            Prefixes.TryGetRegion("W", out actual);
+            Prefixes.TryGetRegion("W", out string actual);
             Assert.AreEqual(Expected, actual);
         }
 
@@ -21,8 +20,7 @@ namespace HammerTests
         public void TestTryGetRegionOOWS()
         {
             const string Expected = "oows";
-            string actual;
-            Prefixes.TryGetRegion("S0", out actual);
+            Prefixes.TryGetRegion("S0", out string actual);
             Assert.AreEqual(Expected, actual);
         }
     }
@@ -34,8 +32,7 @@ namespace HammerTests
         public void TestTryGetIndicatorPair()
         {
             const string Expected = "🇺🇸";
-            string actual;
-            RegionalIndicators.TryGetIndicatorPair("us", out actual);
+            RegionalIndicators.TryGetIndicatorPair("us", out string actual);
             Assert.AreEqual(Expected, actual);
         }
     }
