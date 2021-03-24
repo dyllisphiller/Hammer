@@ -20,14 +20,10 @@
                                     Icon="Find"
                                     Content="Search"
                                     AccessKey="S"/>
-                <NavigationViewItem Tag="people"
+                <!--<NavigationViewItem Tag="people"
                                     Icon="People"
                                     Content="People"
-                                    AccessKey="P"/>
-                <NavigationViewItem Tag="about"
-                                    Icon="View"
-                                    Content="About"
-                                    AccessKey="A"/>
+                                    AccessKey="P"/>-->
             </NavigationView.MenuItems>
 
             <NavigationView.AutoSuggestBox>
