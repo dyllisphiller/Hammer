@@ -39,7 +39,7 @@ namespace Hammer.Core.Models
     {
         private string callsign;
         private string status;
-        private string type;
+        private string licenseType;
         private string operatorClass;
         private string frn;
         private Uri ulsUri;
@@ -108,7 +108,7 @@ namespace Hammer.Core.Models
         /// <summary>
         /// Represents a license's licensee type, like PERSON or CLUB.
         /// </summary>
-        public string Type { get => type; set => type = value; }
+        public string LicenseType { get => licenseType; set => licenseType = value; }
 
         /// <summary>
         /// Represents a license's class. Only applies to licenses issued to people.
@@ -287,7 +287,7 @@ namespace Hammer.Core.Models
                 _license = new License
                 {
                     Status = (string)json["status"],
-                    Type = (string)json["type"],
+                    LicenseType = (string)json["type"],
                     Name = (string)json["name"],
                     Callsign = (string)json["current"]["callsign"],
                     OperatorClass = (string)json["current"]["operClass"],
