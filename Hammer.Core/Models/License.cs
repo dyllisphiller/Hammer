@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Hammer.Core.Models
 {
@@ -205,7 +206,33 @@ namespace Hammer.Core.Models
             Country = System.Globalization.CultureInfo.CurrentCulture.Name.Substring(3, 2);
         }
 
+        public static void GetLicenseByCallsign(string json, out License newLicense)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                throw new ArgumentException($"'{nameof(json)}' cannot be null or whitespace.", nameof(json));
+            }
+
+            newLicense = new License();
+        }
+
         // TODO: Adapt this to use an, er, adapter so that other search providers can be dropped in.
+        //public static void TryParse(System.IO.Stream json, out License license)
+        //{
+        //    License _license;
+        //    License _trustee;
+
+        //    if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json), "A non-null JSON string must be passed into this parameter.");
+
+        //    var options = new JsonSerializerOptions
+        //    {
+        //        AllowTrailingCommas = true
+        //    };
+
+        //    JsonSerializer.DeserializeAsync<License>(json, options);
+
+        //    license = new License();
+        //}
         public static void TryParse(JObject json, out License license)
         {
             License _license;
