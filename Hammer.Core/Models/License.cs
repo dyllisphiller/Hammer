@@ -1,4 +1,4 @@
-﻿using Hammer.Core.Cartography;
+﻿using Hammer.Core.Maps;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -143,7 +143,7 @@ namespace Hammer.Core.Models
         /// <summary>
         /// Represents the location of the licensee.
         /// </summary>
-        /// <seealso cref="Hammer.Core.Cartography.GeographicPoint"/>
+        /// <seealso cref="Hammer.Core.Maps.GeographicPoint"/>
         public GeographicPoint Location { get => location; set => location = value; }
 
         /// <summary>
