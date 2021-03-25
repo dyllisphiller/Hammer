@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hammer.Core.Cartography
+namespace Hammer.Core.Maps
 {
     /// <summary>
     /// Represents a point on Earth in degrees latitude and longitude.
