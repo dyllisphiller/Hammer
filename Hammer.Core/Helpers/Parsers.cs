@@ -22,9 +22,9 @@ namespace Hammer.Core.Helpers
             Prefixes.TryGetRegion(callsign, out string region);
             if (region != "us") throw new ApplicationException("Hammer can't look up non-FCC callsigns yet.");
 
-            HttpClient client = new HttpClient();
             APIs.TryMakeUri(region, callsign, out Uri licenseDataUri);
 
+            HttpClient client = new HttpClient();
 
             try
             {
@@ -33,7 +33,7 @@ namespace Hammer.Core.Helpers
                 {
                     Converters =
                     {
-                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
                     }
                 };
                 usLicenseTask = client.GetFromJsonAsync<USLicense>(licenseDataUri, options);
@@ -48,7 +48,6 @@ namespace Hammer.Core.Helpers
                 System.Diagnostics.Debug.WriteLine(ex.Message);
                 return null;
             }
-            
         }
 
     }

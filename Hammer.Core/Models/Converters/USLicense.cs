@@ -54,38 +54,38 @@ namespace Hammer.Core.Models.Converters.US
         }
     }
 
-	public struct USLicenseData
+    public struct USLicenseData
     {
-		public Callsign Callsign;
-		public USOperatorClass OperClass;
+        public Callsign Callsign;
+        public USOperatorClass OperClass;
     }
 
-	public struct USTrusteeData
+    public struct USTrusteeData
     {
-		public Callsign Callsign;
-		public string Name;
+        public Callsign Callsign;
+        public string Name;
     }
 
-	public struct USAddress
+    public struct USAddress
     {
-		public string Line1;
-		public string Line2;
-		public string Attn;
-	}
+        public string Line1;
+        public string Line2;
+        public string Attn;
+    }
 
-	public struct USLocation
+    public struct USLocation
     {
-		public decimal Latitude;
-		public decimal Longitude;
-		public string GridSquare;
-	}
+        public decimal Latitude;
+        public decimal Longitude;
+        public string GridSquare;
+    }
 
-	public struct USOtherInfo
+    public struct USOtherInfo
     {
-		public DateTimeOffset GrantDate;
-		public DateTimeOffset ExpiryDate;
-		public DateTimeOffset LastActionDate;
-		public string FRN;
-		public Uri UlsUri;
-	}
+        public DateTimeOffset GrantDate;
+        public DateTimeOffset ExpiryDate;
+        public DateTimeOffset LastActionDate;
+        public string FRN;
+        public Uri UlsUri;
+    }
 }
