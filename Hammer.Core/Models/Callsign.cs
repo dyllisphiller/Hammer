@@ -28,5 +28,10 @@ namespace Hammer.Core.Models
         {
             return Sign;
         }
+
+        public static explicit operator string(Callsign v)
+        {
+            return v.Sign;
+        }
     }
 }
