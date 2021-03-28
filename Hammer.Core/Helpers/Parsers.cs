@@ -25,8 +25,6 @@ namespace Hammer.Core.Helpers
             HttpClient client = new HttpClient();
             APIs.TryMakeUri(region, callsign, out Uri licenseDataUri);
 
-            Task<License> resultTask;
-            Task<USLicense> usLicenseTask;
 
             try
             {
