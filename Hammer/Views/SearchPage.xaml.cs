@@ -197,10 +197,10 @@ namespace Hammer.Views
         private void ShowMapButton_Click(object sender, RoutedEventArgs e)
         {
             Placecard.ShowPlacecard(sender,
-                                    licenseGeopoint,
-                                    licenseSearchResult.Callsign,
-                                    licenseSearchResult.AddressLine1,
-                                    licenseSearchResult.AddressLine2);
+                licenseGeopoint,
+                licenseSearchResult.Callsign.ToString(),
+                licenseSearchResult.AddressLine1,
+                licenseSearchResult.AddressLine2);
         }
 
         private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
