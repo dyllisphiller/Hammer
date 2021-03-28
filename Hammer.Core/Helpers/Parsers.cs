@@ -1,6 +1,7 @@
 ﻿using Hammer.Core.Callsigns;
 using Hammer.Core.Models;
-using Hammer.Core.Models.Converters.US;
+using Hammer.Core.Models.Regional;
+using Hammer.Core.Models.Converters;
 using Hammer.Core.WebServices;
 using System;
 using System.Collections.Generic;
