@@ -35,10 +35,16 @@ namespace Hammer.Core.Models
         public string Value { get => fieldValue; set => fieldValue = value; }
     }
 
+    public enum LicenseStatus
+    {
+        Valid,
+        Invalid,
+        Updating,
+    }
+
     public class License
     {
         private string callsign;
-        private string status;
         private string licenseType;
         private string operatorClass;
         private string frn;
@@ -82,28 +88,7 @@ namespace Hammer.Core.Models
         /// Represents the status returned by the API.
         /// </summary>
         /// <value>Gets/sets the value of the string field <c>status</c>.</value>
-        public string Status
-        {
-            get => status;
-            set
-            {
-                if (value != null)
-                {
-                    if (value == "VALID" || value == "INVALID" || value == "UPDATING")
-                    {
-                        status = value;
-                    }
-                    else
-                    {
-                        throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} must be VALID, INVALID, or UPDATING.");
-                    }
-                }
-                else
-                {
-                    throw new ArgumentNullException(nameof(value), $"{nameof(status)} cannot be null.");
-                }
-            }
-        }
+        public LicenseStatus Status { get; set; }
 
         /// <summary>
         /// Represents a license's licensee type, like PERSON or CLUB.
@@ -286,7 +271,7 @@ namespace Hammer.Core.Models
 
                 _license = new License
                 {
-                    Status = (string)json["status"],
+                    //Status = (string)json["status"],
                     LicenseType = (string)json["type"],
                     Name = (string)json["name"],
                     Callsign = new Callsign((string)json["current"]["callsign"]),
