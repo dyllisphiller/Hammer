@@ -205,7 +205,7 @@ namespace Hammer.Views
 
         private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
         {
-            var options = new LauncherOptions
+            LauncherOptions options = new LauncherOptions
             {
                 TreatAsUntrusted = true
             };
