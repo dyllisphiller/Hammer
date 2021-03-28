@@ -9,18 +9,9 @@ namespace Hammer.Core.Globalization
     {
         public static RegionInfo GetRegionInfo(string lang, string region)
         {
-            if (string.IsNullOrWhiteSpace(region) || !string.IsNullOrWhiteSpace(lang))
-            {
-                throw new ArgumentNullException();
-            }
-            else if (region.Length != 2 || lang.Length != 2)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-            else
-            {
-                return new RegionInfo(lang + "-" + region);
-            }
+            if (region.Length != 2) throw new ArgumentOutOfRangeException($"{nameof(region)} must be exactly two characters.", nameof(region));
+            if (lang.Length != 2) throw new ArgumentOutOfRangeException($"{nameof(lang)} must be exactly two characters.", nameof(lang));
+            return new RegionInfo(lang + "-" + region);
         }
     }
 }
