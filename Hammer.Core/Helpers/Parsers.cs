@@ -39,7 +39,8 @@ namespace Hammer.Core.Helpers
                 };
                 HttpResponseMessage httpResponse = await client.GetAsync(licenseDataUri);
                 httpResponse.EnsureSuccessStatusCode();
-                USLicense usLicenseResult = await httpResponse.Content.ReadFromJsonAsync<USLicense>(options);
+                //USLicense usLicenseResult = await httpResponse.Content.ReadFromJsonAsync<USLicense>(options);
+                USLicense usLicenseResult = new USLicense(await httpResponse.Content.ReadAsStringAsync());
                 return usLicenseResult.ToLicense();
             }
             catch (Exception ex)
