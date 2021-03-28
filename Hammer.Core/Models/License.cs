@@ -65,7 +65,7 @@ namespace Hammer.Core.Models
         /// <summary>
         /// The callsign this license represents.
         /// </summary>
-        public string Callsign { get => callsign; set => callsign = value; }
+        public Callsign Callsign { get; set; }
 
         /// <summary>
         /// A list of arbitrary LicenseField-encapsulated data points.
@@ -249,7 +249,7 @@ namespace Hammer.Core.Models
                 {
                     _trustee = new License
                     {
-                        Callsign = (string)json["trustee"]["callsign"],
+                        Callsign = new Callsign((string)json["trustee"]["callsign"]),
                         Name = (string)json["trustee"]["name"]
                     };
                 }
@@ -289,7 +289,7 @@ namespace Hammer.Core.Models
                     Status = (string)json["status"],
                     LicenseType = (string)json["type"],
                     Name = (string)json["name"],
-                    Callsign = (string)json["current"]["callsign"],
+                    Callsign = new Callsign((string)json["current"]["callsign"]),
                     OperatorClass = (string)json["current"]["operClass"],
                     FRN = (string)json["frn"],
                     UlsUri = (Uri)json["otherInfo"]["ulsUrl"],

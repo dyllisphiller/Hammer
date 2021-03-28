@@ -215,8 +215,8 @@ namespace Hammer.Views
 
         private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
         {
-            string trusteeCallsign = licenseSearchResult.Trustee.Callsign;
-            await CallsignSearch(trusteeCallsign);
+            Callsign trusteeCallsign = licenseSearchResult.Trustee.Callsign;
+            await CallsignSearch((string)trusteeCallsign);
         }
     }
 }
