@@ -76,9 +76,6 @@ namespace Hammer.Views
             SearchProgressRing.IsActive = true;
             SearchProgressRing.Visibility = Visibility.Visible;
 
-            // Clean the callsign
-            //callsign = Sanitizers.SanitizeCallsign(callsign);
-
             if (string.IsNullOrEmpty(callsign))
             {
                 dialog = new ContentDialog()
@@ -139,7 +136,7 @@ namespace Hammer.Views
                     
             if (licenseSearchResult.Trustee != null)
             {
-                Callsign trusteeCallsign = licenseSearchResult.Trustee.Callsign;
+                Callsign trusteeCallsign = licenseSearchResult.Trustee;
                 SearchTrusteeButtonText.Text = $"Trustee {trusteeCallsign}";
                 SearchTrusteeButton.Visibility = Visibility.Visible;
             }
@@ -204,8 +201,7 @@ namespace Hammer.Views
 
         private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
         {
-            Callsign trusteeCallsign = licenseSearchResult.Trustee.Callsign;
-            await CallsignSearch((string)trusteeCallsign);
+            await CallsignSearch((string)licenseSearchResult.Trustee);
         }
     }
 }

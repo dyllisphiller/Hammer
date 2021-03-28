@@ -138,7 +138,7 @@ namespace Hammer.Core.Models
         /// <summary>
         /// Represents an organization licensee's trustee.
         /// </summary>
-        public License Trustee { get => trustee; set => trustee = value; }
+        public Callsign Trustee { get; set; }
 
         /// <summary>
         /// A street address like 123 E Main St.
@@ -281,7 +281,7 @@ namespace Hammer.Core.Models
                     FRN = (string)json["frn"],
                     UlsUri = (Uri)json["otherInfo"]["ulsUrl"],
 
-                    Trustee = _trustee,
+                    Trustee = new Callsign(_trustee.Callsign.ToString()),
 
                     AddressLine1 = (string)json["address"]["line1"],
                     AddressLine2 = (string)json["address"]["line2"],
