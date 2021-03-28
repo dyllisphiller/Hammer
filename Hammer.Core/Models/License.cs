@@ -143,7 +143,7 @@ namespace Hammer.Core.Models
         /// <summary>
         /// Represents the location of the licensee.
         /// </summary>
-        /// <seealso cref="Hammer.Core.Maps.GeographicPoint"/>
+        /// <seealso cref="GeographicPoint"/>
         public GeographicPoint Location { get => location; set => location = value; }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace Hammer.Core.Models
             if (json != null)
             {
 
-                if (!String.IsNullOrEmpty((string)json["trustee"]["callsign"]))
+                if (!string.IsNullOrEmpty((string)json["trustee"]["callsign"]))
                 {
                     _trustee = new License
                     {
@@ -263,21 +263,21 @@ namespace Hammer.Core.Models
                     (double)json["location"]["longitude"]
                 );
 
-                if (!String.IsNullOrEmpty((string)json["otherInfo"]["grantDate"]))
+                if (!string.IsNullOrEmpty((string)json["otherInfo"]["grantDate"]))
                 {
                     _grantDate = DateTimeOffset.Parse(
                         (string)json["otherInfo"]["grantDate"],
                         System.Globalization.CultureInfo.InvariantCulture);
                 }
 
-                if (!String.IsNullOrEmpty((string)json["otherInfo"]["expiryDate"]))
+                if (!string.IsNullOrEmpty((string)json["otherInfo"]["expiryDate"]))
                 {
                     _expiryDate = DateTimeOffset.Parse(
                         (string)json["otherInfo"]["expiryDate"],
                         System.Globalization.CultureInfo.InvariantCulture);
                 }
 
-                if (!String.IsNullOrEmpty((string)json["otherInfo"]["lastActionDate"]))
+                if (!string.IsNullOrEmpty((string)json["otherInfo"]["lastActionDate"]))
                 {
                     _lastActionDate = DateTimeOffset.Parse(
                         (string)json["otherInfo"]["lastActionDate"],
