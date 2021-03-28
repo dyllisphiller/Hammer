@@ -29,7 +29,7 @@ namespace Hammer.Core.Helpers
             try
             {
                 client.DefaultRequestHeaders.Accept.TryParseAdd("application/json");
-                JsonSerializerOptions options = new JsonSerializerOptions
+                JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
                 {
                     Converters =
                     {
