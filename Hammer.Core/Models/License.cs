@@ -186,7 +186,7 @@ namespace Hammer.Core.Models
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(Country)} must be exactly two letters.");
+                    throw new ArgumentOutOfRangeException(nameof(Country), $"{nameof(Country)} must be exactly two letters.");
                 }
             }
         }
