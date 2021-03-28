@@ -44,7 +44,6 @@ namespace Hammer.Core.Models
 
     public class License
     {
-        private string callsign;
         private string licenseType;
         private string operatorClass;
         private string frn;
@@ -175,6 +174,9 @@ namespace Hammer.Core.Models
                 }
             }
         }
+
+        [JsonExtensionData]
+        public Dictionary<string, object> ExtensionData { get; set; }
 
         /// <summary>
         /// Instantiates a License with a new random Guid and empty objects.
