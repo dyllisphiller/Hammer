@@ -36,12 +36,10 @@ namespace Hammer.Core.Helpers
                         new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
                     }
                 };
-                usLicenseTask = client.GetFromJsonAsync<USLicense>(licenseDataUri, options);
-                USLicense usLicense = await usLicenseTask;
-                resultTask = usLicense.ToLicenseAsync();
-                await resultTask;
-                if (resultTask.Result == null) throw new ApplicationException("Could not get or parse License from API.");
-                return resultTask.Result;
+                HttpResponseMessage httpResponse = await client.GetAsync(licenseDataUri);
+                httpResponse.EnsureSuccessStatusCode();
+                USLicense usLicenseResult = await httpResponse.Content.ReadFromJsonAsync<USLicense>(options);
+                return usLicenseResult.ToLicense();
             }
             catch (Exception ex)
             {
