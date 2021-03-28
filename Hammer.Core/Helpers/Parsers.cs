@@ -17,14 +17,13 @@ namespace Hammer.Core.Helpers
     {
         public static async Task<License> GetLicenseFromJsonAsync(string callsign)
         {
-            string cleanCallsign = Sanitizers.SanitizeCallsign(callsign);
+            callsign = Sanitizers.SanitizeCallsign(callsign);
 
-            Prefixes.TryGetRegion(cleanCallsign, out string region);
-
+            Prefixes.TryGetRegion(callsign, out string region);
             if (region != "us") throw new ApplicationException("Hammer can't look up non-FCC callsigns yet.");
 
-            APIs.TryMakeUri(region, cleanCallsign, out Uri licenseDataUri);
             HttpClient client = new HttpClient();
+            APIs.TryMakeUri(region, callsign, out Uri licenseDataUri);
 
             Task<License> resultTask;
             Task<USLicense> usLicenseTask;
