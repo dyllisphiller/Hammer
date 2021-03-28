@@ -39,11 +39,7 @@ namespace Hammer.Core.WebServices
             string _uri;
             try
             {
-                if (!ApiUriFormulary.TryGetValue(region, out string formula))
-                {
-                    throw new ArgumentOutOfRangeException(nameof(region), $"The API formula for {region} could not be found.");
-                }
-
+                if (!ApiUriFormulary.TryGetValue(region, out string formula)) throw new ArgumentOutOfRangeException(nameof(region), $"An API formula for {region} could not be found.");
                 _uri = string.Format(System.Globalization.CultureInfo.InvariantCulture, formula, callsign);
                 uri = new Uri(_uri, UriKind.Absolute);
                 return true;
