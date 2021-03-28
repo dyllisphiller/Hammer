@@ -118,75 +118,64 @@ namespace Hammer.Views
 
             License licenseSearchResult = await Parsers.GetLicenseFromJsonAsync(callsign);
 
-            /*switch (licenseSearchResult.Status)
+            if (licenseSearchResult.Status == LicenseStatus.Updating)
             {
-                case "VALID":
-                    // Display the results in their fields
-                    SearchResultsHeader.Text = callsign;
-                    SearchResultsSubheader.Text = licenseSearchResult.Name;
+                dialog.Title = "Updating license data";
+                dialog.Content = "The data source is updating their license data from the FCC. This might take a bit. Please try again later.";
+                await dialog.ShowAsync();
+            }
+            else if (licenseSearchResult.Status == LicenseStatus.Invalid)
+            {
+                dialog.Title = "Either the callsign is invalid or something unexpected happened. Try again?";
+                dialog.Content = null;
+                await dialog.ShowAsync();
+            }
 
-                    SearchTrusteeButton.Visibility = Visibility.Collapsed;
+            // Display the results in their fields
+            SearchResultsHeader.Text = callsign;
+            SearchResultsSubheader.Text = licenseSearchResult.Name;
+
+            SearchTrusteeButton.Visibility = Visibility.Collapsed;
                     
-                    if (licenseSearchResult.Trustee != null)
-                    {
-                        string trusteeCallsign = licenseSearchResult.Trustee.Callsign;
-                        SearchTrusteeButtonText.Text = $"Trustee {trusteeCallsign}";
-                        SearchTrusteeButton.Visibility = Visibility.Visible;
-                    }
+            if (licenseSearchResult.Trustee != null)
+            {
+                Callsign trusteeCallsign = licenseSearchResult.Trustee.Callsign;
+                SearchTrusteeButtonText.Text = $"Trustee {trusteeCallsign}";
+                SearchTrusteeButton.Visibility = Visibility.Visible;
+            }
 
-                    AddressLine1Field.Text = licenseSearchResult.AddressLine1;
-                    AddressLine2Field.Text = licenseSearchResult.AddressLine2;
+            AddressLine1Field.Text = licenseSearchResult.AddressLine1;
+            AddressLine2Field.Text = licenseSearchResult.AddressLine2;
 
-                    if (licenseSearchResult.AddressAttn == null)
-                    {
-                        AddressAttnField.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        AddressAttnField.Text = licenseSearchResult.AddressAttn;
-                        AddressAttnField.Visibility = Visibility.Visible;
-                    }
+            if (licenseSearchResult.AddressAttn == null)
+            {
+                AddressAttnField.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                AddressAttnField.Text = licenseSearchResult.AddressAttn;
+                AddressAttnField.Visibility = Visibility.Visible;
+            }
 
-                    LocationLatitudeField.Text = licenseSearchResult.Location.Latitude.ToString(CultureInfo.InvariantCulture);
-                    LocationLongitudeField.Text = licenseSearchResult.Location.Longitude.ToString(CultureInfo.InvariantCulture);
-                    GridSquareField.Text = licenseSearchResult.GridSquare;
+            LocationLatitudeField.Text = licenseSearchResult.Location.Latitude.ToString(CultureInfo.InvariantCulture);
+            LocationLongitudeField.Text = licenseSearchResult.Location.Longitude.ToString(CultureInfo.InvariantCulture);
+            GridSquareField.Text = licenseSearchResult.GridSquare;
 
-                    // Creating the basic geoposition may not be necessary here, not sure
-                    //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
-                    //Geopoint mapPositionCenter = new Geopoint(mapPosition);
-                    //LicenseLocationMapControl.Center = mapPositionCenter;
-                    //LicenseLocationMapControl.ZoomLevel = 12;
-                    //LicenseLocationMapControl.LandmarksVisible = true;
+            //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
+            //Geopoint mapPositionCenter = new Geopoint(mapPosition);
+            //LicenseLocationMapControl.Center = mapPositionCenter;
+            //LicenseLocationMapControl.ZoomLevel = 12;
+            //LicenseLocationMapControl.LandmarksVisible = true;
 
-                    DateGrantedField.Text = licenseSearchResult.GrantDate.ToString("d", CultureInfo.InvariantCulture);
-                    DateExpiryField.Text = licenseSearchResult.ExpiryDate.ToString("d", CultureInfo.InvariantCulture);
-                    DateLastActionField.Text = licenseSearchResult.LastActionDate.ToString("d", CultureInfo.InvariantCulture);
+            DateGrantedField.Text = licenseSearchResult.GrantDate.ToString("d", CultureInfo.InvariantCulture);
+            DateExpiryField.Text = licenseSearchResult.ExpiryDate.ToString("d", CultureInfo.InvariantCulture);
+            DateLastActionField.Text = licenseSearchResult.LastActionDate.ToString("d", CultureInfo.InvariantCulture);
 
-                    LicenseExternalUriButton.NavigateUri = licenseSearchResult.UlsUri;
+            LicenseExternalUriButton.NavigateUri = licenseSearchResult.UlsUri;
 
-                    //UlsUriField.Text = licenseSearchResult.UlsUri.ToString();
+            //UlsUriField.Text = licenseSearchResult.UlsUri.ToString();
 
-                    licenseGeopoint = new Geopoint(new BasicGeoposition { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude });
-
-                    break;
-
-                case "UPDATING":
-                    dialog = new ContentDialog()
-                    {
-                        Title = "Updating license data",
-                        Content = "The data source is updating their license data from the FCC. This might take a bit. Please try again later.",
-                    };
-                    await dialog .ShowAsync();
-                    break;
-
-                default:
-                    dialog = new ContentDialog()
-                    {
-                        Title = "Either the callsign is invalid or something unexpected happened. Try again?",
-                    };
-                    await dialog.ShowAsync();
-                    break;
-            }*/
+            licenseGeopoint = new Geopoint(new BasicGeoposition { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude });
 
             // All done. Nothing to see here.
             SearchProgressRing.Visibility = Visibility.Collapsed;
