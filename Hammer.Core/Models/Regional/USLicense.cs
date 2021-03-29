@@ -46,24 +46,33 @@ namespace Hammer.Core.Models.Regional
                         JsonElement current = root.GetProperty("current");
                         Callsign currentCallsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
 
-                        // REWRITE CURRENT SECTION LIKE PREVIOUS SECTION BELOW
-                        //Current = new USLicenseData()
-                        //{
-                        //    Callsign = new Callsign(current.GetProperty("callsign").GetString()),
-                        //    OperClass = current.GetProperty("operClass").GetString(),
-                        //};
+                        if (root.TryGetProperty("current", out JsonElement jsonCurrent))
+                        {
+                            Current = new USLicenseData();
+
+                            if (jsonCurrent.TryGetProperty("callsign", out JsonElement jsonCurrentCallsign))
+                            {
+                                Current.Callsign = new Callsign(jsonCurrentCallsign.GetString().ToUpperInvariant());
+                            }
+
+                            if (jsonCurrent.TryGetProperty("operClass", out JsonElement jsonCurrentOperClass))
+                            {
+                                string currentOperClass = jsonCurrentOperClass.GetString().ToUpperInvariant();
+                                Current.OperClass = validOperatorClasses.Any(s => currentOperClass.Equals(s)) ? currentOperClass : null;
+                            }
+                        }
 
                         // If there is a previous callsign and/or operator class, add Previous data
                         if (root.TryGetProperty("previous", out JsonElement jsonPrevious))
                         {
                             Previous = new USLicenseData();
 
-                            if (jsonPrevious.TryGetProperty("callsign", out JsonElement jsonPreviousCallsign))
+                            if (jsonPrevious.TryGetProperty("callsign", out JsonElement jsonPreviousCallsign) && !string.IsNullOrWhiteSpace(jsonPreviousCallsign.GetString()))
                             {
                                 Previous.Callsign = new Callsign(jsonPreviousCallsign.GetString().ToUpperInvariant());
                             }
 
-                            if (jsonPrevious.TryGetProperty("operClass", out JsonElement jsonPreviousOperClass))
+                            if (jsonPrevious.TryGetProperty("operClass", out JsonElement jsonPreviousOperClass) && !string.IsNullOrWhiteSpace(jsonPreviousOperClass.GetString()))
                             {
                                 string previousOperClass = jsonPreviousOperClass.GetString().ToUpperInvariant();
                                 Previous.OperClass = validOperatorClasses.Any(s => previousOperClass.Equals(s)) ? previousOperClass : null;
@@ -103,25 +112,55 @@ namespace Hammer.Core.Models.Regional
                             }
                         }
 
-                        JsonElement location = root.GetProperty("location");
-
-                        Location = new USLocation()
+                        if (root.TryGetProperty("location", out JsonElement jsonLocation))
                         {
-                            Latitude = location.GetProperty("latitude").GetDecimal(),
-                            Longitude = location.GetProperty("longitude").GetDecimal(),
-                            GridSquare = location.GetProperty("gridsquare").GetString(),
-                        };
+                            Location = new USLocation();
 
-                        JsonElement otherInfo = root.GetProperty("otherInfo");
+                            if (jsonLocation.TryGetProperty("latitude", out JsonElement jsonLocationLatitude))
+                            {
+                                Location.Latitude = jsonLocationLatitude.GetDecimal();
+                            }
 
-                        OtherInfo = new USOtherInfo()
+                            if (jsonLocation.TryGetProperty("longitude", out JsonElement jsonLocationLongitude))
+                            {
+                                Location.Longitude = jsonLocationLongitude.GetDecimal();
+                            }
+
+                            if (jsonLocation.TryGetProperty("gridsquare", out JsonElement jsonLocationGridSquare))
+                            {
+                                Location.GridSquare = jsonLocationGridSquare.GetString();
+                            }
+                        }
+
+                        if (root.TryGetProperty("otherInfo", out JsonElement jsonOtherInfo))
                         {
-                            GrantDate = otherInfo.GetProperty("grantDate").GetDateTimeOffset(),
-                            ExpiryDate = otherInfo.GetProperty("expiryDate").GetDateTimeOffset(),
-                            LastActionDate = otherInfo.GetProperty("lastActionDate").GetDateTimeOffset(),
-                            FRN = otherInfo.GetProperty("frn").GetString(),
-                            UlsUri = new Uri(otherInfo.GetProperty("ulsUrl").GetString()),
-                        };
+                            OtherInfo = new USOtherInfo();
+
+                            if (jsonOtherInfo.TryGetProperty("grantDate", out JsonElement jsonGrantDate))
+                            {
+                                OtherInfo.GrantDate = jsonGrantDate.GetDateTimeOffset();
+                            }
+
+                            if (jsonOtherInfo.TryGetProperty("expiryDate", out JsonElement jsonExpiryDate))
+                            {
+                                OtherInfo.ExpiryDate = jsonExpiryDate.GetDateTimeOffset();
+                            }
+
+                            if (jsonOtherInfo.TryGetProperty("lastActionDate", out JsonElement jsonLastActionDate))
+                            {
+                                OtherInfo.LastActionDate = jsonLastActionDate.GetDateTimeOffset();
+                            }
+
+                            if (jsonOtherInfo.TryGetProperty("frn", out JsonElement jsonFrn))
+                            {
+                                OtherInfo.Frn = jsonFrn.GetString();
+                            }
+
+                            if (jsonOtherInfo.TryGetProperty("ulsUrl", out JsonElement jsonUlsUrl))
+                            {
+                                OtherInfo.UlsUri = new Uri(jsonUlsUrl.GetString());
+                            }
+                        }
 
                         break;
 
