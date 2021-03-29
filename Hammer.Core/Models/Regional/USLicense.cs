@@ -223,7 +223,7 @@ namespace Hammer.Core.Models.Regional
         public DateTimeOffset GrantDate;
         public DateTimeOffset ExpiryDate;
         public DateTimeOffset LastActionDate;
-        public string FRN;
+        public string Frn;
         public Uri UlsUri;
     }
 }

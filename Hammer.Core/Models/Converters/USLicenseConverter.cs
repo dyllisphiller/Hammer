@@ -14,7 +14,7 @@ namespace Hammer.Core.Models.Converters
                 Callsign = usLicense.Current.Callsign,
                 Country = "us",
                 ExpiryDate = usLicense.OtherInfo.ExpiryDate,
-                FRN = usLicense.OtherInfo.FRN,
+                FRN = usLicense.OtherInfo.Frn,
                 GrantDate = usLicense.OtherInfo.GrantDate,
                 GridSquare = usLicense.Location.GridSquare,
                 LastActionDate = usLicense.OtherInfo.LastActionDate,
