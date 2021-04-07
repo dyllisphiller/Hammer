@@ -44,8 +44,16 @@ namespace Hammer.Core.Models.Regional
                         break;
 
                     case "VALID":
+                        Status = USStatus.Valid;
                         JsonElement current = root.GetProperty("current");
+                        
                         Callsign currentCallsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
+
+                        if (root.TryGetProperty("type", out JsonElement jsonLicenseType))
+                        {
+                            string licenseType = jsonLicenseType.GetString().ToUpperInvariant();
+                            LicenseType = validLicenseTypes.Any(s => licenseType.Equals(s)) ? licenseType : "";
+                        }
 
                         if (root.TryGetProperty("current", out JsonElement jsonCurrent))
                         {
