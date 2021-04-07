@@ -35,13 +35,6 @@ namespace Hammer.Core.Models
         public string Value { get => fieldValue; set => fieldValue = value; }
     }
 
-    public enum LicenseStatus
-    {
-        Valid,
-        Invalid,
-        Updating,
-    }
-
     public class License
     {
         private string country;
@@ -71,10 +64,9 @@ namespace Hammer.Core.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Represents the status returned by the API.
+        /// The status of the license, as returned by the API. Non-standard.
         /// </summary>
-        /// <value>Gets/sets the value of the string field <c>status</c>.</value>
-        public LicenseStatus Status { get; set; }
+        public string Status { get; set; }
 
         /// <summary>
         /// Represents a license's licensee type, like PERSON or CLUB.
