@@ -59,7 +59,7 @@ namespace Hammer.Core.Models.Regional
                             if (jsonCurrent.TryGetProperty("operClass", out JsonElement jsonCurrentOperClass))
                             {
                                 string currentOperClass = jsonCurrentOperClass.GetString().ToUpperInvariant();
-                                Current.OperClass = validOperatorClasses.Any(s => currentOperClass.Equals(s)) ? currentOperClass : null;
+                                Current.OperClass = validOperatorClasses.Any(s => currentOperClass.Equals(s)) ? currentOperClass : "";
                             }
                         }
 
@@ -76,7 +76,7 @@ namespace Hammer.Core.Models.Regional
                             if (jsonPrevious.TryGetProperty("operClass", out JsonElement jsonPreviousOperClass) && !string.IsNullOrWhiteSpace(jsonPreviousOperClass.GetString()))
                             {
                                 string previousOperClass = jsonPreviousOperClass.GetString().ToUpperInvariant();
-                                Previous.OperClass = validOperatorClasses.Any(s => previousOperClass.Equals(s)) ? previousOperClass : null;
+                                Previous.OperClass = validOperatorClasses.Any(s => previousOperClass.Equals(s)) ? previousOperClass : "";
                             }
                         }
 
