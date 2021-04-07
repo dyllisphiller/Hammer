@@ -30,16 +30,8 @@ namespace Hammer.Core.Helpers
             try
             {
                 client.DefaultRequestHeaders.Accept.TryParseAdd("application/json");
-                JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
-                {
-                    Converters =
-                    {
-                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase),
-                    }
-                };
                 HttpResponseMessage httpResponse = await client.GetAsync(licenseDataUri);
                 httpResponse.EnsureSuccessStatusCode();
-                //USLicense usLicenseResult = await httpResponse.Content.ReadFromJsonAsync<USLicense>(options);
                 USLicense usLicenseResult = new USLicense(await httpResponse.Content.ReadAsStringAsync());
                 return usLicenseResult.ToLicense();
             }

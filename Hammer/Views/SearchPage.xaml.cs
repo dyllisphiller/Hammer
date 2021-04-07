@@ -121,6 +121,7 @@ namespace Hammer.Views
                 dialog.Content = "The data source is updating their license data from the FCC. This might take a bit. Please try again later.";
                 await dialog.ShowAsync();
             }
+
             else if (licenseSearchResult.Status == LicenseStatus.Invalid)
             {
                 dialog.Title = "Either the callsign is invalid or something unexpected happened. Try again?";
