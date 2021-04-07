@@ -36,10 +36,7 @@ namespace Hammer.Views
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        private IList<string> autoSuggestHistory = new List<string>
-        {
-            "W1AW",
-        };
+        private MostRecentlyUsedList<string> autoSuggestHistory;
 
         // List of ValueTuple holding the Navigation Tag and the relative Navigation Page
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
@@ -175,23 +172,29 @@ namespace Hammer.Views
         {
             this.InitializeComponent();
 
-            NavViewSearchBox.ItemsSource = autoSuggestHistory;
+            string[] ashValues = { "W1AW", "W2AW", "W3AW", "W4AW", "W5AW" };
+            autoSuggestHistory = new MostRecentlyUsedList<string>(5, ashValues);
+
+            autoSuggestHistory.UseItem("W3AW");
+
+            NavViewSearchBox.ItemsSource = autoSuggestHistory.GetList();
+        }
+
+        private void NavViewSearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            DoSearch(args.SelectedItem.ToString());
         }
 
         private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (args.ChosenSuggestion != null)
-            {
-                //
-            }
-            else
-            {
-                ContentFrame.Navigate(typeof(SearchPage), args.QueryText);
-            }
-            NavView.SelectedItem = NavView.MenuItems[1];
-            //await Views.SearchPage.RetrieveData(NavViewSearchBox.Text.ToUpperInvariant()).ConfigureAwait(true);
-            //Task SearchTask = new Views.SearchPage.RetrieveData();
-            //await SearchTask.ConfigureAwait(true);
+            DoSearch(args.QueryText);
+            //NavView.SelectedItem = NavView.MenuItems[1];
+        }
+
+        private void DoSearch(string query)
+        {
+            autoSuggestHistory.UseItem(query);
+            ContentFrame.Navigate(typeof(SearchPage), query);
         }
 
         private void NavViewSearchBoxAccelerator_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)

@@ -40,6 +40,7 @@
                                 VerticalAlignment="Center"
                                 QueryIcon="Find"
                                 QuerySubmitted="NavViewSearchBox_QuerySubmitted"
+                                SuggestionChosen="NavViewSearchBox_SuggestionChosen"
                                 Margin="0">
                     <AutoSuggestBox.KeyboardAccelerators>
                         <KeyboardAccelerator Key="E" Modifiers="Control" Invoked="NavViewSearchBoxAccelerator_Invoked"/>
