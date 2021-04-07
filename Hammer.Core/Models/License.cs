@@ -136,7 +136,7 @@ namespace Hammer.Core.Models
             LastActionDate = new DateTimeOffset();
             Location = new GeographicPoint();
 
-            Country = System.Globalization.CultureInfo.CurrentCulture.Name.Substring(3, 2);
+            Country = "US";
         }
 
         public static void GetLicenseByCallsign(string json, out License newLicense)
