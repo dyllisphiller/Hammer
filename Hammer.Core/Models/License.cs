@@ -7,34 +7,6 @@ using System.Text.Json.Serialization;
 
 namespace Hammer.Core.Models
 {
-    /// <summary>
-    /// Encapsulates arbitrary key/value fields for non-universal licensee data.
-    /// </summary>
-    /// <remarks>
-    /// This is a shortcut to support those fields exclusive to a certain licensing authority.
-    /// </remarks>
-    public class LicenseField
-    {
-        private string fieldType;
-        private string fieldKey;
-        private string fieldValue;
-
-        /// <summary>
-        /// The type of the field; string, int, double, and so on.
-        /// </summary>
-        public string Type { get => fieldType; set => fieldType = value; }
-
-        /// <summary>
-        /// The name of the field.
-        /// </summary>
-        public string Key { get => fieldKey; set => fieldKey = value; }
-
-        /// <summary>
-        /// The value of the field.
-        /// </summary>
-        public string Value { get => fieldValue; set => fieldValue = value; }
-    }
-
     public class License
     {
         private string country;
@@ -51,11 +23,6 @@ namespace Hammer.Core.Models
         /// The callsign this license represents.
         /// </summary>
         public Callsign Callsign { get; set; }
-
-        /// <summary>
-        /// A list of arbitrary LicenseField-encapsulated data points.
-        /// </summary>
-        public IList<LicenseField> LicenseFields { get; }
 
         /// <summary>
         /// Represents a licensee's name.
