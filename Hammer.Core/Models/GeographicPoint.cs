@@ -58,5 +58,16 @@ namespace Hammer.Core.Maps
             Latitude = latitude;
             Longitude = longitude;
         }
+
+        /// <summary>
+        /// Initializes a new GeographicPoint with the specified latitude and longitude.
+        /// </summary>
+        /// <param name="latitude">Latitude in degrees from -90.0 to 90.0 (inclusive).</param>
+        /// <param name="longitude">Longitude in degrees from -180.0 to 180.0 (inclusive).</param>
+        public GeographicPoint(decimal latitude, decimal longitude)
+        {
+            Latitude = (double)latitude;
+            Longitude = (double)longitude;
+        }
     }
 }
