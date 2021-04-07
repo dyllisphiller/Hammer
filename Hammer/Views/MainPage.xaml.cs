@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using MUXC = Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -75,8 +76,8 @@ namespace Hammer.Views
             this.KeyboardAccelerators.Add(altLeft);
         }
 
-        private void NavView_SelectionChanged(NavigationView sender,
-                                              NavigationViewSelectionChangedEventArgs args)
+        private void NavView_SelectionChanged(MUXC.NavigationView sender,
+                                              MUXC.NavigationViewSelectionChangedEventArgs args)
         {
             if (args.IsSettingsSelected == true)
             {
@@ -112,7 +113,7 @@ namespace Hammer.Views
             }
         }
 
-        private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        private void NavView_BackRequested(MUXC.NavigationView sender, MUXC.NavigationViewBackRequestedEventArgs args)
         {
             On_BackRequested();
         }
@@ -130,8 +131,8 @@ namespace Hammer.Views
 
             // Don't go back if the nav pane is overlaid.
             if (NavView.IsPaneOpen &&
-               (NavView.DisplayMode == NavigationViewDisplayMode.Compact ||
-                NavView.DisplayMode == NavigationViewDisplayMode.Minimal))
+               (NavView.DisplayMode == MUXC.NavigationViewDisplayMode.Compact ||
+                NavView.DisplayMode == MUXC.NavigationViewDisplayMode.Minimal))
                 return false;
 
             ContentFrame.GoBack();
@@ -145,7 +146,7 @@ namespace Hammer.Views
             if (ContentFrame.SourcePageType == typeof(Views.SettingsPage))
             {
                 // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag.
-                NavView.SelectedItem = (NavigationViewItem)NavView.SettingsItem;
+                NavView.SelectedItem = (MUXC.NavigationViewItem)NavView.SettingsItem;
                 NavView.Header = "Settings";
             }
             else if (ContentFrame.SourcePageType != null)
@@ -153,17 +154,17 @@ namespace Hammer.Views
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
                 NavView.SelectedItem = NavView.MenuItems
-                    .OfType<NavigationViewItem>()
+                    .OfType<MUXC.NavigationViewItem>()
                     .First(n => n.Tag.Equals(item.Tag));
 
-                switch (((NavigationViewItem)NavView.SelectedItem).Content.ToString())
+                switch (((MUXC.NavigationViewItem)NavView.SelectedItem).Content.ToString())
                 {
                     case "Search":
                         NavView.AlwaysShowHeader = false;
                         break;
 
                     default:
-                        NavView.Header = ((NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                        NavView.Header = ((MUXC.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
                         NavView.AlwaysShowHeader = true;
                         break;
                 }
