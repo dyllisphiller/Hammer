@@ -138,17 +138,23 @@ namespace Hammer.Core.Models.Regional
 
                             if (jsonOtherInfo.TryGetProperty("grantDate", out JsonElement jsonGrantDate))
                             {
-                                OtherInfo.GrantDate = jsonGrantDate.GetDateTimeOffset();
+                                OtherInfo.GrantDate = DateTimeOffset.TryParse(jsonGrantDate.GetString(), out DateTimeOffset _date)
+                                    ? _date
+                                    : new DateTimeOffset();
                             }
 
                             if (jsonOtherInfo.TryGetProperty("expiryDate", out JsonElement jsonExpiryDate))
                             {
-                                OtherInfo.ExpiryDate = jsonExpiryDate.GetDateTimeOffset();
+                                OtherInfo.ExpiryDate = DateTimeOffset.TryParse(jsonExpiryDate.GetString(), out DateTimeOffset _date)
+                                    ? _date
+                                    : new DateTimeOffset();
                             }
 
                             if (jsonOtherInfo.TryGetProperty("lastActionDate", out JsonElement jsonLastActionDate))
                             {
-                                OtherInfo.LastActionDate = jsonLastActionDate.GetDateTimeOffset();
+                                OtherInfo.LastActionDate = DateTimeOffset.TryParse(jsonLastActionDate.GetString(), out DateTimeOffset _date)
+                                    ? _date
+                                    : new DateTimeOffset();
                             }
 
                             if (jsonOtherInfo.TryGetProperty("frn", out JsonElement jsonFrn))
