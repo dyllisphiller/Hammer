@@ -44,19 +44,6 @@ namespace Hammer.Core.Models
 
     public class License
     {
-        private string licenseType;
-        private string operatorClass;
-        private string frn;
-        private Uri ulsUri;
-        private DateTimeOffset grantDate;
-        private DateTimeOffset expiryDate;
-        private DateTimeOffset lastActionDate;
-        private GeographicPoint location;
-        private string gridSquare;
-        private License trustee;
-        private string addressLine1;
-        private string addressLine2;
-        private string addressAttn;
         private string country;
 
         /// <summary>
@@ -92,48 +79,48 @@ namespace Hammer.Core.Models
         /// <summary>
         /// Represents a license's licensee type, like PERSON or CLUB.
         /// </summary>
-        public string LicenseType { get => licenseType; set => licenseType = value; }
+        public string LicenseType { get; set; }
 
         /// <summary>
         /// Represents a license's class. Only applies to licenses issued to people.
         /// </summary>
-        public string OperatorClass { get => operatorClass; set => operatorClass = value; }
+        public string OperatorClass { get; set; }
 
         /// <summary>
         /// Represents a license's FCC Registration Number.
         /// </summary>
-        public string FRN { get => frn; set => frn = value; }
+        public string FRN { get; set; }
 
         /// <summary>
         /// Represents a license's Universal Licensing System URL.
         /// </summary>
-        public Uri UlsUri { get => ulsUri; set => ulsUri = value; }
+        public Uri UlsUri { get; set; }
 
         /// <summary>
         /// Represents a license's date of issuance.
         /// </summary>
-        public DateTimeOffset GrantDate { get => grantDate; set => grantDate = value; }
+        public DateTimeOffset GrantDate { get; set; }
 
         /// <summary>
         /// Represents a license's date of expiration.
         /// </summary>
-        public DateTimeOffset ExpiryDate { get => expiryDate; set => expiryDate = value; }
+        public DateTimeOffset ExpiryDate { get; set; }
 
         /// <summary>
         /// Represents the date a license was last changed.
         /// </summary>
-        public DateTimeOffset LastActionDate { get => lastActionDate; set => lastActionDate = value; }
+        public DateTimeOffset ModifiedDate { get; set; }
 
         /// <summary>
         /// Represents the location of the licensee.
         /// </summary>
         /// <seealso cref="GeographicPoint"/>
-        public GeographicPoint Location { get => location; set => location = value; }
+        public GeographicPoint Location { get; set; }
 
         /// <summary>
         /// Represents the grid square of the licensee.
         /// </summary>
-        public string GridSquare { get => gridSquare; set => gridSquare = value; }
+        public string GridSquare { get; set; }
 
         /// <summary>
         /// Represents an organization licensee's trustee.
@@ -143,17 +130,17 @@ namespace Hammer.Core.Models
         /// <summary>
         /// A street address like 123 E Main St.
         /// </summary>
-        public string AddressLine1 { get => addressLine1; set => addressLine1 = value; }
+        public string AddressLine1 { get; set; }
 
         /// <summary>
         /// A city, state/province, and postal code, like New York, NY 10001.
         /// </summary>
-        public string AddressLine2 { get => addressLine2; set => addressLine2 = value; }
+        public string AddressLine2 { get; set; }
 
         /// <summary>
         /// An attention line, if any.
         /// </summary>
-        public string AddressAttn { get => addressAttn; set => addressAttn = value; }
+        public string AddressAttn { get; set; }
 
         /// <summary>
         /// Represents a license's originating country/region using the ISO two-letter standard.
