@@ -52,7 +52,7 @@ namespace Hammer.CLI
 
             License.GetLicenseByCallsign(callsign, out License license);
 
-            license.Callsign = callsign;
+            license.Callsign = new Callsign(callsign);
             license.Name = "JOHNNY APPLESEED";
             license.FRN = "1234567";
             license.OperatorClass = "Extra";
