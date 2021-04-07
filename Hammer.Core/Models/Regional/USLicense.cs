@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -118,12 +119,12 @@ namespace Hammer.Core.Models.Regional
 
                             if (jsonLocation.TryGetProperty("latitude", out JsonElement jsonLocationLatitude))
                             {
-                                Location.Latitude = jsonLocationLatitude.GetDecimal();
+                                Location.Latitude = Convert.ToDecimal(jsonLocationLatitude.GetString(), CultureInfo.GetCultureInfo("en-US"));
                             }
 
                             if (jsonLocation.TryGetProperty("longitude", out JsonElement jsonLocationLongitude))
                             {
-                                Location.Longitude = jsonLocationLongitude.GetDecimal();
+                                Location.Longitude = Convert.ToDecimal(jsonLocationLongitude.GetString(), CultureInfo.GetCultureInfo("en-US"));
                             }
 
                             if (jsonLocation.TryGetProperty("gridsquare", out JsonElement jsonLocationGridSquare))
