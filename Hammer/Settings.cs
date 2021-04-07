@@ -1,38 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace Hammer.Settings
 {
     /// <summary>
-    /// Provides access to Hammer's roaming app data store.
+    /// Provides access to Hammer's app data stores.
     /// </summary>
-    public class Roaming
+    [Serializable]
+    class SettingsStore : INotifyPropertyChanged
     {
-        /// <summary>
-        /// The name of the roaming app data store container.
-        /// </summary>
-        static readonly string containerName = "settings";
+        public bool KeepSearchHistory { get; set; }
+        public IList<string> SearchHistory { get; set; }
 
-        /// <summary>
-        /// The roaming app data store settings container.
-        /// </summary>
-        static readonly ApplicationDataContainer roamingSettings = ApplicationData.Current.RoamingSettings;
+        static readonly string settingsContainerName = "settings";
+        static readonly string cacheContainerName = "cache";
 
-        static void SetSetting(string settingKey, string settingValue) => roamingSettings.Values[settingKey] = settingValue;
+        static readonly ApplicationDataContainer roamingSettings = ApplicationData.Current.RoamingSettings.CreateContainer(settingsContainerName, ApplicationDataCreateDisposition.Always);
+        static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings.CreateContainer(cacheContainerName, ApplicationDataCreateDisposition.Always);
 
-        /// <summary>
-        /// Gets a setting by key from the roaming settings container.
-        /// </summary>
-        /// <param name="settingKey">The key of the setting to return.</param>
-        /// <param name="settingValue">If it exists, the value of the setting as an object; otherwise, null.</param>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        static void SetSetting(string settingKey, object settingValue) => roamingSettings.Values[settingKey] = settingValue;
+
         static bool TryGetSetting(string settingKey, out object settingValue)
         {
             return roamingSettings.Values.TryGetValue(settingKey, out settingValue);
+        }
+
+        public static void SetSearchHistory(bool isEnabled)
+        {
+            SetSetting("searchHistoryEnabled", isEnabled);
         }
     }
 }
