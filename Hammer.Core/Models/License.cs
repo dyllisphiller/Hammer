@@ -133,7 +133,7 @@ namespace Hammer.Core.Models
 
             GrantDate = new DateTimeOffset();
             ExpiryDate = new DateTimeOffset();
-            LastActionDate = new DateTimeOffset();
+            ModifiedDate = new DateTimeOffset();
             Location = new GeographicPoint();
 
             Country = "US";
@@ -239,7 +239,7 @@ namespace Hammer.Core.Models
 
                     GrantDate = _grantDate,
                     ExpiryDate = _expiryDate,
-                    LastActionDate = _lastActionDate
+                    ModifiedDate = _lastActionDate
                 };
             }
             else

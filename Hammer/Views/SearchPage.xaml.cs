@@ -167,7 +167,7 @@ namespace Hammer.Views
 
             DateGrantedField.Text = licenseSearchResult.GrantDate.ToString("d", CultureInfo.InvariantCulture);
             DateExpiryField.Text = licenseSearchResult.ExpiryDate.ToString("d", CultureInfo.InvariantCulture);
-            DateLastActionField.Text = licenseSearchResult.LastActionDate.ToString("d", CultureInfo.InvariantCulture);
+            DateLastActionField.Text = licenseSearchResult.ModifiedDate.ToString("d", CultureInfo.InvariantCulture);
 
             LicenseExternalUriButton.NavigateUri = licenseSearchResult.UlsUri;
 
