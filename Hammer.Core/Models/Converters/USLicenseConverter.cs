@@ -16,6 +16,7 @@ namespace Hammer.Core.Models.Converters
                 ExpiryDate = usLicense.OtherInfo.ExpiryDate,
                 FRN = usLicense.OtherInfo.Frn,
                 GrantDate = usLicense.OtherInfo.GrantDate,
+                Location = new Maps.GeographicPoint(usLicense.Location.Latitude, usLicense.Location.Longitude),
                 GridSquare = usLicense.Location.GridSquare,
                 ModifiedDate = usLicense.OtherInfo.LastActionDate,
                 LicenseType = usLicense.LicenseType,
