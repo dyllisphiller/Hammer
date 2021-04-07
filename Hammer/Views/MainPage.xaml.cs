@@ -1,27 +1,14 @@
-﻿using Hammer;
-using Hammer.Views;
+﻿using Hammer.Core.Helpers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using MUXC = Microsoft.UI.Xaml.Controls;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Resources;
-using Windows.System;
-using Windows.Storage;
 
 namespace Hammer.Views
 {
@@ -61,7 +48,7 @@ namespace Hammer.Views
             // Add keyboard accelerators for backwards navigation.
             KeyboardAccelerator goBack = new KeyboardAccelerator { Key = VirtualKey.GoBack };
             goBack.Invoked += BackInvoked;
-            this.KeyboardAccelerators.Add(goBack);
+            KeyboardAccelerators.Add(goBack);
 
             // ALT routes here
             var altLeft = new KeyboardAccelerator
@@ -70,7 +57,7 @@ namespace Hammer.Views
                 Modifiers = VirtualKeyModifiers.Menu
             };
             altLeft.Invoked += BackInvoked;
-            this.KeyboardAccelerators.Add(altLeft);
+            KeyboardAccelerators.Add(altLeft);
         }
 
         private void NavView_SelectionChanged(MUXC.NavigationView sender,
@@ -92,7 +79,7 @@ namespace Hammer.Views
             Type _page = null;
             if (navItemTag == "settings")
             {
-                _page = typeof(Views.SettingsPage);
+                _page = typeof(SettingsPage);
             }
             else
             {
@@ -140,7 +127,7 @@ namespace Hammer.Views
         {
             NavView.IsBackEnabled = ContentFrame.CanGoBack;
 
-            if (ContentFrame.SourcePageType == typeof(Views.SettingsPage))
+            if (ContentFrame.SourcePageType == typeof(SettingsPage))
             {
                 // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag.
                 NavView.SelectedItem = (MUXC.NavigationViewItem)NavView.SettingsItem;

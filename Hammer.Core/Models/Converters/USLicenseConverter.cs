@@ -8,11 +8,11 @@ namespace Hammer.Core.Models.Converters
         {
             License license = new License()
             {
+                Country = "US",
                 AddressAttn = usLicense.Address.Attn,
                 AddressLine1 = usLicense.Address.Line1,
                 AddressLine2 = usLicense.Address.Line2,
                 Callsign = usLicense.Current.Callsign,
-                Country = "us",
                 ExpiryDate = usLicense.OtherInfo.ExpiryDate,
                 FRN = usLicense.OtherInfo.Frn,
                 GrantDate = usLicense.OtherInfo.GrantDate,

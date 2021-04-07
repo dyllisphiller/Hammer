@@ -19,33 +19,20 @@ namespace Hammer.Core.Maps
         public double Latitude
         {
             get => latitude;
-            set
-            {
-                if (value >= -90.0 && value <= 90.0)
-                {
-                    latitude = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(Latitude)} must be between -90.0 and 90.0.");
-                }
-            }
+            set => latitude = value < -90.0 || value > 90.0
+                    ? throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(Latitude)} must be between -90.0 and 90.0.")
+                    : value;
         }
 
+        /// <summary>
+        /// The longitude in degrees, between -180.0 and 180.0 (inclusive).
+        /// </summary>
         public double Longitude
         {
             get => longitude;
-            set
-            {
-                if (value >= -180.0 && value <= 180.0)
-                {
-                    longitude = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(Longitude)} must be between -180.0 and 180.0.");
-                }
-            }
+            set => longitude = value < -180.0 || value > 180.0
+                    ? throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(Longitude)} must be between -180.0 and 180.0.")
+                    : value;
         }
         public override string ToString()
         {

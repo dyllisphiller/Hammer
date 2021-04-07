@@ -25,9 +25,8 @@ namespace Hammer.Core.Models
         public Callsign Callsign { get; set; }
 
         /// <summary>
-        /// Represents a licensee's name.
+        /// The licensee's name.
         /// </summary>
-        /// <value>Gets/sets the value of the string field <c>name</c>.</value>
         public string Name { get; set; }
 
         /// <summary>
