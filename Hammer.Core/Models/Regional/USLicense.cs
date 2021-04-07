@@ -9,7 +9,7 @@ namespace Hammer.Core.Models.Regional
     public class USLicense
     {
         public USStatus Status { get; set; }
-        public USLicenseType LicenseType { get; set; }
+        public string LicenseType { get; set; }
         public USLicenseData Current { get; set; }
         public USLicenseData Previous { get; set; }
         public Callsign Trustee { get; set; }
@@ -176,15 +176,6 @@ namespace Hammer.Core.Models.Regional
         Valid,
         Invalid,
         Updating,
-    }
-
-    public enum USLicenseType
-    {
-        Person,
-        Club,
-        Recreation,
-        Races,
-        Military,
     }
 
     public enum USOperatorClass
