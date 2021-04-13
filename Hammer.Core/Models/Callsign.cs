@@ -14,8 +14,9 @@ namespace Hammer.Core.Models
 
             private set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException($"{nameof(Sign)} cannot be null or whitespace.", nameof(Sign));
-                sign = value;
+                sign = string.IsNullOrWhiteSpace(value)
+                    ? throw new ArgumentException($"{nameof(Sign)} cannot be null or whitespace.", nameof(Sign))
+                    : value;
             }
         }
 
