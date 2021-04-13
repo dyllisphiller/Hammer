@@ -28,11 +28,12 @@
             </TransitionCollection>
         </Grid.Transitions>
 
-        <ProgressRing x:Name="SearchProgressRing"
-                      IsActive="False"
-                      Visibility="Collapsed"
-                      Height="60"
-                      Width="60"/>
+        <muxc:ProgressRing
+            x:Name="SearchProgressRing"
+            IsActive="False"
+            Visibility="Collapsed"
+            Height="60"
+            Width="60"/>
 
         <StackPanel x:Name="SearchPageDefault" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock
