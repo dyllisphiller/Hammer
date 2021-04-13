@@ -10,10 +10,18 @@
     mc:Ignorable="d">
 
     <Grid>
-        <StackPanel>
-            <TextBlock x:Name="SettingsPage_Header" Style="{ThemeResource HeaderTextBlockStyle}"/>
+        <StackPanel Margin="0,12,0,0">
+            <TextBlock x:Name="Settings_Header" Text="Settings" Style="{StaticResource HeaderTextBlockStyle}" Margin="0,0,0,12"/>
+            <TextBlock x:Name="Privacy_Header" Text="Privacy" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,6"/>
 
-            <ToggleSwitch Header="Keep search history" x:Name="KeepSearchHistory" Toggled="KeepSearchHistory_Toggled"/>
+            <ToggleSwitch Header="Keep search history" OnContent="Keep" OffContent="Forget" x:Name="KeepSearchHistory" IsOn="{x:Bind Mode=TwoWay, Path=Settings.KeepSearchHistory}"/>
+
+            <Button x:Name="ClearSearchHistoryButton" Style="{StaticResource ButtonRevealStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <fi:FluentIconElement Symbol="Delete20" Margin="0,0,8,0"/>
+                    <TextBlock Text="Clear search history"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>

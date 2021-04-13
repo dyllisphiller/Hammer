@@ -10,7 +10,7 @@ namespace Hammer.Settings
     /// Provides access to Hammer's app data stores.
     /// </summary>
     [Serializable]
-    class SettingsStore : INotifyPropertyChanged
+    public class SettingsStore : INotifyPropertyChanged
     {
         public bool KeepSearchHistory { get; set; }
         public IList<string> SearchHistory { get; set; }
@@ -23,16 +23,39 @@ namespace Hammer.Settings
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        static void SetSetting(string settingKey, object settingValue) => roamingSettings.Values[settingKey] = settingValue;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        static bool TryGetSetting(string settingKey, out object settingValue)
+        public SettingsStore()
         {
-            return roamingSettings.Values.TryGetValue(settingKey, out settingValue);
+            if (roamingSettings.Values.ContainsKey("searchHistoryEnabled"))
+            {
+                KeepSearchHistory = (bool)roamingSettings.Values["searchHistoryEnabled"];
+            }
+            else
+            {
+                roamingSettings.Values["searchHistoryEnabled"] = true;
+                KeepSearchHistory = true;
+            }
         }
 
-        public static void SetSearchHistory(bool isEnabled)
+        public void SetSetting<T>(string settingKey, T settingValue)
+        {
+            roamingSettings.Values[settingKey] = settingValue;
+            OnPropertyChanged();
+        }
+
+        public bool TryGetSetting<T>(string settingKey, out T settingValue)
+        {
+            bool exists = roamingSettings.Values.TryGetValue(settingKey, out object _value);
+            settingValue = (T)_value;
+            return exists;
+        }
+
+        public void SetSearchHistory(bool isEnabled)
         {
             SetSetting("searchHistoryEnabled", isEnabled);
+            OnPropertyChanged("KeepSearchHistory");
         }
     }
 }
