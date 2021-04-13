@@ -77,7 +77,7 @@
 
                     <Button x:Name="ShowMapButton" Click="ShowMapButton_Click" HorizontalAlignment="Right">
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="Map" Margin="0,0,8,0"/>
+                            <fi:FluentIconElement Symbol="Map20" Margin="0,0,8,0"/>
                             <TextBlock>Map</TextBlock>
                         </StackPanel>
                     </Button>
