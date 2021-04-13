@@ -23,7 +23,7 @@ namespace Hammer.Views
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        private MostRecentlyUsedList<string> autoSuggestHistory;
+        private readonly MostRecentlyUsedList<string> autoSuggestHistory;
 
         // List of ValueTuple holding the Navigation Tag and the relative Navigation Page
         private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
