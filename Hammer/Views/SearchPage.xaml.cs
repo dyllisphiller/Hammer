@@ -48,6 +48,7 @@ namespace Hammer.Views
                     ContentDialog contentDialog = new ContentDialog()
                     {
                         Title = ex.Message,
+                        CloseButtonText = "OK",
                     };
                     await contentDialog.ShowAsync();
                 }
@@ -65,8 +66,9 @@ namespace Hammer.Views
             {
                 ContentDialog dialog = new ContentDialog()
                 {
-                    Title = "A void is not a valid callsign",
-                    Content = "Hammer would try to find that callsign, but the void remains unlicensed. (The search field cannot be empty.)",
+                    Title = "Enter a callsign to look up a license",
+                    Content = "The search field cannot be empty.",
+                    CloseButtonText = "OK",
                 };
                 await dialog.ShowAsync();
             }
