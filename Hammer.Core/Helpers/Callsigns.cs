@@ -21,7 +21,7 @@ namespace Hammer.Core.Callsigns
         /// <returns>true if the callsign has a known prefix; otherwise, false</returns>
         public static bool HasKnownPrefix(string callsign)
         {
-            return Prefixes.TryGetRegion(callsign, out _);
+            return Issuers.TryGetRegion(callsign, out _);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Hammer.Core.Callsigns
         /// <param name="callsign">The callsign to validate.</param>
         public static bool IsValidForRegion(string callsign, string region)
         {
-            return Prefixes.TryGetRegion(callsign, out string _region) && _region == region;
+            return Issuers.TryGetRegion(callsign, out string _region) && _region == region;
         }
 
         public static string SanitizeCallsign(this string callsign)

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Hammer.Core.Callsigns
@@ -14,7 +11,7 @@ namespace Hammer.Core.Callsigns
     /// Region strings must be 2 or 4 lowercase Latin letters. If the string is
     /// 4 letters, it must begin with the characters "oo".
     /// </remarks>
-    public static class Prefixes
+    public static class Issuers
     {
         internal static IDictionary<string, string> ITUPrefixes = new Dictionary<string, string>
         {
@@ -697,26 +694,26 @@ namespace Hammer.Core.Callsigns
 
             //    string rawPrefixRegex;
 
-                //if (!prefixRegexCache.TryGetValue(prefix, out regex))
-                //{
-                //    regex = new Regex(prefix, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                //    prefixRegexCache.Add(prefix, regex);
-                //}
+            //if (!prefixRegexCache.TryGetValue(prefix, out regex))
+            //{
+            //    regex = new Regex(prefix, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            //    prefixRegexCache.Add(prefix, regex);
+            //}
 
-                //if (IssuerPrefixes.TryGetValue(prefix, out rawPrefixRegex))
-                //{
-                //    regex = new Regex(rawPrefixRegex, RegexOptions.IgnoreCase);
-                //    if (regex.Match(callsign).Success)
-                //    {
-                //        _output = p.Value;
-                //    }
-                //}
+            //if (IssuerPrefixes.TryGetValue(prefix, out rawPrefixRegex))
+            //{
+            //    regex = new Regex(rawPrefixRegex, RegexOptions.IgnoreCase);
+            //    if (regex.Match(callsign).Success)
+            //    {
+            //        _output = p.Value;
+            //    }
+            //}
 
-                //if (regex.Match(callsign).Success)
-                //{
-                //    _output = cc;
-                //    break;
-                //}
+            //if (regex.Match(callsign).Success)
+            //{
+            //    _output = cc;
+            //    break;
+            //}
             //}
         }
     }
