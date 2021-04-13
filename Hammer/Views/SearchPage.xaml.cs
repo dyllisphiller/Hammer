@@ -1,23 +1,15 @@
-﻿using Hammer.Core.Callsigns;
+﻿using System;
+using System.Globalization;
+using System.Threading.Tasks;
 using Hammer.Core.Helpers;
 using Hammer.Core.Models;
-using Hammer.Core.WebServices;
 using Hammer.Helpers.Maps;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Globalization;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using MUXC = Microsoft.UI.Xaml.Controls;
 using Windows.Devices.Geolocation;
 using Windows.System;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
-using Windows.Web.Http;
 
 namespace Hammer.Views
 {

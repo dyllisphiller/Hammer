@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Hammer.Core.WebServices
 {
@@ -51,7 +49,7 @@ namespace Hammer.Core.WebServices
                 return false;
             }
         }
-        
+
         public async static Task<JObject> GetLicenseJObjectAsync(Uri uri)
         {
             JObject jResult = null;

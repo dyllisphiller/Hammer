@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Hammer.Core.Callsigns;
+﻿using Hammer.Core.Callsigns;
 using Hammer.Core.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HammerTests
 {

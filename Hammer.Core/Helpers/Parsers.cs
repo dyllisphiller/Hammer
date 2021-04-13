@@ -1,17 +1,11 @@
-﻿using Hammer.Core.Callsigns;
-using Hammer.Core.Models;
-using Hammer.Core.Models.Regional;
-using Hammer.Core.Models.Converters;
-using Hammer.Core.WebServices;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.RegularExpressions;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Hammer.Core.Callsigns;
+using Hammer.Core.Models;
+using Hammer.Core.Models.Converters;
+using Hammer.Core.Models.Regional;
+using Hammer.Core.WebServices;
 
 namespace Hammer.Core.Helpers
 {

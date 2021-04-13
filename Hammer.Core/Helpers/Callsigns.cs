@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Hammer.Core.Callsigns;
 using Hammer.Core.Models;
 
 namespace Hammer.Core.Callsigns
