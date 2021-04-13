@@ -16,9 +16,16 @@ namespace Hammer.Core.Models.Regional
         public USLicenseData Previous { get; set; }
         public Callsign Trustee { get; set; }
         public string Name { get; set; }
-        public USAddress Address { get; set; }
-        public USLocation Location { get; set; }
-        public USOtherInfo OtherInfo { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string AddressAttn { get; set; }
+        public GeographicPoint Location { get; set; }
+        public string GridSquare { get; set; }
+        public DateTimeOffset GrantDate { get; set; }
+        public DateTimeOffset ExpiryDate { get; set; }
+        public DateTimeOffset LastActionDate { get; set; }
+        public string Frn { get; set; }
+        public Uri UlsUri { get; set; }
 
         [JsonExtensionData]
         public Dictionary<string, object> ExtensionData { get; set; }
@@ -104,77 +111,56 @@ namespace Hammer.Core.Models.Regional
 
                         if (root.TryGetProperty("address", out JsonElement jsonAddress))
                         {
-                            Address = new USAddress();
-
-                            if (jsonAddress.TryGetProperty("attn", out JsonElement jsonAddressAttn))
-                            {
-                                Address.Attn = jsonAddressAttn.GetString();
-                            }
-
-                            if (jsonAddress.TryGetProperty("line1", out JsonElement jsonAddressLine1))
-                            {
-                                Address.Line1 = jsonAddressLine1.GetString();
-                            }
-
-                            if (jsonAddress.TryGetProperty("line2", out JsonElement jsonAddressLine2))
-                            {
-                                Address.Line2 = jsonAddressLine2.GetString();
-                            }
+                            AddressAttn = jsonAddress.TryGetProperty("attn", out JsonElement jsonAddressAttn) ? jsonAddressAttn.GetString() : "";
+                            AddressLine1 = jsonAddress.TryGetProperty("line1", out JsonElement jsonAddressLine1) ? jsonAddressLine1.GetString() : "";
+                            AddressLine2 = jsonAddress.TryGetProperty("line2", out JsonElement jsonAddressLine2) ? jsonAddressLine2.GetString() : "";
                         }
 
                         if (root.TryGetProperty("location", out JsonElement jsonLocation))
                         {
-                            Location = new USLocation();
-
-                            if (jsonLocation.TryGetProperty("latitude", out JsonElement jsonLocationLatitude))
+                            Location = new GeographicPoint
                             {
-                                Location.Latitude = Convert.ToDecimal(jsonLocationLatitude.GetString(), CultureInfo.GetCultureInfo("en-US"));
-                            }
-
-                            if (jsonLocation.TryGetProperty("longitude", out JsonElement jsonLocationLongitude))
-                            {
-                                Location.Longitude = Convert.ToDecimal(jsonLocationLongitude.GetString(), CultureInfo.GetCultureInfo("en-US"));
-                            }
-
-                            if (jsonLocation.TryGetProperty("gridsquare", out JsonElement jsonLocationGridSquare))
-                            {
-                                Location.GridSquare = jsonLocationGridSquare.GetString();
-                            }
+                                Latitude = jsonLocation.TryGetProperty("latitude", out JsonElement jsonLocationLatitude)
+                                    ? Convert.ToDouble(jsonLocationLatitude.GetString(), CultureInfo.GetCultureInfo("en-US"))
+                                    : 0,
+                                Longitude = jsonLocation.TryGetProperty("longitude", out JsonElement jsonLocationLongitude)
+                                    ? Convert.ToDouble(jsonLocationLongitude.GetString(), CultureInfo.GetCultureInfo("en-US"))
+                                    : 0,
+                            };
+                            GridSquare = jsonLocation.TryGetProperty("gridsquare", out JsonElement jsonLocationGridSquare) ? jsonLocationGridSquare.GetString() : "";
                         }
 
                         if (root.TryGetProperty("otherInfo", out JsonElement jsonOtherInfo))
                         {
-                            OtherInfo = new USOtherInfo();
-
                             if (jsonOtherInfo.TryGetProperty("grantDate", out JsonElement jsonGrantDate))
                             {
-                                OtherInfo.GrantDate = DateTimeOffset.TryParse(jsonGrantDate.GetString(), out DateTimeOffset _date)
+                                GrantDate = DateTimeOffset.TryParse(jsonGrantDate.GetString(), out DateTimeOffset _date)
                                     ? _date
                                     : new DateTimeOffset();
                             }
 
                             if (jsonOtherInfo.TryGetProperty("expiryDate", out JsonElement jsonExpiryDate))
                             {
-                                OtherInfo.ExpiryDate = DateTimeOffset.TryParse(jsonExpiryDate.GetString(), out DateTimeOffset _date)
+                                ExpiryDate = DateTimeOffset.TryParse(jsonExpiryDate.GetString(), out DateTimeOffset _date)
                                     ? _date
                                     : new DateTimeOffset();
                             }
 
                             if (jsonOtherInfo.TryGetProperty("lastActionDate", out JsonElement jsonLastActionDate))
                             {
-                                OtherInfo.LastActionDate = DateTimeOffset.TryParse(jsonLastActionDate.GetString(), out DateTimeOffset _date)
+                                LastActionDate = DateTimeOffset.TryParse(jsonLastActionDate.GetString(), out DateTimeOffset _date)
                                     ? _date
                                     : new DateTimeOffset();
                             }
 
                             if (jsonOtherInfo.TryGetProperty("frn", out JsonElement jsonFrn))
                             {
-                                OtherInfo.Frn = jsonFrn.GetString();
+                                Frn = jsonFrn.GetString();
                             }
 
                             if (jsonOtherInfo.TryGetProperty("ulsUrl", out JsonElement jsonUlsUrl))
                             {
-                                OtherInfo.UlsUri = new Uri(jsonUlsUrl.GetString());
+                                UlsUri = new Uri(jsonUlsUrl.GetString());
                             }
                         }
 
@@ -209,28 +195,5 @@ namespace Hammer.Core.Models.Regional
     {
         public Callsign Callsign;
         public string OperClass;
-    }
-
-    public class USAddress
-    {
-        public string Line1;
-        public string Line2;
-        public string Attn;
-    }
-
-    public class USLocation
-    {
-        public decimal Latitude;
-        public decimal Longitude;
-        public string GridSquare;
-    }
-
-    public class USOtherInfo
-    {
-        public DateTimeOffset GrantDate;
-        public DateTimeOffset ExpiryDate;
-        public DateTimeOffset LastActionDate;
-        public string Frn;
-        public Uri UlsUri;
     }
 }
