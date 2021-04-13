@@ -11,9 +11,11 @@
 
     <Grid>
         <muxc:NavigationView x:Name="NavView"
-                        Loaded="NavView_Loaded"
-                        SelectionChanged="NavView_SelectionChanged"
-                        BackRequested="NavView_BackRequested">
+                             Loaded="NavView_Loaded"
+                             SelectionChanged="NavView_SelectionChanged"
+                             BackRequested="NavView_BackRequested"
+                             PaneTitle="Hammer"
+                             AlwaysShowHeader="False">
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem Tag="home"
                                     x:Uid="NavViewItem_Home">
@@ -54,24 +56,22 @@
                        IsTabStop="True"
                        NavigationFailed="ContentFrame_NavigationFailed"/>
             </ScrollViewer>
-
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup>
-                    <VisualState>
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}"/>
-                        </VisualState.StateTriggers>
-                        <VisualState.Setters>
-                            <!-- Remove the next 3 lines for left-only navigation. -->
-                            <Setter Target="NavView.PaneDisplayMode" Value="Top"/>
-                            <Setter Target="NavViewSearchBox.Width" Value="200"/>
-                            <Setter Target="MainPagesHeader.Visibility" Value="Collapsed"/>
-                            <!-- Leave the next line for left-only navigation. -->
-                            <Setter Target="ContentFrame.Padding" Value="24,0,24,24"/>
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
         </muxc:NavigationView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavView.PaneDisplayMode" Value="Top"/>
+                        <Setter Target="NavViewSearchBox.Width" Value="200"/>
+                        <!-- Leave the next line for left-only navigation. -->
+                        <Setter Target="ContentFrame.Padding" Value="24,0,24,24"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>
