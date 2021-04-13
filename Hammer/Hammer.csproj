@@ -119,7 +119,6 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Helpers\AutoSuggest.cs" />
     <Compile Include="Helpers\Clipboard.cs" />
     <Compile Include="Helpers\Placecard.cs" />
     <Compile Include="Dialogs\ErrorAPIUpdating.xaml.cs">
