@@ -31,7 +31,7 @@ namespace Hammer.Core.Models
 
         public static explicit operator string(Callsign c)
         {
-            return c.Sign;
+            return c == null ? "" : c.Sign;
         }
     }
 }
