@@ -51,7 +51,7 @@ namespace Hammer.Core.Helpers
 
         public int Count => _mru.Count;
 
-        public void UseItem(T item)
+        public void MarkAsRecentlyUsed(T item)
         {
             _mru.Bump(item);
 

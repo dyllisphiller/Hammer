@@ -178,7 +178,7 @@ namespace Hammer.Views
 
         private void DoSearch(string query)
         {
-            autoSuggestHistory.UseItem(query);
+            autoSuggestHistory.MarkAsRecentlyUsed(query);
             ContentFrame.Navigate(typeof(SearchPage), query);
         }
 
