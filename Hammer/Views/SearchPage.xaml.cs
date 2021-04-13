@@ -18,7 +18,9 @@ namespace Hammer.Views
     /// </summary>
     public sealed partial class SearchPage : Page
     {
-        //public LicenseViewModel ViewModel { get; set; }
+        internal CultureInfo invariantCulture = CultureInfo.InvariantCulture;
+
+        public LicenseViewModel ViewModel { get; set; } = new LicenseViewModel();
 
         public SearchPage()
         {
@@ -27,7 +29,15 @@ namespace Hammer.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is string p && !string.IsNullOrWhiteSpace(p))
+            string p = (string)e.Parameter;
+            // if the user navigates to the page without a search parameter,
+            // the page should guide the user to search
+            if (string.IsNullOrWhiteSpace(p))
+            {
+                SearchPageDefaultHeader.Visibility = Visibility.Visible;
+            }
+
+            else
             {
                 try
                 {
@@ -42,16 +52,7 @@ namespace Hammer.Views
                     await contentDialog.ShowAsync();
                 }
             }
-            // this means the page was navigated to without a search parameter, so it should show a search box instead
-            if (string.IsNullOrWhiteSpace((string)e.Parameter))
-            {
-                SearchPageDefaultHeader.Visibility = Visibility.Visible;
-            }
         }
-
-        License licenseSearchResult = new License();
-        Geopoint licenseGeopoint;
-        ContentDialog dialog;
 
         private async Task CallsignSearch(string callsign)
         {
@@ -70,6 +71,7 @@ namespace Hammer.Views
                 await dialog.ShowAsync();
             }
 
+            ViewModel.License = await Parsers.GetLicenseFromJsonAsync(callsign);
 
             switch (ViewModel.License.Status)
             {
@@ -137,10 +139,10 @@ namespace Hammer.Views
         private void ShowMapButton_Click(object sender, RoutedEventArgs e)
         {
             Placecard.ShowPlacecard(sender,
-                licenseGeopoint,
-                licenseSearchResult.Callsign.ToString(),
-                licenseSearchResult.AddressLine1,
-                licenseSearchResult.AddressLine2);
+                new Geopoint(new BasicGeoposition() { Latitude = ViewModel.License.Location.Latitude, Longitude = ViewModel.License.Location.Longitude }),
+                ViewModel.License.Callsign.Sign,
+                ViewModel.License.AddressLine1,
+                ViewModel.License.AddressLine2);
         }
 
         private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
@@ -150,12 +152,12 @@ namespace Hammer.Views
                 TreatAsUntrusted = true
             };
 
-            await Launcher.LaunchUriAsync(licenseSearchResult.UlsUri, options);
+            await Launcher.LaunchUriAsync(ViewModel.License.UlsUri, options);
         }
 
         private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
         {
-            await CallsignSearch((string)licenseSearchResult.Trustee);
+            await CallsignSearch(ViewModel.License.Trustee.Sign);
         }
     }
 }

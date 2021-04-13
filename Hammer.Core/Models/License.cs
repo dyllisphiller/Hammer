@@ -131,27 +131,30 @@ namespace Hammer.Core.Models
 
             Country = "US";
         }
+    }
 
-        public static void GetLicenseByCallsign(string json, out License newLicense)
+    public class LicenseViewModel : INotifyPropertyChanged
+    {
+        private readonly License defaultLicense = new License() { Status = LicenseStatus.EDEFAULTVIEWMODEL, };
+        private License license = null;
+
+        public License DefaultLicense { get => defaultLicense; }
+        public License License
         {
-            if (string.IsNullOrWhiteSpace(json))
-            {
-                throw new ArgumentException($"'{nameof(json)}' cannot be null or whitespace.", nameof(json));
-            }
-
-            newLicense = new License();
+            get => license;// ?? defaultLicense;
+            set => license = value;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
-    public class LicenseViewModel
     public enum LicenseStatus
     {
-        private readonly License defaultLicense = new License();
-        public License DefaultLicense { get => defaultLicense; }
         Unknown,
         Valid,
         Invalid,

@@ -43,8 +43,12 @@
         </StackPanel>
         
         <StackPanel x:Name="SearchResultsStackPanel" Visibility="Collapsed" Margin="0,12,0,0">
-            <TextBlock x:Name="SearchResultsHeader" Style="{StaticResource HeaderTextBlockStyle}"/>
-            <TextBlock x:Name="SearchResultsSubheader" Style="{StaticResource TitleTextBlockStyle}"/>
+            <TextBlock x:Name="SearchResultsHeader"
+                       Style="{StaticResource HeaderTextBlockStyle}"
+                       Text="{x:Bind Path=ViewModel.License.Callsign, Mode=OneWay}"/>
+            <TextBlock x:Name="SearchResultsSubheader"
+                       Style="{StaticResource TitleTextBlockStyle}"
+                       Text="{x:Bind Path=ViewModel.License.Name, Mode=OneWay}"/>
             
             <StackPanel>
                 <Grid>
@@ -59,13 +63,14 @@
 
                     <StackPanel Margin="0,12,24,0">
                         <TextBlock x:Name="AddressAttnField"
-                                   Text="Attn: Test Field"
-                                   Margin="0,6,0,0"/>
+                                   Text="{x:Bind Path=ViewModel.License.AddressAttn, Mode=OneWay}"
+                                   Margin="0,6,0,0"
+                                   Visibility="Collapsed"/>
                         <TextBlock x:Name="AddressLine1Field"
-                                   Text="123 W Main St"
+                                   Text="{x:Bind Path=ViewModel.License.AddressLine1, Mode=OneWay}"
                                    Margin="0,6,0,0"/>
                         <TextBlock x:Name="AddressLine2Field"
-                                   Text="Anytown, US 54321"
+                                   Text="{x:Bind Path=ViewModel.License.AddressLine2, Mode=OneWay}"
                                    Margin="0,6,0,0"/>
                     </StackPanel>
 
@@ -82,7 +87,9 @@
                         Margin="0,12,0,6">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Find" Margin="0,0,6,0"/>
-                        <TextBlock x:Name="SearchTrusteeButtonText">Trustee</TextBlock>
+                        <TextBlock x:Name="SearchTrusteeButtonText"
+                                   Text="{x:Bind sys:String.Format('Trustee {0}', ViewModel.License.Trustee), Mode=OneWay}"
+                                   ToolTipService.ToolTip="Look up the trustee's callsign"/>
                     </StackPanel>
                 </Button>
 
@@ -100,28 +107,31 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="0"
-                        Grid.Column="0"
-                        Text="Latitude"
-                        Style="{StaticResource BaseTextBlockStyle}"/>
+                               Grid.Column="0"
+                               Text="Latitude"
+                               Style="{StaticResource BaseTextBlockStyle}"/>
                     <TextBlock x:Name="LocationLatitudeField"
-                        Grid.Row="1"
-                        Grid.Column="0"/>
+                               Grid.Row="1"
+                               Grid.Column="0"
+                               Text="{x:Bind Path=ViewModel.License.Location.Latitude, Mode=OneWay}"/>
 
                     <TextBlock Grid.Row="0"
-                        Grid.Column="1"
-                        Text="Longitude"
-                        Style="{StaticResource BaseTextBlockStyle}"/>
+                               Grid.Column="1"
+                               Text="Longitude"
+                               Style="{StaticResource BaseTextBlockStyle}"/>
                     <TextBlock x:Name="LocationLongitudeField"
-                        Grid.Row="1"
-                        Grid.Column="1"/>
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               Text="{x:Bind Path=ViewModel.License.Location.Longitude, Mode=OneWay}"/>
 
                     <TextBlock Grid.Row="0"
-                        Grid.Column="2"
-                        Text="Grid Square"
-                        Style="{StaticResource BaseTextBlockStyle}"/>
+                               Grid.Column="2"
+                               Text="Grid Square"
+                               Style="{StaticResource BaseTextBlockStyle}"/>
                     <TextBlock x:Name="GridSquareField"
-                        Grid.Row="1"
-                        Grid.Column="2"/>
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               Text="{x:Bind Path=ViewModel.License.GridSquare, Mode=OneWay}"/>
 
                     <Maps:MapControl x:Name="LicenseLocationMapControl"
                                      ZoomInteractionMode="GestureAndControl"
@@ -149,16 +159,16 @@
                     <TextBlock x:Name="DateGrantedField"
                            Grid.Row="1"
                            Grid.Column="0"
-                           Text="1969-12-31"/>
+                           Text="{x:Bind Path=ViewModel.License.GrantDate.ToString('d', invariantCulture), Mode=OneWay}"/>
 
                     <TextBlock Grid.Row="0"
                            Grid.Column="1"
                            Style="{StaticResource BaseTextBlockStyle}"
-                           Text="Updated"/>
-                    <TextBlock x:Name="DateLastActionField"
+                           Text="Modified"/>
+                    <TextBlock x:Name="DateModifiedField"
                            Grid.Row="1"
                            Grid.Column="1"
-                           Text="1969-12-31"/>
+                           Text="{x:Bind Path=ViewModel.License.ModifiedDate.ToString('d', invariantCulture), Mode=OneWay}"/>
 
                     <TextBlock Grid.Row="0"
                            Grid.Column="2"
@@ -167,12 +177,13 @@
                     <TextBlock x:Name="DateExpiryField"
                            Grid.Row="1"
                            Grid.Column="2"
-                           Text="1969-12-31"/>
+                           Text="{x:Bind Path=ViewModel.License.ExpiryDate.ToString('d', invariantCulture), Mode=OneWay}"/>
                 </Grid>
 
                 <HyperlinkButton x:Name="LicenseExternalUriButton"
                                  Content="View on FCC ULS"
-                                 Margin="0,12,0,0"/>
+                                 Margin="0,12,0,0"
+                                 NavigateUri="{x:Bind Path=ViewModel.License.UlsUri, Mode=OneWay}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
