@@ -32,7 +32,7 @@ namespace Hammer.Core.Models
         /// <summary>
         /// The status of the license, as returned by the API. Non-standard.
         /// </summary>
-        public string Status { get; set; }
+        public LicenseStatus Status { get; set; }
 
         /// <summary>
         /// Represents a license's licensee type, like PERSON or CLUB.
@@ -251,8 +251,15 @@ namespace Hammer.Core.Models
     }
 
     public class LicenseViewModel
+    public enum LicenseStatus
     {
         private readonly License defaultLicense = new License();
         public License DefaultLicense { get => defaultLicense; }
+        Unknown,
+        Valid,
+        Invalid,
+        Updating,
+        ESIGNNOTUS,
+        EDEFAULTVIEWMODEL,
     }
 }

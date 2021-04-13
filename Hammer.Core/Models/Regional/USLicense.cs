@@ -10,7 +10,7 @@ namespace Hammer.Core.Models.Regional
 {
     public class USLicense
     {
-        public USStatus Status { get; set; }
+        public string Status { get; set; }
         public string LicenseType { get; set; }
         public USLicenseData Current { get; set; }
         public USLicenseData Previous { get; set; }
@@ -44,15 +44,15 @@ namespace Hammer.Core.Models.Regional
                 switch (status)
                 {
                     case "INVALID":
-                        Status = USStatus.Invalid;
+                        Status = status;
                         break;
 
                     case "UPDATING":
-                        Status = USStatus.Updating;
+                        Status = status;
                         break;
 
                     case "VALID":
-                        Status = USStatus.Valid;
+                        Status = status;
                         JsonElement current = root.GetProperty("current");
                         
                         Callsign currentCallsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
@@ -171,13 +171,6 @@ namespace Hammer.Core.Models.Regional
                 }
             }
         }
-    }
-
-    public enum USStatus
-    {
-        Valid,
-        Invalid,
-        Updating,
     }
 
     public enum USOperatorClass
