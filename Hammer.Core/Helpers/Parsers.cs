@@ -13,6 +13,7 @@ namespace Hammer.Core.Helpers
     {
         public static async Task<License> GetLicenseFromJsonAsync(string callsign)
         {
+            // Sanitize the callsign input.
             callsign = Sanitizers.SanitizeCallsign(callsign);
 
             // Get the callsign's region.

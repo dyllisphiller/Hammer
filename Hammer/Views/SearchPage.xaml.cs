@@ -22,8 +22,7 @@ namespace Hammer.Views
 
         public SearchPage()
         {
-            this.InitializeComponent();
-            //if (this.ViewModel == null) { this.ViewModel = new LicenseViewModel(); }
+            InitializeComponent();
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -32,7 +31,7 @@ namespace Hammer.Views
             {
                 try
                 {
-                    await CallsignSearch(p).ConfigureAwait(true);
+                    await CallsignSearch(p);
                 }
                 catch (Exception ex)
                 {
@@ -56,63 +55,21 @@ namespace Hammer.Views
 
         private async Task CallsignSearch(string callsign)
         {
-            /* Spinny blade wall! Actually it's just a spinner.
-             * Can we call it a fidget spinner? Can computers fidget?
-             * This needs to be a thing for generalized AI. Occasional fidgeting.
-             * Imagine it pinging a random host for funsies. Toggling the power light.
-             * Or, if the machine is old, opening and closing the optical drive tray.
-             */
-
-            //TODO: Trigger these with events instead of synchronously?
+            // TODO: Trigger these with events instead of synchronously?
             SearchResultsStackPanel.Visibility = Visibility.Collapsed;
             SearchProgressRing.IsActive = true;
             SearchProgressRing.Visibility = Visibility.Visible;
 
             if (string.IsNullOrEmpty(callsign))
             {
-                dialog = new ContentDialog()
+                ContentDialog dialog = new ContentDialog()
                 {
                     Title = "A void is not a valid callsign",
                     Content = "Hammer would try to find that callsign, but the void remains unlicensed. (The search field cannot be empty.)",
                 };
                 await dialog.ShowAsync();
-                string ex = "Search field must not be empty.";
-                throw new ApplicationException(ex);
             }
 
-            // Make sure it's a US callsign.
-            //Prefixes.TryGetRegion(callsign, out string region);
-
-            //if (region != "us")
-            //{
-            //    dialog = new ContentDialog() {
-            //        Title = $"{callsign} is not a US callsign",
-            //        Content = $"{callsign} was not issued by the FCC, so Hammer can't look it up its license. Hammer doesn't yet support non-US callsigns.",
-            //    };
-            //    await dialog.ShowAsync();
-            //    string ex = "Can't look up non-FCC callsigns.";
-            //    throw new ApplicationException(ex);
-            //}
-
-            // Get the API endpoint URI for the callsign
-            //APIs.TryMakeUri(region, callsign, out Uri uri);
-
-
-            // Parse JObject from API payload
-            //JObject jResult;
-            //jResult = await APIs.GetLicenseJObjectAsync(uri);
-
-            // Parse new License from JObject
-            //License.TryParse(jResult, out licenseSearchResult);
-
-            License licenseSearchResult = await Parsers.GetLicenseFromJsonAsync(callsign);
-
-            if (licenseSearchResult.Status == LicenseStatus.Updating)
-            {
-                dialog.Title = "Updating license data";
-                dialog.Content = "The data source is updating their license data from the FCC. This might take a bit. Please try again later.";
-                await dialog.ShowAsync();
-            }
 
             switch (ViewModel.License.Status)
             {

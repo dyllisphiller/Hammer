@@ -11,14 +11,19 @@ namespace Hammer.Views
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        private SettingsStore Settings { get; set; } = new SettingsStore();
+
         public SettingsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void KeepSearchHistory_Toggled(object sender, RoutedEventArgs e)
         {
-
+            if (sender is ToggleSwitch toggle)
+            {
+                Settings.SetSearchHistory(toggle.IsOn);
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Hammer.Views
         {
             ("home", typeof(HomePage)),
             ("search", typeof(SearchPage)),
-            //("people", typeof(Views.PeoplePage)),
+            //("people", typeof(PeoplePage)),
         };
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
@@ -141,28 +141,26 @@ namespace Hammer.Views
                     .OfType<MUXC.NavigationViewItem>()
                     .First(n => n.Tag.Equals(item.Tag));
 
-                switch (((MUXC.NavigationViewItem)NavView.SelectedItem).Content.ToString())
-                {
-                    case "Search":
-                        NavView.AlwaysShowHeader = false;
-                        break;
+                //switch (((MUXC.NavigationViewItem)NavView.SelectedItem).Content.ToString())
+                //{
+                //    case "Search":
+                //        NavView.AlwaysShowHeader = false;
+                //        break;
 
-                    default:
-                        NavView.Header = ((MUXC.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
-                        NavView.AlwaysShowHeader = true;
-                        break;
-                }
+                //    default:
+                //        NavView.Header = ((MUXC.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                //        NavView.AlwaysShowHeader = true;
+                //        break;
+                //}
             }
         }
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             string[] ashValues = { "W1AW", "W2AW", "W3AW", "W4AW", "W5AW" };
             autoSuggestHistory = new MostRecentlyUsedList<string>(5, ashValues);
-
-            autoSuggestHistory.UseItem("W3AW");
 
             NavViewSearchBox.ItemsSource = autoSuggestHistory.GetList();
         }

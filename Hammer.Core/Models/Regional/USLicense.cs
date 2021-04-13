@@ -36,8 +36,8 @@ namespace Hammer.Core.Models.Regional
             {
                 JsonElement root = document.RootElement;
 
-                string[] validLicenseTypes = new string[] { "PERSON", "CLUB", "RECREATION", "RACES", "MILITARY" };
-                string[] validOperatorClasses = new string[] { "TECHNICIAN", "GENERAL", "EXTRA", "NOVICE", "TECHNICIAN PLUS", "ADVANCED" };
+                string[] validLicenseTypes = { "PERSON", "CLUB", "RECREATION", "RACES", "MILITARY" };
+                string[] validOperatorClasses = { "TECHNICIAN", "GENERAL", "EXTRA", "NOVICE", "TECHNICIAN PLUS", "ADVANCED" };
 
                 string status = root.GetProperty("status").GetString().ToUpperInvariant();
 
@@ -54,7 +54,7 @@ namespace Hammer.Core.Models.Regional
                     case "VALID":
                         Status = status;
                         JsonElement current = root.GetProperty("current");
-                        
+
                         Callsign currentCallsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
 
                         if (root.TryGetProperty("type", out JsonElement jsonLicenseType))

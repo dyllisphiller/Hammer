@@ -102,7 +102,6 @@ namespace Hammer.Core.Models
 
         /// <summary>
         /// Represents a license's originating country/region using the ISO two-letter standard.
-        /// This defaults to the user's current culture settings. en-US yields US, it-IT yields IT, and so on.
         /// </summary>
         public string Country
         {
