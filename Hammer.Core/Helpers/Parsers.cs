@@ -15,8 +15,17 @@ namespace Hammer.Core.Helpers
         {
             callsign = Sanitizers.SanitizeCallsign(callsign);
 
-            Prefixes.TryGetRegion(callsign, out string region);
-            if (region != "us") throw new ApplicationException("Hammer can't look up non-FCC callsigns yet.");
+            // Get the callsign's region.
+            Issuers.TryGetRegion(callsign, out string region);
+
+            // Right now, only US callsigns are supported.
+            if (region != "us")
+            {
+                return new License()
+                {
+                    Status = LicenseStatus.ESIGNNOTUS,
+                };
+            }
 
             APIs.TryMakeUri(region, callsign, out Uri licenseDataUri);
 

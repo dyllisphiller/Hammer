@@ -114,58 +114,62 @@ namespace Hammer.Views
                 await dialog.ShowAsync();
             }
 
-            else if (licenseSearchResult.Status == LicenseStatus.Invalid)
+            switch (ViewModel.License.Status)
             {
-                dialog.Title = "Either the callsign is invalid or something unexpected happened. Try again?";
-                dialog.Content = null;
-                await dialog.ShowAsync();
+                case LicenseStatus.EDEFAULTVIEWMODEL:
+                    {
+                        break;
+                    }
+                case LicenseStatus.ESIGNNOTUS:
+                    {
+                        ContentDialog dialog = new ContentDialog()
+                        {
+                            Title = "Hammer can only look up US callsigns",
+                            CloseButtonText = "OK",
+                        };
+                        await dialog.ShowAsync();
+                        break;
+                    }
+
+                case LicenseStatus.Updating:
+                    {
+                        ContentDialog dialog = new ContentDialog()
+                        {
+                            Title = "Updating license data",
+                            Content = "The server is fetching new license data from the FCC. This might take a bit; try again later.",
+                            CloseButtonText = "OK",
+                        };
+                        await dialog.ShowAsync();
+                        break;
+                    }
+
+                case LicenseStatus.Invalid:
+                    {
+                        ContentDialog dialog = new ContentDialog()
+                        {
+                            Title = "Either the callsign is invalid or something unexpected happened.",
+                            Content = "Try again later. If the error persists, please consider filing a bug report.",
+                            CloseButtonText = "OK",
+                        };
+                        await dialog.ShowAsync();
+                        break;
+                    }
+
+                default:
+                    {
+                        SearchTrusteeButton.Visibility = ViewModel.License.Trustee != null ? Visibility.Visible : Visibility.Collapsed;
+
+                        AddressAttnField.Visibility = ViewModel.License.AddressAttn == null ? Visibility.Collapsed : Visibility.Visible;
+
+                        //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
+                        //Geopoint mapPositionCenter = new Geopoint(mapPosition);
+                        //LicenseLocationMapControl.Center = mapPositionCenter;
+                        //LicenseLocationMapControl.ZoomLevel = 12;
+                        //LicenseLocationMapControl.LandmarksVisible = true;
+
+                        break;
+                    }
             }
-
-            // Display the results in their fields
-            SearchResultsHeader.Text = callsign;
-            SearchResultsSubheader.Text = licenseSearchResult.Name;
-
-            SearchTrusteeButton.Visibility = Visibility.Collapsed;
-                    
-            if (licenseSearchResult.Trustee != null)
-            {
-                Callsign trusteeCallsign = licenseSearchResult.Trustee;
-                SearchTrusteeButtonText.Text = $"Trustee {trusteeCallsign}";
-                SearchTrusteeButton.Visibility = Visibility.Visible;
-            }
-
-            AddressLine1Field.Text = licenseSearchResult.AddressLine1;
-            AddressLine2Field.Text = licenseSearchResult.AddressLine2;
-
-            if (licenseSearchResult.AddressAttn == null)
-            {
-                AddressAttnField.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                AddressAttnField.Text = licenseSearchResult.AddressAttn;
-                AddressAttnField.Visibility = Visibility.Visible;
-            }
-
-            LocationLatitudeField.Text = licenseSearchResult.Location.Latitude.ToString(CultureInfo.InvariantCulture);
-            LocationLongitudeField.Text = licenseSearchResult.Location.Longitude.ToString(CultureInfo.InvariantCulture);
-            GridSquareField.Text = licenseSearchResult.GridSquare;
-
-            //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
-            //Geopoint mapPositionCenter = new Geopoint(mapPosition);
-            //LicenseLocationMapControl.Center = mapPositionCenter;
-            //LicenseLocationMapControl.ZoomLevel = 12;
-            //LicenseLocationMapControl.LandmarksVisible = true;
-
-            DateGrantedField.Text = licenseSearchResult.GrantDate.ToString("d", CultureInfo.InvariantCulture);
-            DateExpiryField.Text = licenseSearchResult.ExpiryDate.ToString("d", CultureInfo.InvariantCulture);
-            DateLastActionField.Text = licenseSearchResult.ModifiedDate.ToString("d", CultureInfo.InvariantCulture);
-
-            LicenseExternalUriButton.NavigateUri = licenseSearchResult.UlsUri;
-
-            //UlsUriField.Text = licenseSearchResult.UlsUri.ToString();
-
-            licenseGeopoint = new Geopoint(new BasicGeoposition { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude });
 
             // All done. Nothing to see here.
             SearchProgressRing.Visibility = Visibility.Collapsed;

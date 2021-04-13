@@ -8,6 +8,7 @@ namespace Hammer.Core.Models.Converters
         {
             License license = new License()
             {
+                Status = USLicenseStatusConverter(usLicense.Status),
                 Country = "US",
                 AddressAttn = usLicense.Address.Attn,
                 AddressLine1 = usLicense.Address.Line1,
@@ -26,6 +27,29 @@ namespace Hammer.Core.Models.Converters
             };
 
             return license;
+        }
+
+        private static LicenseStatus USLicenseStatusConverter(string usLicenseStatus)
+        {
+            usLicenseStatus = usLicenseStatus.ToUpperInvariant();
+            LicenseStatus licenseStatus;
+            switch (usLicenseStatus)
+            {
+                case "VALID":
+                    licenseStatus = LicenseStatus.Valid;
+                    break;
+                case "UPDATING":
+                    licenseStatus = LicenseStatus.Updating;
+                    break;
+                case "INVALID":
+                    licenseStatus = LicenseStatus.Invalid;
+                    break;
+                default:
+                    licenseStatus = LicenseStatus.Unknown;
+                    break;
+            }
+
+            return licenseStatus;
         }
     }
 }
