@@ -43,7 +43,7 @@ namespace Hammer.Core.Helpers
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-                return null;
+                throw;
             }
         }
 
