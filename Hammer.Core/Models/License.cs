@@ -108,14 +108,9 @@ namespace Hammer.Core.Models
             get => country;
             set
             {
-                if (value != null && value.Length < 5 && value.Length > 1)
-                {
-                    country = value.ToUpperInvariant();
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException(nameof(Country), $"{nameof(Country)} must be exactly two letters.");
-                }
+                country = value != null && value.Length < 5 && value.Length > 1
+                    ? value.ToUpperInvariant()
+                    : throw new ArgumentOutOfRangeException(nameof(Country), $"{nameof(Country)} must be exactly two letters.");
             }
         }
 
@@ -147,105 +142,8 @@ namespace Hammer.Core.Models
             newLicense = new License();
         }
 
-        // TODO: Adapt this to use an, er, adapter so that other search providers can be dropped in.
-        //public static void TryParse(System.IO.Stream json, out License license)
-        //{
-        //    License _license;
-        //    License _trustee;
 
-        //    if (string.IsNullOrWhiteSpace(json)) throw new ArgumentNullException(nameof(json), "A non-null JSON string must be passed into this parameter.");
-
-        //    var options = new JsonSerializerOptions
-        //    {
-        //        AllowTrailingCommas = true
-        //    };
-
-        //    JsonSerializer.DeserializeAsync<License>(json, options);
-
-        //    license = new License();
-        //}
-        public static void TryParse(JObject json, out License license)
         {
-            License _license;
-            License _trustee;
-            GeographicPoint _geographicPoint;
-            DateTimeOffset _grantDate = new DateTimeOffset();
-            DateTimeOffset _expiryDate = new DateTimeOffset();
-            DateTimeOffset _lastActionDate = new DateTimeOffset();
-
-            if (json != null)
-            {
-
-                if (!string.IsNullOrEmpty((string)json["trustee"]["callsign"]))
-                {
-                    _trustee = new License
-                    {
-                        Callsign = new Callsign((string)json["trustee"]["callsign"]),
-                        Name = (string)json["trustee"]["name"]
-                    };
-                }
-                else
-                {
-                    _trustee = null;
-                }
-
-                _geographicPoint = new GeographicPoint(
-                    (double)json["location"]["latitude"],
-                    (double)json["location"]["longitude"]
-                );
-
-                if (!string.IsNullOrEmpty((string)json["otherInfo"]["grantDate"]))
-                {
-                    _grantDate = DateTimeOffset.Parse(
-                        (string)json["otherInfo"]["grantDate"],
-                        System.Globalization.CultureInfo.InvariantCulture);
-                }
-
-                if (!string.IsNullOrEmpty((string)json["otherInfo"]["expiryDate"]))
-                {
-                    _expiryDate = DateTimeOffset.Parse(
-                        (string)json["otherInfo"]["expiryDate"],
-                        System.Globalization.CultureInfo.InvariantCulture);
-                }
-
-                if (!string.IsNullOrEmpty((string)json["otherInfo"]["lastActionDate"]))
-                {
-                    _lastActionDate = DateTimeOffset.Parse(
-                        (string)json["otherInfo"]["lastActionDate"],
-                        System.Globalization.CultureInfo.InvariantCulture);
-                }
-
-                _license = new License
-                {
-                    //Status = (string)json["status"],
-                    LicenseType = (string)json["type"],
-                    Name = (string)json["name"],
-                    Callsign = new Callsign((string)json["current"]["callsign"]),
-                    OperatorClass = (string)json["current"]["operClass"],
-                    FRN = (string)json["frn"],
-                    UlsUri = (Uri)json["otherInfo"]["ulsUrl"],
-
-                    Trustee = new Callsign(_trustee.Callsign.ToString()),
-
-                    AddressLine1 = (string)json["address"]["line1"],
-                    AddressLine2 = (string)json["address"]["line2"],
-                    AddressAttn = (string)json["address"]["attn"],
-
-                    Location = _geographicPoint,
-
-                    GridSquare = (string)json["location"]["gridsquare"],
-
-                    GrantDate = _grantDate,
-                    ExpiryDate = _expiryDate,
-                    ModifiedDate = _lastActionDate
-                };
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(json), $"{nameof(TryParse)} must have one JObject argument");
-            }
-
-            license = _license;
         }
     }
 
