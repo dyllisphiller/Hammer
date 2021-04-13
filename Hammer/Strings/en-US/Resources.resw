@@ -121,7 +121,7 @@
     <value>Address</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>A collection of utilities for amateur radio users (hams).</value>
+    <value>A collection of amateur radio utilities.</value>
     <comment>A description of the app</comment>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
