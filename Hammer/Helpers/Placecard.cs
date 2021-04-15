@@ -11,16 +11,6 @@ namespace Hammer.Helpers.Maps
     {
         public static void ShowPlacecard(object sender, Geopoint geopoint, string callsign, string addressLine1, string addressLine2)
         {
-            if (sender == null) { throw new ArgumentNullException(nameof(sender), "'sender' must not be null."); }
-
-            PlaceInfoCreateOptions options = new PlaceInfoCreateOptions
-            {
-                DisplayAddress = $"{addressLine1}, {addressLine2}",
-                DisplayName = callsign
-            };
-
-            PlaceInfo licensePlaceInfo = PlaceInfo.Create(geopoint, options);
-
             FrameworkElement targetElement = (FrameworkElement)sender;
 
             GeneralTransform generalTransform =
@@ -31,7 +21,14 @@ namespace Hammer.Helpers.Maps
 
             try
             {
-                licensePlaceInfo.Show(rectangle, Windows.UI.Popups.Placement.Below);
+                PlaceInfoCreateOptions options = new PlaceInfoCreateOptions
+                {
+                    DisplayAddress = $"{addressLine1}, {addressLine2}",
+                    DisplayName = callsign
+                };
+
+                PlaceInfo.Create(geopoint, options)
+                         .Show(rectangle, Windows.UI.Popups.Placement.Below);
             }
             catch (Exception ex)
             {
