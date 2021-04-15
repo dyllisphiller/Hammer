@@ -682,7 +682,7 @@ namespace Hammer.Core.Callsigns
 
             else
             {
-                region = "";
+                region = null;
                 return false;
             }
 
