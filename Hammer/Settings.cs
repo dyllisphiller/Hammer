@@ -58,5 +58,12 @@ namespace Hammer.Settings
             SetSetting("searchHistoryEnabled", isEnabled);
             OnPropertyChanged(nameof(KeepSearchHistory));
         }
+
+        public void UpdateSearchHistory(MostRecentlyUsedList<string> mruList)
+        {
+            SearchHistory = mruList;
+            SetSetting("searchHistory", mruList);
+            OnPropertyChanged(nameof(SearchHistory));
+        }
     }
 }
