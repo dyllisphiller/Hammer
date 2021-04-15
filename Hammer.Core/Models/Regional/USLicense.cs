@@ -27,9 +27,6 @@ namespace Hammer.Core.Models.Regional
         public string Frn { get; set; }
         public Uri UlsUri { get; set; }
 
-        [JsonExtensionData]
-        public Dictionary<string, object> ExtensionData { get; set; }
-
         public USLicense(string jsonString)
         {
             using (JsonDocument document = JsonDocument.Parse(jsonString))
