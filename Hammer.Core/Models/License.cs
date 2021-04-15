@@ -37,7 +37,7 @@ namespace Hammer.Core.Models
         /// <summary>
         /// Represents a license's licensee type, like PERSON or CLUB.
         /// </summary>
-        public string LicenseType { get; set; }
+        public string LicenseeType { get; set; }
 
         /// <summary>
         /// Represents a license's class. Only applies to licenses issued to people.

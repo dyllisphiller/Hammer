@@ -20,7 +20,7 @@ namespace Hammer.Core.Models.Converters
                 Location = new Maps.GeographicPoint(usLicense.Location.Latitude, usLicense.Location.Longitude),
                 GridSquare = usLicense.GridSquare,
                 ModifiedDate = usLicense.LastActionDate,
-                LicenseType = usLicense.LicenseType,
+                LicenseeType = usLicense.LicenseType,
                 Name = usLicense.Name,
                 OperatorClass = usLicense.Current.OperClass.ToString(),
                 Trustee = usLicense.Trustee,
