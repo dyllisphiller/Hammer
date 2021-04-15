@@ -170,17 +170,6 @@ namespace Hammer.Core.Models.Regional
         }
     }
 
-    public enum USOperatorClass
-    {
-        Technician,
-        General,
-        Extra,
-        // these are no longer issued but may still be used on certain licenses
-        Novice,
-        TechnicianPlus,
-        Advanced,
-    }
-
     public class USLicenseData
     {
         public Callsign Callsign;
