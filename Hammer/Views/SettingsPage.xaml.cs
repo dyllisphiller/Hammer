@@ -3,6 +3,7 @@ using MUXC = Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Storage;
+using System;
 
 namespace Hammer.Views
 {
@@ -24,6 +25,12 @@ namespace Hammer.Views
             {
                 Settings.SetSearchHistory(toggle.IsOn);
             }
+        }
+
+        private async void FeedbackButton_Click(object sender, RoutedEventArgs e)
+        {
+            var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
+            await launcher.LaunchAsync();
         }
     }
 }

@@ -20,6 +20,12 @@
                 <StackPanel Orientation="Horizontal">
                     <fi:FluentIconElement Symbol="Delete20" Margin="0,0,8,0"/>
                     <TextBlock Text="Clear search history"/>
+                    <StackPanel Orientation="Horizontal">
+                        <fi:FluentIconElement Symbol="PersonFeedback20Filled" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <Button x:Name="FeedbackButton" Style="{ThemeResource TextBlockButtonStyle}" Click="FeedbackButton_Click">
+                            Give feedback
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Button>
         </StackPanel>
