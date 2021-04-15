@@ -8,6 +8,22 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="XamlAutoFontFamily"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextTrimming" Value="None"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
+                <Setter Property="TextLineBounds" Value="Full"/>
+            </Style>
+            <Style x:Key="DiminishedBodyTextBlockStyle" BasedOn="{StaticResource BodyTextBlockStyle}" TargetType="TextBlock">
+                <Setter Property="Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{ThemeResource SystemBaseMediumColor}"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
