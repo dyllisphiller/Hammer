@@ -131,25 +131,30 @@ namespace Hammer.Core.Models
 
             Country = "US";
         }
-    }
 
-    public class LicenseViewModel : INotifyPropertyChanged
-    {
-        private readonly License defaultLicense = new License() { Status = LicenseStatus.EDEFAULTVIEWMODEL, };
-        private License license = null;
-
-        public License DefaultLicense { get => defaultLicense; }
-        public License License
+        public static License GetTestLicense()
         {
-            get => license;// ?? defaultLicense;
-            set => license = value;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            
+            return new License()
+            {
+                Status = LicenseStatus.ETESTLICENSEDATA,
+                Callsign = new Callsign("CALLSIGN"),
+                Name = "Johnny Appleseed",
+                Country = "US",
+                AddressLine1 = "4321 Street Ave",
+                AddressLine2 = "Anytown, OR 97000",
+                GrantDate = new DateTimeOffset(new DateTime(2020, 1, 1), new TimeSpan(-4, 0, 0)),
+                ModifiedDate = new DateTimeOffset(new DateTime(2020, 6, 15), new TimeSpan(-4, 0, 0)),
+                ExpiryDate = new DateTimeOffset(new DateTime(2030, 1, 1), new TimeSpan(-4, 0, 0)),
+                FRN = "0123456789",
+                GridSquare = "FF99ff",
+                ID = new Guid(),
+                LicenseeType = "PERSON",
+                OperatorClass = "TECHNICIAN",
+                Location = new GeographicPoint(45, -123),
+                UlsUri = new Uri("https://example.com/"),
+                Trustee = new Callsign("KB1"),
+            };
         }
     }
 
@@ -160,6 +165,9 @@ namespace Hammer.Core.Models
         Invalid,
         Updating,
         ESIGNNOTUS,
-        EDEFAULTVIEWMODEL,
+        /// <summary>
+        /// Indicates a license contains example (i.e., fake) data.
+        /// </summary>
+        ETESTLICENSEDATA,
     }
 }
