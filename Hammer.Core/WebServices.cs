@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -33,13 +34,17 @@ namespace Hammer.Core.WebServices
         /// <returns>true if the Uri was successfully created; otherwise, false.</returns>
         public static bool TryMakeUri(string region, string callsign, out Uri uri)
         {
-            string _uri;
             try
             {
-                if (!ApiUriFormulary.TryGetValue(region, out string formula)) throw new ArgumentOutOfRangeException(nameof(region), $"An API formula for {region} could not be found.");
-                _uri = string.Format(System.Globalization.CultureInfo.InvariantCulture, formula, callsign);
-                uri = new Uri(_uri, UriKind.Absolute);
-                return true;
+                if (ApiUriFormulary.TryGetValue(region, out string formula))
+                {
+                    uri = new Uri(string.Format(CultureInfo.InvariantCulture, formula, callsign));
+                    return true;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(region), $"An API formula for {region} could not be found.");
+                }
             }
             catch (Exception ex)
             {
