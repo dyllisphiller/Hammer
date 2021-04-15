@@ -7,19 +7,51 @@
     xmlns:local="using:Hammer.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:Width="1920"
+    d:Height="1080"
     mc:Ignorable="d">
 
-    <Grid>
-        <StackPanel Margin="0,12,0,0">
-            <TextBlock x:Name="Settings_Header" Text="Settings" Style="{StaticResource HeaderTextBlockStyle}" Margin="0,0,0,12"/>
-            <TextBlock x:Name="Privacy_Header" Text="Privacy" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,6"/>
+    <Grid Margin="0,12,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <ToggleSwitch Header="Keep search history" OnContent="Keep" OffContent="Forget" x:Name="KeepSearchHistory" IsOn="{x:Bind Mode=TwoWay, Path=Settings.KeepSearchHistory}"/>
+        <TextBlock x:Name="Settings_Header" Text="Settings" Style="{StaticResource HeaderTextBlockStyle}" Margin="0,0,0,12"/>
 
-            <Button x:Name="ClearSearchHistoryButton" Style="{StaticResource ButtonRevealStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <fi:FluentIconElement Symbol="Delete20" Margin="0,0,8,0"/>
-                    <TextBlock Text="Clear search history"/>
+        <ScrollViewer Grid.Row="1">
+            <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*" MaxWidth="320"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Padding="0,0,12,0" MaxWidth="460" HorizontalAlignment="Left">
+                    <TextBlock x:Name="Privacy_Header" Text="Privacy" TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,8"/>
+
+                    <TextBlock x:Name="SearchSuggestions_Heading" Text="Keep search history on this device" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock Style="{StaticResource DiminishedBodyTextBlockStyle}" Margin="0,8,0,0">
+                        Turning this on means Hammer will store the five most recent search queries you've made. Search history won't leave your device, and you can clear it at any time below.
+                    </TextBlock>
+                    <ToggleSwitch OnContent="Keep" OffContent="Forget" x:Name="KeepSearchHistory" IsOn="{x:Bind Mode=TwoWay, Path=Settings.KeepSearchHistory}" Margin="0,12,0,0"/>
+
+                    <Button x:Name="ClearSearchHistoryButton" Style="{StaticResource ButtonRevealStyle}" Margin="0,12,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <!--<fi:FluentIconElement Symbol="Delete20" Margin="0,0,8,0"/>-->
+                            <TextBlock Text="Clear search history"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,8">
+                        About Hammer
+                    </TextBlock>
+                    <TextBlock Text="Hammer provides ama" Style="{StaticResource DiminishedBodyTextBlockStyle}" Margin="0,0,0,8"/>
+
                     <StackPanel Orientation="Horizontal">
                         <fi:FluentIconElement Symbol="PersonFeedback20Filled" VerticalAlignment="Center" Margin="0,0,4,0"/>
                         <Button x:Name="FeedbackButton" Style="{ThemeResource TextBlockButtonStyle}" Click="FeedbackButton_Click">
@@ -27,7 +59,7 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-            </Button>
-        </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>
