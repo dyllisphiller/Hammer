@@ -118,8 +118,8 @@ namespace Hammer.Views
 
                 default:
                     {
-                        SearchTrusteeButton.Visibility = ViewModel.License.Trustee != null ? Visibility.Visible : Visibility.Collapsed;
-
+                        ShowMapButton.IsEnabled = true;
+                        SearchTrusteeButton.Visibility = ViewModel.License.Trustee == null ? Visibility.Collapsed : Visibility.Visible;
                         AddressAttnField.Visibility = ViewModel.License.AddressAttn == null ? Visibility.Collapsed : Visibility.Visible;
 
                         //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
