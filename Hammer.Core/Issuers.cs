@@ -594,8 +594,6 @@ namespace Hammer.Core.Callsigns
 
             // VA - Vatican City
             { @"^HV", "va" },
-            // FATHER DE HVPONTIFF K
-            // Anyone else imagining the Pope as a ham?
 
             // VC - Saint Vincent and the Grenadines
             { @"^J8", "vc" },
