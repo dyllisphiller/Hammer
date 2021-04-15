@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 namespace Hammer.Core.WebServices
 {
@@ -48,29 +47,6 @@ namespace Hammer.Core.WebServices
                 uri = null;
                 return false;
             }
-        }
-
-        public async static Task<JObject> GetLicenseJObjectAsync(Uri uri)
-        {
-            JObject jResult = null;
-
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    client.DefaultRequestHeaders.Accept.TryParseAdd("application/json");
-                    HttpResponseMessage httpResponse = await client.GetAsync(uri);
-                    httpResponse.EnsureSuccessStatusCode();
-                    string result = await httpResponse.Content.ReadAsStringAsync();
-                    jResult = JObject.Parse(result);
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
-                }
-            }
-
-            return jResult;
         }
     }
 }
