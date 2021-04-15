@@ -10,17 +10,19 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using System.ComponentModel;
 
 namespace Hammer.Views
 {
     /// <summary>
     /// The license search result page, meant to be navigated to within a Frame.
     /// </summary>
-    public sealed partial class SearchPage : Page
+    public sealed partial class SearchPage : Page, INotifyPropertyChanged
     {
         internal CultureInfo invariantCulture = CultureInfo.InvariantCulture;
+        internal LicenseViewModel ViewModel { get; set; } = new LicenseViewModel();
 
-        public LicenseViewModel ViewModel { get; set; } = new LicenseViewModel();
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public SearchPage()
         {
@@ -39,6 +41,8 @@ namespace Hammer.Views
 
             else
             {
+                SearchPageDefaultHeader.Visibility = Visibility.Collapsed;
+
                 try
                 {
                     await CallsignSearch(p);
@@ -57,11 +61,6 @@ namespace Hammer.Views
 
         private async Task CallsignSearch(string callsign)
         {
-            // TODO: Trigger these with events instead of synchronously?
-            SearchResultsStackPanel.Visibility = Visibility.Collapsed;
-            SearchProgressRing.IsActive = true;
-            SearchProgressRing.Visibility = Visibility.Visible;
-
             if (string.IsNullOrEmpty(callsign))
             {
                 ContentDialog dialog = new ContentDialog()
@@ -73,14 +72,15 @@ namespace Hammer.Views
                 await dialog.ShowAsync();
             }
 
+            SearchResultsStackPanel.Visibility = Visibility.Collapsed;
+            SearchProgressRing.IsActive = true;
+            SearchProgressRing.Visibility = Visibility.Visible;
+
             ViewModel.License = await Parsers.GetLicenseFromJsonAsync(callsign);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ViewModel.License"));
 
             switch (ViewModel.License.Status)
             {
-                case LicenseStatus.EDEFAULTVIEWMODEL:
-                    {
-                        break;
-                    }
                 case LicenseStatus.ESIGNNOTUS:
                     {
                         ContentDialog dialog = new ContentDialog()
