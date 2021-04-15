@@ -56,7 +56,7 @@ namespace Hammer.Settings
         public void SetSearchHistory(bool isEnabled)
         {
             SetSetting("searchHistoryEnabled", isEnabled);
-            OnPropertyChanged("KeepSearchHistory");
+            OnPropertyChanged(nameof(KeepSearchHistory));
         }
     }
 }
