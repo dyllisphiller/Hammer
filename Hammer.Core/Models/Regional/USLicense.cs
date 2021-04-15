@@ -95,7 +95,7 @@ namespace Hammer.Core.Models.Regional
 
                         if (root.TryGetProperty("trustee", out JsonElement jsonTrustee))
                         {
-                            if (jsonTrustee.TryGetProperty("callsign", out JsonElement jsonTrusteeCallsign))
+                            if (jsonTrustee.TryGetProperty("callsign", out JsonElement jsonTrusteeCallsign) && !string.IsNullOrWhiteSpace(jsonTrusteeCallsign.GetString()))
                             {
                                 Trustee = new Callsign(jsonTrusteeCallsign.GetString());
                             }
