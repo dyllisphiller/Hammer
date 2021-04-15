@@ -21,7 +21,7 @@ namespace Hammer.Core.WebServices
             // placeholders than there are objects to interpolate in the
             // System.String.Format() method, but not vice versa.
 
-            // W1JDD runs Callook and his API terms are great. Thanks, Josh!
+            // Callook is run by W1JDD. Their API terms are great. Thanks, Josh!
             { "us", "https://callook.info/{0}/json" },
         };
 
