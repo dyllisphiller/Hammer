@@ -8,11 +8,7 @@
     mc:Ignorable="d"
     SecondaryButtonText="Report an error"
     CloseButtonText="OK"
-    DefaultButton="Close">
-
-    <Grid>
-        <StackPanel>
-            <TextBlock x:Uid="InvalidCallsign" TextWrapping="Wrap" Margin="0,0,0,12" />
-        </StackPanel>
-    </Grid>
+    DefaultButton="Close"
+    Title="Invalid callsign"
+    Content="The callsign entered is invalid. If you know this callsign is valid and a license exists, please consider reporting this as a bug.">
 </ContentDialog>

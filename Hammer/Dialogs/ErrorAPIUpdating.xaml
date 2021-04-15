@@ -7,12 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     DefaultButton="Close"
-    CloseButtonText="OK">
+    CloseButtonText="OK"
+    Title="Updating license data">
 
     <Grid>
         <StackPanel>
-            <TextBlock TextWrapping="Wrap" x:Uid="ErrorAPIUpdating"/>
-            <HyperlinkButton Content="About Callook" NavigateUri="https://callook.info/"/>
+            <TextBlock Text="Our source, Callook, is getting fresh information from the FCC. Please try your search again later." TextWrapping="WrapWholeWords"/>
+            <HyperlinkButton Content="Learn more about Callook" NavigateUri="https://callook.info/"/>
         </StackPanel>
     </Grid>
 </ContentDialog>
