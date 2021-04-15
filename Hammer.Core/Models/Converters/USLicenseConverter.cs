@@ -2,7 +2,7 @@
 
 namespace Hammer.Core.Models.Converters
 {
-    public static partial class ConverterExtensions
+    public static partial class LicenseExtensions
     {
         public static License ToLicense(this USLicense usLicense)
         {
