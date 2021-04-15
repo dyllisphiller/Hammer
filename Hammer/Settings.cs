@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Hammer.Core.Helpers;
 using Windows.Storage;
 
 namespace Hammer.Settings
@@ -13,7 +14,7 @@ namespace Hammer.Settings
     public class SettingsStore : INotifyPropertyChanged
     {
         public bool KeepSearchHistory { get; set; }
-        public IList<string> SearchHistory { get; set; }
+        public MostRecentlyUsedList<string> SearchHistory { get; set; }
 
         static readonly string settingsContainerName = "settings";
         static readonly string cacheContainerName = "cache";
