@@ -9,7 +9,7 @@ namespace Hammer.Helpers.Maps
 {
     public static class Placecard
     {
-        public static void ShowPlacecard(object sender, Geopoint geopoint, string callsign, string addressLine1, string addressLine2)
+        public static void ShowPlacecard(object sender, Geopoint geopoint, string displayName, string addressLine1, string addressLine2)
         {
             FrameworkElement targetElement = (FrameworkElement)sender;
 
@@ -24,7 +24,7 @@ namespace Hammer.Helpers.Maps
                 PlaceInfoCreateOptions options = new PlaceInfoCreateOptions
                 {
                     DisplayAddress = $"{addressLine1}, {addressLine2}",
-                    DisplayName = callsign
+                    DisplayName = displayName
                 };
 
                 PlaceInfo.Create(geopoint, options)
