@@ -32,5 +32,10 @@ namespace Hammer.Views
             var launcher = Microsoft.Services.Store.Engagement.StoreServicesFeedbackLauncher.GetDefault();
             await launcher.LaunchAsync();
         }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
