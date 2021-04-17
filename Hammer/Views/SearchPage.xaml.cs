@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Hammer.Core;
 using Hammer.Core.Helpers;
 using Hammer.Core.Models;
 using Hammer.Helpers.Maps;
@@ -32,8 +33,8 @@ namespace Hammer.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             string p = (string)e.Parameter;
-            // if the user navigates to the page without a search parameter,
-            // the page should guide the user to search
+
+            // if the user navigates here directly, guide the user to search
             if (string.IsNullOrWhiteSpace(p))
             {
                 SearchPageDefaultHeader.Visibility = Visibility.Visible;
@@ -59,6 +60,11 @@ namespace Hammer.Views
             }
         }
 
+        private async Task CallsignSearch(Callsign callsign)
+        {
+            await CallsignSearch(callsign.ToString());
+        }
+
         private async Task CallsignSearch(string callsign)
         {
             if (string.IsNullOrEmpty(callsign))
@@ -76,61 +82,56 @@ namespace Hammer.Views
             SearchProgressRing.IsActive = true;
             SearchProgressRing.Visibility = Visibility.Visible;
 
-            ViewModel.License = await Parsers.GetLicenseFromJsonAsync(callsign);
+            try
+            {
+                ViewModel.License = await Parsers.GetLicenseFromJsonAsync(callsign);
+            }
+            catch (UnsupportedIssuerException ex)
+            {
+                ContentDialog _ = new ContentDialog()
+                {
+                    Title = ex.Message,
+                    CloseButtonText = "OK",
+                };
+                await _.ShowAsync();
+            }
+            catch (LicenseDatabaseUpdatingException ex)
+            {
+                ContentDialog _ = new ContentDialog()
+                {
+                    Title = ex.Message,
+                    CloseButtonText = "OK",
+                };
+                await _.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ViewModel.License"));
 
-            switch (ViewModel.License.Status)
+            if (ViewModel.License.Status == LicenseStatus.Invalid)
             {
-                case LicenseStatus.ESIGNNOTUS:
-                    {
-                        ContentDialog dialog = new ContentDialog()
-                        {
-                            Title = "Hammer can only look up US callsigns",
-                            CloseButtonText = "OK",
-                        };
-                        await dialog.ShowAsync();
-                        break;
-                    }
-
-                case LicenseStatus.Updating:
-                    {
-                        ContentDialog dialog = new ContentDialog()
-                        {
-                            Title = "Updating license data",
-                            Content = "The server is fetching new license data from the FCC. This might take a bit; try again later.",
-                            CloseButtonText = "OK",
-                        };
-                        await dialog.ShowAsync();
-                        break;
-                    }
-
-                case LicenseStatus.Invalid:
-                    {
-                        ContentDialog dialog = new ContentDialog()
-                        {
-                            Title = "Either the callsign is invalid or something unexpected happened.",
-                            Content = "Try again later. If the error persists, please consider filing a bug report.",
-                            CloseButtonText = "OK",
-                        };
-                        await dialog.ShowAsync();
-                        break;
-                    }
-
-                default:
-                    {
-                        ShowMapButton.IsEnabled = true;
-                        SearchTrusteeButton.Visibility = ViewModel.License.Trustee == null ? Visibility.Collapsed : Visibility.Visible;
-                        AddressAttnField.Visibility = ViewModel.License.AddressAttn == null ? Visibility.Collapsed : Visibility.Visible;
-
-                        //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
-                        //Geopoint mapPositionCenter = new Geopoint(mapPosition);
-                        //LicenseLocationMapControl.Center = mapPositionCenter;
-                        //LicenseLocationMapControl.ZoomLevel = 12;
-                        //LicenseLocationMapControl.LandmarksVisible = true;
-
-                        break;
-                    }
+                ContentDialog dialog = new ContentDialog()
+                {
+                    Title = "Either the callsign is invalid or something unexpected happened.",
+                    Content = "Try again later. If the error persists, please consider filing a bug report.",
+                    CloseButtonText = "OK",
+                };
+                await dialog.ShowAsync();
             }
+
+            ShowMapButton.IsEnabled = true;
+            SearchTrusteeButton.Visibility = ViewModel.License is IInTrust ? Visibility.Collapsed : Visibility.Visible;
+            AddressAttnField.Visibility = ViewModel.License.AddressAttn == null ? Visibility.Collapsed : Visibility.Visible;
+
+            //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
+            //Geopoint mapPositionCenter = new Geopoint(mapPosition);
+            //LicenseLocationMapControl.Center = mapPositionCenter;
+            //LicenseLocationMapControl.ZoomLevel = 12;
+            //LicenseLocationMapControl.LandmarksVisible = true;
 
             // All done. Nothing to see here.
             SearchProgressRing.Visibility = Visibility.Collapsed;
@@ -159,7 +160,10 @@ namespace Hammer.Views
 
         private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
         {
-            await CallsignSearch(ViewModel.License.Trustee.Sign);
+            if (ViewModel.License is ClubLicense)
+            {
+                await CallsignSearch(((ClubLicense)ViewModel.License).Trustee.Callsign);
+            }
         }
     }
 }
