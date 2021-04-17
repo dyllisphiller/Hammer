@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Hammer.Core.Maps;
 
@@ -8,28 +9,40 @@ namespace Hammer.Core.Models
     /// <summary>
     /// Represents a License for a Person.
     /// </summary>
-    public class PersonalLicense : BaseLicense
+    public class PersonalLicense : BaseLicense, INotifyPropertyChanged
     {
+        private OperatorClasses operatorClass;
+        private IList<(Callsign, OperatorClasses)> historical;
+
         /// <summary>
         /// Represents a license's class. Only applies to licenses issued to people.
         /// </summary>
-        public OperatorClasses OperatorClass { get; set; }
+        public OperatorClasses OperatorClass
+        {
+            get => operatorClass;
+            set
+            {
+                operatorClass = value;
+                RaisePropertyChanged(nameof(OperatorClass));
+            }
+        }
 
-        public IList<(Callsign, OperatorClasses)> Historical { get; set; } = new List<(Callsign, OperatorClasses)>();
+        public IList<(Callsign, OperatorClasses)> Historical
+        {
+            get => historical;
+            private set
+            {
+                historical = value;
+                RaisePropertyChanged(nameof(Historical));
+            }
+        }
 
         /// <summary>
         /// Instantiates a License with a new random Guid and empty objects.
         /// </summary>
         public PersonalLicense()
         {
-            ID = Guid.NewGuid();
-
-            GrantDate = new DateTimeOffset();
-            ExpiryDate = new DateTimeOffset();
-            ModifiedDate = new DateTimeOffset();
-            Location = new GeographicPoint();
-
-            Country = "US";
+            Historical = new List<(Callsign, OperatorClasses)>();
         }
 
         public static PersonalLicense GetTestLicense()

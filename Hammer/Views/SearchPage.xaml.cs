@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Hammer.Core;
 using Hammer.Core.Helpers;
 using Hammer.Core.Models;
+using Hammer.Core.ViewModels;
 using Hammer.Helpers.Maps;
 using MUXC = Microsoft.UI.Xaml.Controls;
 using Windows.Devices.Geolocation;
