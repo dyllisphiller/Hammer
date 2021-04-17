@@ -11,9 +11,9 @@ namespace Hammer.Core.Helpers
 {
     public static class Parsers
     {
-        public static async Task<License> GetLicenseFromJsonAsync(string callsign)
+        public static async Task<BaseLicense> GetLicenseFromJsonAsync(string callsign)
         {
-            // Sanitize the callsign input.
+            // Check and sanitize the callsign input.
             callsign = Sanitizers.SanitizeCallsign(callsign);
 
             // Get the callsign's region.
@@ -22,28 +22,26 @@ namespace Hammer.Core.Helpers
             // Right now, only US callsigns are supported.
             if (region != "us")
             {
-                return new License()
-                {
-                    Status = LicenseStatus.ESIGNNOTUS,
-                };
+                throw new UnsupportedIssuerException("Hammer can only look up US callsigns");
             }
 
             APIs.TryMakeUri(region, callsign, out Uri licenseDataUri);
 
-            HttpClient client = new HttpClient();
-
-            try
+            using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Accept.TryParseAdd("application/json");
-                HttpResponseMessage httpResponse = await client.GetAsync(licenseDataUri);
-                httpResponse.EnsureSuccessStatusCode();
-                USLicense usLicenseResult = new USLicense(await httpResponse.Content.ReadAsStringAsync());
-                return usLicenseResult.ToLicense();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                throw;
+                try
+                {
+                    client.DefaultRequestHeaders.Accept.TryParseAdd("application/json");
+                    HttpResponseMessage httpResponse = await client.GetAsync(licenseDataUri);
+                    httpResponse.EnsureSuccessStatusCode();
+                    USLicense usLicenseResult = new USLicense(await httpResponse.Content.ReadAsStringAsync());
+                    return usLicenseResult.ToLicense();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    throw;
+                }
             }
         }
 

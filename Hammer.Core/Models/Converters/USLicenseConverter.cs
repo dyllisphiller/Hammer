@@ -4,11 +4,11 @@ namespace Hammer.Core.Models.Converters
 {
     public static partial class LicenseExtensions
     {
-        public static License ToLicense(this USLicense usLicense)
+        public static BaseLicense ToLicense(this USLicense usLicense)
         {
-            License license = new License()
+            PersonalLicense license = new PersonalLicense()
             {
-                Status = USLicenseStatusConverter(usLicense.Status),
+                Status = usLicense.Status,
                 Country = "US",
                 AddressAttn = usLicense.AddressAttn,
                 AddressLine1 = usLicense.AddressLine1,
@@ -20,36 +20,12 @@ namespace Hammer.Core.Models.Converters
                 Location = new Maps.GeographicPoint(usLicense.Location.Latitude, usLicense.Location.Longitude),
                 GridSquare = usLicense.GridSquare,
                 ModifiedDate = usLicense.LastActionDate,
-                LicenseeType = usLicense.LicenseType,
+                LicenseeType = usLicense.LicenseeType,
                 Name = usLicense.Name,
-                OperatorClass = usLicense.Current.OperClass.ToString(),
-                Trustee = usLicense.Trustee,
+                OperatorClass = usLicense.Current.OperClass,
             };
 
             return license;
-        }
-
-        private static LicenseStatus USLicenseStatusConverter(string usLicenseStatus)
-        {
-            usLicenseStatus = usLicenseStatus.ToUpperInvariant();
-            LicenseStatus licenseStatus;
-            switch (usLicenseStatus)
-            {
-                case "VALID":
-                    licenseStatus = LicenseStatus.Valid;
-                    break;
-                case "UPDATING":
-                    licenseStatus = LicenseStatus.Updating;
-                    break;
-                case "INVALID":
-                    licenseStatus = LicenseStatus.Invalid;
-                    break;
-                default:
-                    licenseStatus = LicenseStatus.Unknown;
-                    break;
-            }
-
-            return licenseStatus;
         }
     }
 }

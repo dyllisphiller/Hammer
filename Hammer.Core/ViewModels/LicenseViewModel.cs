@@ -5,10 +5,10 @@ namespace Hammer.Core.Models
 {
     public class LicenseViewModel : INotifyPropertyChanged
     {
-        private static readonly License defaultLicense;
-        private License license;
+        private static readonly BaseLicense defaultLicense;
+        private BaseLicense license;
 
-        public License License
+        public BaseLicense License
         {
             get => license ?? defaultLicense;
             set => license = value;
@@ -21,9 +21,6 @@ namespace Hammer.Core.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        static LicenseViewModel()
-        {
-            defaultLicense = License.GetTestLicense();
-        }
+        static LicenseViewModel() => defaultLicense = Models.PersonalLicense.GetTestLicense();
     }
 }

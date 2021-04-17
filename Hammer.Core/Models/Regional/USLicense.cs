@@ -10,8 +10,8 @@ namespace Hammer.Core.Models.Regional
 {
     public class USLicense
     {
-        public string Status { get; set; }
-        public string LicenseType { get; set; }
+        public LicenseStatus Status { get; set; }
+        public LicenseeTypes LicenseeType { get; set; }
         public USLicenseData Current { get; set; }
         public USLicenseData Previous { get; set; }
         public Callsign Trustee { get; set; }
@@ -27,144 +27,152 @@ namespace Hammer.Core.Models.Regional
         public string Frn { get; set; }
         public Uri UlsUri { get; set; }
 
+        private static OperatorClasses ParseOperatorClass(string operatorClassString)
+        {
+            return !Enum.TryParse(operatorClassString, true, out OperatorClasses operatorClass)
+                ? operatorClass
+                : OperatorClasses.Unknown;
+        }
+
+        private static LicenseeTypes ParseLicenseeType(string licenseeTypeString)
+        {
+            return !Enum.TryParse(licenseeTypeString, true, out LicenseeTypes licenseeType)
+                ? licenseeType
+                : LicenseeTypes.Unknown;
+        }
+
+        private static LicenseStatus ParseLicenseStatus(string licenseStatusString)
+        {
+            return !Enum.TryParse(licenseStatusString, true, out LicenseStatus licenseStatus)
+                ? licenseStatus
+                : LicenseStatus.Unknown;
+        }
+
         public USLicense(string jsonString)
         {
             using (JsonDocument document = JsonDocument.Parse(jsonString))
             {
                 JsonElement root = document.RootElement;
 
-                string[] validLicenseTypes = { "PERSON", "CLUB", "RECREATION", "RACES", "MILITARY" };
-                string[] validOperatorClasses = { "TECHNICIAN", "GENERAL", "EXTRA", "NOVICE", "TECHNICIAN PLUS", "ADVANCED" };
+                LicenseStatus _status = ParseLicenseStatus(root.GetProperty("status").GetString());
 
-                string status = root.GetProperty("status").GetString().ToUpperInvariant();
-
-                switch (status)
+                if (_status == LicenseStatus.Valid)
                 {
-                    case "INVALID":
-                        Status = status;
-                        break;
+                    if (root.TryGetProperty("type", out JsonElement jsonLicenseeType))
+                    {
+                        string licenseeType = jsonLicenseeType.GetString().ToUpperInvariant();
+                        LicenseeType = ParseLicenseeType(licenseeType);
+                    }
 
-                    case "UPDATING":
-                        Status = status;
-                        break;
+                    JsonElement current = root.GetProperty("current");
 
-                    case "VALID":
-                        Status = status;
-                        JsonElement current = root.GetProperty("current");
+                    Callsign currentCallsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
 
-                        Callsign currentCallsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
+                    if (root.TryGetProperty("current", out JsonElement jsonCurrent))
+                    {
+                        Current = new USLicenseData();
 
-                        if (root.TryGetProperty("type", out JsonElement jsonLicenseType))
+                        if (jsonCurrent.TryGetProperty("callsign", out JsonElement jsonCurrentCallsign))
                         {
-                            string licenseType = jsonLicenseType.GetString().ToUpperInvariant();
-                            LicenseType = validLicenseTypes.Any(s => licenseType.Equals(s)) ? licenseType : "";
+                            Current.Callsign = new Callsign(jsonCurrentCallsign.GetString().ToUpperInvariant());
                         }
 
-                        if (root.TryGetProperty("current", out JsonElement jsonCurrent))
+                        if (jsonCurrent.TryGetProperty("operClass", out JsonElement jsonCurrentOperClass))
                         {
-                            Current = new USLicenseData();
+                            string currentOperClass = jsonCurrentOperClass.GetString().ToUpperInvariant();
+                            Current.OperClass = ParseOperatorClass(currentOperClass);
+                        }
+                    }
 
-                            if (jsonCurrent.TryGetProperty("callsign", out JsonElement jsonCurrentCallsign))
-                            {
-                                Current.Callsign = new Callsign(jsonCurrentCallsign.GetString().ToUpperInvariant());
-                            }
+                    // If there is a previous callsign and/or operator class, add Previous data
+                    if (root.TryGetProperty("previous", out JsonElement jsonPrevious))
+                    {
+                        Previous = new USLicenseData();
 
-                            if (jsonCurrent.TryGetProperty("operClass", out JsonElement jsonCurrentOperClass))
-                            {
-                                string currentOperClass = jsonCurrentOperClass.GetString().ToUpperInvariant();
-                                Current.OperClass = validOperatorClasses.Any(s => currentOperClass.Equals(s)) ? currentOperClass : "";
-                            }
+                        if (jsonPrevious.TryGetProperty("callsign", out JsonElement jsonPreviousCallsign) && !string.IsNullOrWhiteSpace(jsonPreviousCallsign.GetString()))
+                        {
+                            Previous.Callsign = new Callsign(jsonPreviousCallsign.GetString().ToUpperInvariant());
+                        }
+                        else
+                        {
+                            Previous.Callsign = null;
                         }
 
-                        // If there is a previous callsign and/or operator class, add Previous data
-                        if (root.TryGetProperty("previous", out JsonElement jsonPrevious))
+                        if (jsonPrevious.TryGetProperty("operClass", out JsonElement jsonPreviousOperClass) && !string.IsNullOrWhiteSpace(jsonPreviousOperClass.GetString()))
                         {
-                            Previous = new USLicenseData();
+                            string previousOperClass = jsonPreviousOperClass.GetString().ToUpperInvariant();
+                            Previous.OperClass = ParseOperatorClass(previousOperClass);
+                        }
+                    }
 
-                            if (jsonPrevious.TryGetProperty("callsign", out JsonElement jsonPreviousCallsign) && !string.IsNullOrWhiteSpace(jsonPreviousCallsign.GetString()))
-                            {
-                                Previous.Callsign = new Callsign(jsonPreviousCallsign.GetString().ToUpperInvariant());
-                            }
+                    if (root.TryGetProperty("trustee", out JsonElement jsonTrustee))
+                    {
+                        if (jsonTrustee.TryGetProperty("callsign", out JsonElement jsonTrusteeCallsign) && !string.IsNullOrWhiteSpace(jsonTrusteeCallsign.GetString()))
+                        {
+                            Trustee = new Callsign(jsonTrusteeCallsign.GetString());
+                        }
+                    }
 
-                            if (jsonPrevious.TryGetProperty("operClass", out JsonElement jsonPreviousOperClass) && !string.IsNullOrWhiteSpace(jsonPreviousOperClass.GetString()))
-                            {
-                                string previousOperClass = jsonPreviousOperClass.GetString().ToUpperInvariant();
-                                Previous.OperClass = validOperatorClasses.Any(s => previousOperClass.Equals(s)) ? previousOperClass : "";
-                            }
+                    if (root.TryGetProperty("name", out JsonElement jsonName)
+                        && !string.IsNullOrEmpty(jsonName.GetString()))
+                    {
+                        Name = jsonName.GetString();
+                    }
+
+                    if (root.TryGetProperty("address", out JsonElement jsonAddress))
+                    {
+                        AddressAttn = jsonAddress.TryGetProperty("attn", out JsonElement jsonAddressAttn) ? jsonAddressAttn.GetString() : "";
+                        AddressLine1 = jsonAddress.TryGetProperty("line1", out JsonElement jsonAddressLine1) ? jsonAddressLine1.GetString() : "";
+                        AddressLine2 = jsonAddress.TryGetProperty("line2", out JsonElement jsonAddressLine2) ? jsonAddressLine2.GetString() : "";
+                    }
+
+                    if (root.TryGetProperty("location", out JsonElement jsonLocation))
+                    {
+                        Location = new GeographicPoint
+                        {
+                            Latitude = jsonLocation.TryGetProperty("latitude", out JsonElement jsonLocationLatitude)
+                                ? Convert.ToDouble(jsonLocationLatitude.GetString(), CultureInfo.GetCultureInfo("en-US"))
+                                : 0,
+                            Longitude = jsonLocation.TryGetProperty("longitude", out JsonElement jsonLocationLongitude)
+                                ? Convert.ToDouble(jsonLocationLongitude.GetString(), CultureInfo.GetCultureInfo("en-US"))
+                                : 0,
+                        };
+                        GridSquare = jsonLocation.TryGetProperty("gridsquare", out JsonElement jsonLocationGridSquare) ? jsonLocationGridSquare.GetString() : "";
+                    }
+
+                    if (root.TryGetProperty("otherInfo", out JsonElement jsonOtherInfo))
+                    {
+                        if (jsonOtherInfo.TryGetProperty("grantDate", out JsonElement jsonGrantDate))
+                        {
+                            GrantDate = DateTimeOffset.TryParse(jsonGrantDate.GetString(), out DateTimeOffset _date)
+                                ? _date
+                                : new DateTimeOffset();
                         }
 
-                        if (root.TryGetProperty("trustee", out JsonElement jsonTrustee))
+                        if (jsonOtherInfo.TryGetProperty("expiryDate", out JsonElement jsonExpiryDate))
                         {
-                            if (jsonTrustee.TryGetProperty("callsign", out JsonElement jsonTrusteeCallsign) && !string.IsNullOrWhiteSpace(jsonTrusteeCallsign.GetString()))
-                            {
-                                Trustee = new Callsign(jsonTrusteeCallsign.GetString());
-                            }
+                            ExpiryDate = DateTimeOffset.TryParse(jsonExpiryDate.GetString(), out DateTimeOffset _date)
+                                ? _date
+                                : new DateTimeOffset();
                         }
 
-                        if (root.TryGetProperty("name", out JsonElement jsonName))
+                        if (jsonOtherInfo.TryGetProperty("lastActionDate", out JsonElement jsonLastActionDate))
                         {
-                            Name = jsonName.GetString();
+                            LastActionDate = DateTimeOffset.TryParse(jsonLastActionDate.GetString(), out DateTimeOffset _date)
+                                ? _date
+                                : new DateTimeOffset();
                         }
 
-                        if (root.TryGetProperty("address", out JsonElement jsonAddress))
+                        if (jsonOtherInfo.TryGetProperty("frn", out JsonElement jsonFrn))
                         {
-                            AddressAttn = jsonAddress.TryGetProperty("attn", out JsonElement jsonAddressAttn) ? jsonAddressAttn.GetString() : "";
-                            AddressLine1 = jsonAddress.TryGetProperty("line1", out JsonElement jsonAddressLine1) ? jsonAddressLine1.GetString() : "";
-                            AddressLine2 = jsonAddress.TryGetProperty("line2", out JsonElement jsonAddressLine2) ? jsonAddressLine2.GetString() : "";
+                            Frn = jsonFrn.GetString();
                         }
 
-                        if (root.TryGetProperty("location", out JsonElement jsonLocation))
+                        if (jsonOtherInfo.TryGetProperty("ulsUrl", out JsonElement jsonUlsUrl))
                         {
-                            Location = new GeographicPoint
-                            {
-                                Latitude = jsonLocation.TryGetProperty("latitude", out JsonElement jsonLocationLatitude)
-                                    ? Convert.ToDouble(jsonLocationLatitude.GetString(), CultureInfo.GetCultureInfo("en-US"))
-                                    : 0,
-                                Longitude = jsonLocation.TryGetProperty("longitude", out JsonElement jsonLocationLongitude)
-                                    ? Convert.ToDouble(jsonLocationLongitude.GetString(), CultureInfo.GetCultureInfo("en-US"))
-                                    : 0,
-                            };
-                            GridSquare = jsonLocation.TryGetProperty("gridsquare", out JsonElement jsonLocationGridSquare) ? jsonLocationGridSquare.GetString() : "";
+                            UlsUri = new Uri(jsonUlsUrl.GetString());
                         }
-
-                        if (root.TryGetProperty("otherInfo", out JsonElement jsonOtherInfo))
-                        {
-                            if (jsonOtherInfo.TryGetProperty("grantDate", out JsonElement jsonGrantDate))
-                            {
-                                GrantDate = DateTimeOffset.TryParse(jsonGrantDate.GetString(), out DateTimeOffset _date)
-                                    ? _date
-                                    : new DateTimeOffset();
-                            }
-
-                            if (jsonOtherInfo.TryGetProperty("expiryDate", out JsonElement jsonExpiryDate))
-                            {
-                                ExpiryDate = DateTimeOffset.TryParse(jsonExpiryDate.GetString(), out DateTimeOffset _date)
-                                    ? _date
-                                    : new DateTimeOffset();
-                            }
-
-                            if (jsonOtherInfo.TryGetProperty("lastActionDate", out JsonElement jsonLastActionDate))
-                            {
-                                LastActionDate = DateTimeOffset.TryParse(jsonLastActionDate.GetString(), out DateTimeOffset _date)
-                                    ? _date
-                                    : new DateTimeOffset();
-                            }
-
-                            if (jsonOtherInfo.TryGetProperty("frn", out JsonElement jsonFrn))
-                            {
-                                Frn = jsonFrn.GetString();
-                            }
-
-                            if (jsonOtherInfo.TryGetProperty("ulsUrl", out JsonElement jsonUlsUrl))
-                            {
-                                UlsUri = new Uri(jsonUlsUrl.GetString());
-                            }
-                        }
-
-                        break;
-
-                    default:
-                        throw new Exception("Returned JSON data does not match API specification.");
+                    }
                 }
             }
         }
@@ -173,6 +181,6 @@ namespace Hammer.Core.Models.Regional
     public class USLicenseData
     {
         public Callsign Callsign;
-        public string OperClass;
+        public OperatorClasses OperClass;
     }
 }
