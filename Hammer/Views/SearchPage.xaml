@@ -43,7 +43,7 @@
                 Visibility="Collapsed"/>
         </StackPanel>
         
-        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Collapsed" Margin="0,12,0,0">
+        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Visible" Margin="0,12,0,0">
             <TextBlock x:Name="SearchResultsHeader"
                        Style="{StaticResource HeaderTextBlockStyle}"
                        Text="{x:Bind Path=ViewModel.License.Callsign, Mode=OneWay}"/>
@@ -65,14 +65,14 @@
                     <StackPanel Margin="0,12,24,0">
                         <TextBlock x:Name="AddressAttnField"
                                    Text="{x:Bind Path=ViewModel.License.AddressAttn, Mode=OneWay}"
-                                   Margin="0,6,0,0"
+                                   Margin="0,8,0,0"
                                    Visibility="Collapsed"/>
                         <TextBlock x:Name="AddressLine1Field"
                                    Text="{x:Bind Path=ViewModel.License.AddressLine1, Mode=OneWay}"
-                                   Margin="0,6,0,0"/>
+                                   Margin="0,8,0,0"/>
                         <TextBlock x:Name="AddressLine2Field"
                                    Text="{x:Bind Path=ViewModel.License.AddressLine2, Mode=OneWay}"
-                                   Margin="0,6,0,0"/>
+                                   Margin="0,8,0,0"/>
                     </StackPanel>
 
                     <Button x:Name="ShowMapButton" Click="ShowMapButton_Click" HorizontalAlignment="Right" IsEnabled="False">
@@ -85,17 +85,17 @@
 
                 <Button x:Name="SearchTrusteeButton"
                         Click="SearchTrusteeButton_Click"
-                        Margin="0,12,0,6"
+                        Margin="0,16,0,8"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Find" Margin="0,0,6,0"/>
+                        <SymbolIcon Symbol="Find" Margin="0,0,8,0"/>
                         <TextBlock x:Name="SearchTrusteeButtonText"
                                    Text="{x:Bind sys:String.Format('Trustee {0}', ViewModel.License.Trustee), Mode=OneWay}"
                                    ToolTipService.ToolTip="Look up the trustee's callsign"/>
                     </StackPanel>
                 </Button>
 
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,12">Location</TextBlock>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,16">Location</TextBlock>
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -141,7 +141,7 @@
                                      Visibility="Collapsed"/>
                 </Grid>
 
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,12">Chronology</TextBlock>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,16">Chronology</TextBlock>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
