@@ -341,3 +341,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 Hammer/ApiTokens.cs
+.DS_Store
