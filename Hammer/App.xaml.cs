@@ -2,6 +2,7 @@
 using Hammer.Views;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -19,8 +20,8 @@ namespace Hammer
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         /// <summary>
@@ -30,6 +31,10 @@ namespace Hammer
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            //ApplicationView.PreferredLaunchViewSize = new Windows.Foundation.Size(500, 800);
+            //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Windows.Foundation.Size(500, 800));
+
             Frame rootFrame = (Frame)Window.Current.Content;
 
             // Do not repeat app initialization when the Window already has content,

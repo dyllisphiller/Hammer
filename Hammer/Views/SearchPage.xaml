@@ -7,26 +7,73 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:fi="using:Fluent.Icons"
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
-    xmlns:sys="using:System"
     x:Class="Hammer.Views.SearchPage"
     mc:Ignorable="d">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Uid="LabelTrustee" Label="Trustee">
+                <AppBarButton.Icon>
+                    <fi:FluentIconElement Symbol="Search20"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <AppBarButton x:Uid="LabelMap" Label="Map" Click="ShowMapButton_Click">
+                <AppBarButton.Icon>
+                    <fi:FluentIconElement Symbol="Map20"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <CommandBar.Content>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="10,10,10,10"
+                               Style="{StaticResource BaseTextBlockStyle}"
+                               Text="{x:Bind Path=ViewModel.License.Callsign.Sign, Mode=OneWay}"/>
+                    <TextBlock Margin="0,10,10,10"
+                               Style="{StaticResource DiminishedBodyTextBlockStyle}"
+                               Text="{x:Bind Path=ViewModel.License.Name, Mode=OneWay}"/>
+                </StackPanel>
+            </CommandBar.Content>
+        </CommandBar>
+    </Page.BottomAppBar>
 
     <Grid x:Name="SearchResults">
         <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>-->
-        <!--<Grid.RowDefinitions>
+        <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition/>
             <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>-->
+        </Grid.RowDefinitions>
 
         <Grid.Transitions>
             <TransitionCollection>
                 <RepositionThemeTransition />
             </TransitionCollection>
         </Grid.Transitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,16,0,0" Spacing="16">
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                       Text="{x:Bind Path=ViewModel.Overline, Mode=OneWay}"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="16">
+                <Button HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal">
+                        <fi:FluentIconElement Symbol="Search24" Margin="0,-2,8,0"/>
+                        <TextBlock x:Uid="LabelTrustee" Text="Trustee"/>
+                    </StackPanel>
+                </Button>
+
+                <Button HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal">
+                        <fi:FluentIconElement Symbol="Map24" Margin="0,-2,8,0"/>
+                        <TextBlock x:Uid="LabelMap" Text="Map"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
 
         <muxc:ProgressRing
             x:Name="SearchProgressRing"
@@ -36,151 +83,172 @@
             Width="60"/>
 
         <StackPanel x:Name="SearchPageDefault" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock
-                x:Name="SearchPageDefaultHeader"
-                Style="{StaticResource SubheaderTextBlockStyle}"
-                Text="Look up a callsign using the search field"
-                Visibility="Collapsed"/>
+            <TextBlock x:Name="SearchPageDefaultHeader"
+                       Style="{StaticResource SubheaderTextBlockStyle}"
+                       Text="Look up a callsign using the search field"
+                       Visibility="Collapsed"/>
         </StackPanel>
-        
-        <StackPanel x:Name="SearchResultsStackPanel" Visibility="Visible" Margin="0,12,0,0">
-            <TextBlock x:Name="SearchResultsHeader"
-                       Style="{StaticResource HeaderTextBlockStyle}"
-                       Text="{x:Bind Path=ViewModel.License.Callsign, Mode=OneWay}"/>
-            <TextBlock x:Name="SearchResultsSubheader"
+
+        <StackPanel Grid.Row="1" x:Name="SearchResultsStackPanel"
+                    Visibility="Collapsed"
+                    Margin="0,12,0,0">
+            <!--<TextBlock x:Name="SearchResultsHeader"
                        Style="{StaticResource TitleTextBlockStyle}"
+                       Text="{x:Bind Path=ViewModel.Overline, Mode=OneWay}"/>-->
+            <TextBlock x:Name="SearchResultsSubheader"
+                       Style="{StaticResource SubheaderTextBlockStyle}"
                        Text="{x:Bind Path=ViewModel.License.Name, Mode=OneWay}"/>
-            
+
             <StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
 
-                    <StackPanel Margin="0,12,24,0">
-                        <TextBlock x:Name="AddressAttnField"
-                                   Text="{x:Bind Path=ViewModel.License.AddressAttn, Mode=OneWay}"
-                                   Margin="0,8,0,0"
-                                   Visibility="Collapsed"/>
-                        <TextBlock x:Name="AddressLine1Field"
-                                   Text="{x:Bind Path=ViewModel.License.AddressLine1, Mode=OneWay}"
-                                   Margin="0,8,0,0"/>
-                        <TextBlock x:Name="AddressLine2Field"
-                                   Text="{x:Bind Path=ViewModel.License.AddressLine2, Mode=OneWay}"
-                                   Margin="0,8,0,0"/>
-                    </StackPanel>
+                <StackPanel Margin="0,16,24,0">
+                    <TextBlock x:Name="AddressAttnField"
+                                Text="{x:Bind Path=ViewModel.License.AddressAttn, Mode=OneWay}"
+                                Margin="0,4,0,0"
+                                Visibility="{x:Bind Path=ViewModel.HasAddressAttn}"/>
+                    <TextBlock x:Name="AddressLine1Field"
+                                Text="{x:Bind Path=ViewModel.License.AddressLine1, Mode=OneWay}"
+                                Margin="0,4,0,0"/>
+                    <TextBlock x:Name="AddressLine2Field"
+                                Text="{x:Bind Path=ViewModel.License.AddressLine2, Mode=OneWay}"
+                                Margin="0,4,0,0"/>
 
-                    <Button x:Name="ShowMapButton" Click="ShowMapButton_Click" HorizontalAlignment="Right" IsEnabled="False">
+                    <Button x:Name="ShowMapButton"
+                            Click="ShowMapButton_Click"
+                            HorizontalAlignment="Right"
+                            IsEnabled="False"
+                            ToolTipService.ToolTip="View a map of this licensee’s location">
                         <StackPanel Orientation="Horizontal">
-                            <fi:FluentIconElement Symbol="Map20" Margin="0,0,8,0"/>
+                            <fi:FluentIconElement Symbol="Map24" Margin="0,-2,8,0"/>
                             <TextBlock>Map</TextBlock>
                         </StackPanel>
                     </Button>
-                </Grid>
+                </StackPanel>
 
                 <Button x:Name="SearchTrusteeButton"
                         Click="SearchTrusteeButton_Click"
-                        Margin="0,16,0,8"
-                        Visibility="Collapsed">
+                        Margin="0,16,0,0"
+                        Visibility="Visible"
+                        ToolTipService.ToolTip="Look up the trustee’s callsign">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Find" Margin="0,0,8,0"/>
+                        <fi:FluentIconElement Symbol="Search24" Margin="0,-2,8,0"/>
                         <TextBlock x:Name="SearchTrusteeButtonText"
-                                   Text="{x:Bind sys:String.Format('Trustee {0}', ViewModel.License.Trustee), Mode=OneWay}"
-                                   ToolTipService.ToolTip="Look up the trustee's callsign"/>
+                                   Text="{x:Bind ViewModel.AsClubLicense.Trustee.Callsign, Mode=OneWay}"/>
                     </StackPanel>
                 </Button>
 
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,16">Location</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="0,32,32,0">
+                        <TextBlock Text="Location"
+                               Style="{StaticResource TitleTextBlockStyle}"/>
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"
+                            <TextBlock x:Uid="LabelLatitude"
+                                   Text="Latitude"
+                                   Grid.Column="0"
+                                   Grid.Row="0"
+                                   Margin="0,0,8,0"
+                                   Style="{StaticResource BaseTextBlockStyle}"/>
+                            <TextBlock x:Name="LocationLatitudeField"
+                                   Text="{x:Bind Path=ViewModel.License.Location.Latitude, Mode=OneWay}"
+                                   Grid.Column="1"
+                                   Grid.Row="0"
+                                   Style="{StaticResource DiminishedBodyTextBlockStyle}"/>
+
+                            <TextBlock x:Uid="LabelLongitude"
+                                   Text="Longitude"
+                                   Grid.Column="0"
+                                   Grid.Row="1"
+                                   Margin="0,0,8,0"
+                                   Style="{StaticResource BaseTextBlockStyle}"/>
+                            <TextBlock x:Name="LocationLongitudeField"
+                                   Text="{x:Bind Path=ViewModel.License.Location.Longitude, Mode=OneWay}"
+                                   Grid.Column="1"
+                                   Grid.Row="1"
+                                   Style="{StaticResource DiminishedBodyTextBlockStyle}"/>
+
+                            <TextBlock x:Uid="LabelGridSquare"
+                                   Text="Grid Square"
+                                   Grid.Column="0"
+                                   Grid.Row="2"
+                                   Margin="0,0,8,0"
+                                   Style="{StaticResource BaseTextBlockStyle}"/>
+                            <TextBlock x:Name="GridSquareField"
+                                   Text="{x:Bind Path=ViewModel.License.GridSquare, Mode=OneWay}"
+                                   Grid.Column="1"
+                                   Grid.Row="2"
+                                   Style="{StaticResource DiminishedBodyTextBlockStyle}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!--<Maps:MapControl x:Name="LicenseLocationMapControl"
+                                 ZoomInteractionMode="GestureAndControl"
+                                 TiltInteractionMode="GestureAndControl"
+                                 Visibility="Visible"/>-->
+
+                    <StackPanel Margin="0,32,0,0">
+                        <TextBlock Text="Chronology"
+                                   Style="{StaticResource TitleTextBlockStyle}"/>
+
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock x:Uid="LabelDateGranted"
+                               Text="Granted"
                                Grid.Column="0"
-                               Text="Latitude"
+                               Grid.Row="0"
+                               Margin="0,0,8,0"
                                Style="{StaticResource BaseTextBlockStyle}"/>
-                    <TextBlock x:Name="LocationLatitudeField"
-                               Grid.Row="1"
+                            <TextBlock x:Name="DateGrantedField"
+                               Grid.Row="0"
+                               Grid.Column="1"
+                               Text="{x:Bind Path=ViewModel.License.GrantDate.ToString('d', currentCulture), Mode=OneWay}"
+                               Style="{StaticResource DiminishedBodyTextBlockStyle}"/>
+
+                            <TextBlock x:Uid="LabelDateModified"
+                               Text="Modified"
                                Grid.Column="0"
-                               Text="{x:Bind Path=ViewModel.License.Location.Latitude, Mode=OneWay}"/>
-
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="1"
-                               Text="Longitude"
+                               Grid.Row="1"
+                               Margin="0,0,8,0"
                                Style="{StaticResource BaseTextBlockStyle}"/>
-                    <TextBlock x:Name="LocationLongitudeField"
+                            <TextBlock x:Name="DateModifiedField"
                                Grid.Row="1"
                                Grid.Column="1"
-                               Text="{x:Bind Path=ViewModel.License.Location.Longitude, Mode=OneWay}"/>
+                               Text="{x:Bind Path=ViewModel.License.ModifiedDate.ToString('d', currentCulture), Mode=OneWay}"
+                               Style="{StaticResource DiminishedBodyTextBlockStyle}"/>
 
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="2"
-                               Text="Grid Square"
+                            <TextBlock x:Uid="LabelDateExpiry"
+                               Text="Expires"
+                               Grid.Column="0"
+                               Grid.Row="2"
+                               Margin="0,0,8,0"
                                Style="{StaticResource BaseTextBlockStyle}"/>
-                    <TextBlock x:Name="GridSquareField"
-                               Grid.Row="1"
-                               Grid.Column="2"
-                               Text="{x:Bind Path=ViewModel.License.GridSquare, Mode=OneWay}"/>
-
-                    <Maps:MapControl x:Name="LicenseLocationMapControl"
-                                     ZoomInteractionMode="GestureAndControl"
-                                     TiltInteractionMode="GestureAndControl"
-                                     Visibility="Collapsed"/>
-                </Grid>
-
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,24,0,16">Chronology</TextBlock>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                           Grid.Column="0"
-                           Style="{StaticResource BaseTextBlockStyle}"
-                           Text="Granted"/>
-                    <TextBlock x:Name="DateGrantedField"
-                           Grid.Row="1"
-                           Grid.Column="0"
-                           Text="{x:Bind Path=ViewModel.License.GrantDate.ToString('d', invariantCulture), Mode=OneWay}"/>
-
-                    <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           Style="{StaticResource BaseTextBlockStyle}"
-                           Text="Modified"/>
-                    <TextBlock x:Name="DateModifiedField"
-                           Grid.Row="1"
-                           Grid.Column="1"
-                           Text="{x:Bind Path=ViewModel.License.ModifiedDate.ToString('d', invariantCulture), Mode=OneWay}"/>
-
-                    <TextBlock Grid.Row="0"
-                           Grid.Column="2"
-                           Style="{StaticResource BaseTextBlockStyle}"
-                           Text="Expires"/>
-                    <TextBlock x:Name="DateExpiryField"
-                           Grid.Row="1"
-                           Grid.Column="2"
-                           Text="{x:Bind Path=ViewModel.License.ExpiryDate.ToString('d', invariantCulture), Mode=OneWay}"/>
-                </Grid>
+                            <TextBlock x:Name="DateExpiryField"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               Text="{x:Bind Path=ViewModel.License.ExpiryDate.ToString('d', currentCulture), Mode=OneWay}"
+                               Style="{StaticResource DiminishedBodyTextBlockStyle}"/>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
 
                 <HyperlinkButton x:Name="LicenseExternalUriButton"
                                  Content="View on FCC ULS"

@@ -7,8 +7,8 @@
     xmlns:local="using:Hammer.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:Width="1920"
-    d:Height="1080"
+    d:Width="1200"
+    d:Height="800"
     mc:Ignorable="d">
 
     <Grid Margin="0,12,0,0">
@@ -63,6 +63,22 @@
                     </StackPanel>
 
                     <StackPanel Margin="0,0,0,32">
+                        <StackPanel Orientation="Horizontal">
+                            <fi:FluentIconElement Symbol="PersonQuestionMark20Filled" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                            <Button x:Name="HelpButton" Style="{ThemeResource TextBlockButtonStyle}" Click="HelpButton_Click">
+                                Get help
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <fi:FluentIconElement Symbol="PersonFeedback20Filled" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                            <Button x:Name="FeedbackButton" Style="{ThemeResource TextBlockButtonStyle}" Click="FeedbackButton_Click">
+                                Give feedback
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,32">
                         <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,8">
                             Gratitude &amp; thanks
                         </TextBlock>
@@ -78,22 +94,11 @@
                             <Run FontWeight="SemiBold">.<!--TODO: courtesy ask before mentioning--></Run>
                             for development advice and troubleshooting.
                         </TextBlock>
-                    </StackPanel>
-
-                    <StackPanel Margin="0,0,0,32">
-                        <StackPanel Orientation="Horizontal">
-                            <fi:FluentIconElement Symbol="PersonQuestionMark20Filled" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                            <Button x:Name="HelpButton" Style="{ThemeResource TextBlockButtonStyle}" Click="HelpButton_Click">
-                                Get help
-                            </Button>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal">
-                            <fi:FluentIconElement Symbol="PersonFeedback20Filled" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                            <Button x:Name="FeedbackButton" Style="{ThemeResource TextBlockButtonStyle}" Click="FeedbackButton_Click">
-                                Give feedback
-                            </Button>
-                        </StackPanel>
+                        <TextBlock Style="{StaticResource DiminishedBodyTextBlockStyle}" Margin="0,0,0,8">
+                            Thanks to Anthony Giretti for
+                            <Hyperlink NavigateUri="https://anthonygiretti.com/2020/10/03/net-5-exploring-system-net-http-json-namespace/">exploring System.Net.Http.Json</Hyperlink>,
+                            which was insufficiently documented elsewhere during development.
+                        </TextBlock>
                     </StackPanel>
                 </StackPanel>
             </Grid>

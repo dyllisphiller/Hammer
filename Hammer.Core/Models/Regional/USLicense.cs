@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -63,10 +63,6 @@ namespace Hammer.Core.Models.Regional
                         string licenseeType = jsonLicenseeType.GetString().ToUpperInvariant();
                         LicenseeType = ParseLicenseeType(licenseeType);
                     }
-
-                    JsonElement current = root.GetProperty("current");
-
-                    Callsign currentCallsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
 
                     if (root.TryGetProperty("current", out JsonElement jsonCurrent))
                     {
@@ -184,3 +180,4 @@ namespace Hammer.Core.Models.Regional
         public OperatorClasses OperClass;
     }
 }
+*/

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace Hammer.Core.Models
 {
@@ -17,6 +14,11 @@ namespace Hammer.Core.Models
                 trustee = value;
                 RaisePropertyChanged(nameof(Trustee));
             }
+        }
+
+        public ClubLicense()
+        {
+            LicenseeType = LicenseeTypes.Club;
         }
     }
 }

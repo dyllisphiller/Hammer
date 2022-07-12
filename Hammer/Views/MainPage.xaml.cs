@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Hammer.Core.Helpers;
+using Hammer.Core.Models;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,7 +30,7 @@ namespace Hammer.Views
         {
             ("home", typeof(HomePage)),
             ("search", typeof(SearchPage)),
-            //("people", typeof(PeoplePage)),
+            ("people", typeof(PeoplePage)),
         };
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
@@ -77,6 +77,7 @@ namespace Hammer.Views
         private void NavView_Navigate(string navItemTag, NavigationTransitionInfo transitionInfo)
         {
             Type _page = null;
+
             if (navItemTag == "settings")
             {
                 _page = typeof(SettingsPage);
@@ -86,6 +87,7 @@ namespace Hammer.Views
                 var item = _pages.FirstOrDefault(p => p.Tag.Equals(navItemTag));
                 _page = item.Page;
             }
+
             // Get the page type before navigation so you can prevent duplicate
             // entries in the backstack.
             var preNavPageType = ContentFrame.CurrentSourcePageType;
@@ -159,10 +161,12 @@ namespace Hammer.Views
         {
             InitializeComponent();
 
-            string[] ashValues = { "W1AW", "W2AW", "W3AW", "W4AW", "W5AW" };
+            string[] ashValues = { "W1AW" };
             autoSuggestHistory = new MostRecentlyUsedList<string>(5, ashValues);
 
             NavViewSearchBox.ItemsSource = autoSuggestHistory.GetList();
+
+            //SearchTip.IsOpen = true;
         }
 
         private void NavViewSearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)

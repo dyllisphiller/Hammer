@@ -8,7 +8,6 @@ using Hammer.Core.ViewModels;
 using Hammer.Helpers.Maps;
 using MUXC = Microsoft.UI.Xaml.Controls;
 using Windows.Devices.Geolocation;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -21,7 +20,7 @@ namespace Hammer.Views
     /// </summary>
     public sealed partial class SearchPage : Page, INotifyPropertyChanged
     {
-        internal CultureInfo invariantCulture = CultureInfo.InvariantCulture;
+        internal CultureInfo currentCulture = CultureInfo.CurrentCulture;
         internal LicenseViewModel ViewModel { get; set; } = new LicenseViewModel();
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -47,33 +46,25 @@ namespace Hammer.Views
 
                 try
                 {
-                    await CallsignSearch(p);
+                    Callsign callsign = new Callsign(p);
+                    await CallsignSearch(callsign);
                 }
                 catch (Exception ex)
                 {
-                    ContentDialog contentDialog = new ContentDialog()
-                    {
-                        Title = ex.Message,
-                        CloseButtonText = "OK",
-                    };
-                    await contentDialog.ShowAsync();
+                    //await ExceptionDialog(ex);
                 }
             }
+
+            base.OnNavigatedTo(e);
         }
 
         private async Task CallsignSearch(Callsign callsign)
         {
-            await CallsignSearch(callsign.ToString());
-        }
-
-        private async Task CallsignSearch(string callsign)
-        {
-            if (string.IsNullOrEmpty(callsign))
+            if (string.IsNullOrEmpty(callsign.Sign))
             {
                 ContentDialog dialog = new ContentDialog()
                 {
-                    Title = "Enter a callsign to look up a license",
-                    Content = "The search field cannot be empty.",
+                    Content = "Enter a callsign to look up a license.",
                     CloseButtonText = "OK",
                 };
                 await dialog.ShowAsync();
@@ -89,27 +80,17 @@ namespace Hammer.Views
             }
             catch (UnsupportedIssuerException ex)
             {
-                ContentDialog _ = new ContentDialog()
-                {
-                    Title = ex.Message,
-                    CloseButtonText = "OK",
-                };
-                await _.ShowAsync();
+                await ExceptionDialog(ex);
             }
             catch (LicenseDatabaseUpdatingException ex)
             {
-                ContentDialog _ = new ContentDialog()
-                {
-                    Title = ex.Message,
-                    CloseButtonText = "OK",
-                };
-                await _.ShowAsync();
+                await ExceptionDialog(ex);
             }
             catch (Exception ex)
             {
+                await ExceptionDialog(ex);
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
-
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ViewModel.License"));
 
@@ -128,7 +109,7 @@ namespace Hammer.Views
             SearchTrusteeButton.Visibility = ViewModel.License is IInTrust ? Visibility.Collapsed : Visibility.Visible;
             AddressAttnField.Visibility = ViewModel.License.AddressAttn == null ? Visibility.Collapsed : Visibility.Visible;
 
-            //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = licenseSearchResult.Location.Latitude, Longitude = licenseSearchResult.Location.Longitude };
+            //BasicGeoposition mapPosition = new BasicGeoposition() { Latitude = ViewModel.License.Location.Latitude, Longitude = ViewModel.License.Location.Longitude };
             //Geopoint mapPositionCenter = new Geopoint(mapPosition);
             //LicenseLocationMapControl.Center = mapPositionCenter;
             //LicenseLocationMapControl.ZoomLevel = 12;
@@ -140,30 +121,40 @@ namespace Hammer.Views
             SearchResultsStackPanel.Visibility = Visibility.Visible;
         }
 
+        private static async Task ExceptionDialog(Exception ex)
+        {
+            ContentDialog dialog = new ContentDialog()
+            {
+                Content = ex.Message,
+                CloseButtonText = "OK",
+            };
+            await dialog.ShowAsync();
+        }
+
         private void ShowMapButton_Click(object sender, RoutedEventArgs e)
         {
             Placecard.ShowPlacecard(sender,
                 new Geopoint(new BasicGeoposition() { Latitude = ViewModel.License.Location.Latitude, Longitude = ViewModel.License.Location.Longitude }),
-                ViewModel.License.Callsign.Sign,
+                ViewModel.License.Name,
                 ViewModel.License.AddressLine1,
                 ViewModel.License.AddressLine2);
         }
 
-        private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
-        {
-            LauncherOptions options = new LauncherOptions
-            {
-                TreatAsUntrusted = true
-            };
+        //private async void UlsUriButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    LauncherOptions options = new LauncherOptions
+        //    {
+        //        TreatAsUntrusted = true
+        //    };
 
-            await Launcher.LaunchUriAsync(ViewModel.License.UlsUri, options);
-        }
+        //    await Launcher.LaunchUriAsync(ViewModel.License.UlsUri, options);
+        //}
 
         private async void SearchTrusteeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.License is ClubLicense)
+            if (ViewModel.License is ClubLicense _cl)
             {
-                await CallsignSearch(((ClubLicense)ViewModel.License).Trustee.Callsign);
+                await CallsignSearch(_cl.Trustee.Callsign);
             }
         }
     }

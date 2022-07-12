@@ -23,7 +23,7 @@ namespace Hammer.Helpers.Maps
             {
                 PlaceInfoCreateOptions options = new PlaceInfoCreateOptions
                 {
-                    DisplayAddress = $"{addressLine1}, {addressLine2}",
+                    DisplayAddress = $"{addressLine1}\r\n{addressLine2}",
                     DisplayName = displayName
                 };
 

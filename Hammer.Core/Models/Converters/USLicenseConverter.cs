@@ -1,4 +1,4 @@
-﻿using Hammer.Core.Models.Regional;
+﻿/*using Hammer.Core.Models.Regional;
 
 namespace Hammer.Core.Models.Converters
 {
@@ -29,3 +29,4 @@ namespace Hammer.Core.Models.Converters
         }
     }
 }
+*/

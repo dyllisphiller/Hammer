@@ -1,8 +1,12 @@
 # Hammer
 
-Currently, Hammer is a pre-alpha Windows app for getting FCC data about amateur callsigns using the <https://callook.info/> JSON API. Other utilities (TBD) may come later as needed.
+Currently, Hammer is a pre-alpha Windows app for getting FCC data about amateur
+callsigns using the <https://callook.info/> JSON API. Other utilities may come
+later, as needed.
 
-The ultimate goal is platform-agnostic amateur radio utility library and UIs that leverage it, either platform-specific or using a technology like .NET MAUI (Multi-platform App User Interface).
+The ultimate goal is platform-agnostic amateur radio utility library and UIs
+that leverage it, either platform-specific or using a technology like .NET MAUI
+(Multi-platform App User Interface).
 
 ## Components
 

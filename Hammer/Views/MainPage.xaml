@@ -24,13 +24,13 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Tag="search"
-                                    Content="Callsign lookup"
+                                    Content="License"
                                     AccessKey="L">
                     <muxc:NavigationViewItem.Icon>
                         <fi:FluentIconElement Symbol="Certificate24"/>
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
-                <!--<NavigationViewItem Tag="people"
+                <!--<muxc:NavigationViewItem Tag="people"
                                     Icon="People"
                                     Content="People"
                                     AccessKey="P"/>-->
@@ -52,7 +52,7 @@
 
             <ScrollViewer>
                 <Frame x:Name="ContentFrame"
-                       Padding="12,0,12,24"
+                       Padding="12,12,12,24"
                        IsTabStop="True"
                        NavigationFailed="ContentFrame_NavigationFailed"/>
             </ScrollViewer>

@@ -3,33 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
-using Hammer.Core.Maps;
+using Hammer.Core.Helpers;
 
 namespace Hammer.Core.Models
 {
-    public class Factories
+    public static class Factories
     {
-        private static OperatorClasses ParseOperatorClass(string operatorClassString)
-        {
-            return !Enum.TryParse(operatorClassString, true, out OperatorClasses operatorClass)
-                ? operatorClass
-                : OperatorClasses.Unknown;
-        }
-
-        private static LicenseeTypes ParseLicenseeType(string licenseeTypeString)
-        {
-            return !Enum.TryParse(licenseeTypeString, true, out LicenseeTypes licenseeType)
-                ? licenseeType
-                : LicenseeTypes.Unknown;
-        }
-
-        private static LicenseStatus ParseLicenseStatus(string licenseStatusString)
-        {
-            return !Enum.TryParse(licenseStatusString, true, out LicenseStatus licenseStatus)
-                ? licenseStatus
-                : LicenseStatus.Unknown;
-        }
-
         private static BaseLicense NewLicenseByType(LicenseeTypes licenseeType)
         {
             switch (licenseeType)
@@ -43,7 +22,7 @@ namespace Hammer.Core.Models
             }
         }
 
-        public BaseLicense MakeLicense(string jsonString)
+        public static BaseLicense MakeLicense(string jsonString)
         {
             BaseLicense license;
 
@@ -51,48 +30,46 @@ namespace Hammer.Core.Models
             {
                 JsonElement root = document.RootElement;
 
-                LicenseStatus _status = ParseLicenseStatus(root.GetProperty("status").GetString());
+                string statusString = root.GetProperty("status").GetString();
+                LicenseStatus _status = Parsers.ParseEnum<LicenseStatus>(statusString);
 
                 if (_status == LicenseStatus.Valid)
                 {
                     string licenseeTypeString = root.GetProperty("type").GetString().ToUpperInvariant();
-                    LicenseeTypes licenseeType = ParseLicenseeType(licenseeTypeString);
+                    LicenseeTypes licenseeType = Parsers.ParseEnum<LicenseeTypes>(licenseeTypeString);
+
                     license = NewLicenseByType(licenseeType);
-
-                    JsonElement current = root.GetProperty("current");
-
 
                     if (root.TryGetProperty("current", out JsonElement jsonCurrent))
                     {
-                        license.Callsign = new Callsign(current.GetProperty("callsign").GetString().ToUpperInvariant());
+                        string callsignString = jsonCurrent.GetProperty("callsign").GetString().ToUpperInvariant();
+                        license.Callsign = new Callsign(callsignString);
 
                         if (license is PersonalLicense _pl
                             && jsonCurrent.TryGetProperty("operClass", out JsonElement jsonCurrentOperClass))
                         {
                             string currentOperClass = jsonCurrentOperClass.GetString().ToUpperInvariant();
-                            _pl.OperatorClass = ParseOperatorClass(currentOperClass);
+                            _pl.OperatorClass = Parsers.ParseEnum<OperatorClasses>(currentOperClass);
                         }
                     }
 
-                    // If there is a previous callsign and/or operator class, add Previous data
-                    if (license is PersonalLicense _pl)
+                    if (root.TryGetProperty("previous", out JsonElement jsonPrevious))
                     {
-                        if (root.TryGetProperty("previous", out JsonElement jsonPrevious))
+                        if (jsonCurrent.TryGetProperty("callsign", out JsonElement jsonPreviousCallsign))
                         {
-                            if (jsonPrevious.TryGetProperty("callsign", out JsonElement jsonPreviousCallsign)
-                                && jsonPrevious.TryGetProperty("operClass", out JsonElement jsonPreviousOperClass))
-                            {
-                                string previousCallsign = jsonPreviousCallsign.GetString();
-                                string previousOperClass = jsonPreviousOperClass.GetString();
+                            string previousCallsign = jsonPreviousCallsign.GetString().ToUpperInvariant();
+                            license.PreviousCallsign = new Callsign(previousCallsign);
+                        }
 
-                                if (!string.IsNullOrWhiteSpace(previousCallsign)
-                                    && !string.IsNullOrWhiteSpace(previousOperClass))
-                                {
-                                    _pl.Historical.Add((
-                                        new Callsign(previousCallsign),
-                                        ParseOperatorClass(previousOperClass)));
-                                }
+                        if (license is PersonalLicense _pl
+                            && jsonPrevious.TryGetProperty("operClass", out JsonElement jsonPreviousOperClass))
+                        {
+                            string previousOperClass = jsonPreviousOperClass.GetString();
+                            if (!string.IsNullOrWhiteSpace(previousOperClass))
+                            {
+                                _pl.PreviousOperatorClass = Parsers.ParseEnum<OperatorClasses>(previousOperClass);
                             }
+
                         }
                     }
 
@@ -139,22 +116,22 @@ namespace Hammer.Core.Models
                         if (jsonOtherInfo.TryGetProperty("grantDate", out JsonElement jsonGrantDate))
                         {
                             license.GrantDate = DateTimeOffset.TryParse(jsonGrantDate.GetString(), out DateTimeOffset _date)
-                                                ? _date
-                                                : new DateTimeOffset();
+                                ? _date
+                                : new DateTimeOffset();
                         }
 
                         if (jsonOtherInfo.TryGetProperty("expiryDate", out JsonElement jsonExpiryDate))
                         {
                             license.ExpiryDate = DateTimeOffset.TryParse(jsonExpiryDate.GetString(), out DateTimeOffset _date)
-                                                 ? _date
-                                                 : new DateTimeOffset();
+                                ? _date
+                                : new DateTimeOffset();
                         }
 
                         if (jsonOtherInfo.TryGetProperty("lastActionDate", out JsonElement jsonLastActionDate))
                         {
                             license.ModifiedDate = DateTimeOffset.TryParse(jsonLastActionDate.GetString(), out DateTimeOffset _date)
-                                                   ? _date
-                                                   : new DateTimeOffset();
+                                ? _date
+                                : new DateTimeOffset();
                         }
 
                         if (jsonOtherInfo.TryGetProperty("frn", out JsonElement jsonFrn))
@@ -166,10 +143,16 @@ namespace Hammer.Core.Models
                         {
                             license.UlsUri = new Uri(jsonUlsUrl.GetString());
                         }
+
+                        return license;
                     }
                 }
+                else
+                {
+                    return new PersonalLicense();
+                }
             }
-            return license;
+            return new PersonalLicense();
         }
     }
 }

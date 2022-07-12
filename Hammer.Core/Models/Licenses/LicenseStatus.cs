@@ -18,9 +18,5 @@
         /// Indicates the API source is updating.
         /// </summary>
         Updating,
-        /// <summary>
-        /// Indicates a license contains example (i.e., fake) data.
-        /// </summary>
-        ETESTLICENSEDATA,
     }
 }

@@ -6,33 +6,51 @@ namespace Hammer.Core.ViewModels
 {
     public class LicenseViewModel : INotifyPropertyChanged
     {
-        private static readonly BaseLicense defaultLicense;
         private BaseLicense license;
 
         public BaseLicense License
         {
-            get => license ?? defaultLicense;
-            set => license = value;
+            get => license;
+            set
+            {
+                license = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(Overline));
+            }
         }
 
-        static LicenseViewModel() => defaultLicense = PersonalLicense.GetTestLicense();
+        public bool IsClubLicense => license is ClubLicense;
+        public bool IsPersonalLicense => license is PersonalLicense;
+
+        public ClubLicense AsClubLicense => license as ClubLicense;
+        public PersonalLicense AsPersonalLicense => license as PersonalLicense;
+
+        public bool HasAddressAttn => !string.IsNullOrWhiteSpace(License.AddressAttn);
+
+        public string Overline
+        {
+            get
+            {
+                string overline = string.IsNullOrWhiteSpace(License.Callsign.Sign) ? "" : License.Callsign.Sign;
+                const string SEPARATOR = " • ";
+
+                //if (IsPersonalLicense) overline += string.IsNullOrWhiteSpace(overline) ? $"{AsPersonalLicense.OperatorClass}" : $" ({AsPersonalLicense.OperatorClass})";
+                //else if (IsClubLicense) overline += string.IsNullOrWhiteSpace(overline) ? $"{AsClubLicense.Trustee.Callsign}" : $"{SEPARATOR}{AsClubLicense.Trustee.Callsign}";
+
+                return overline;
+            }
+        }
 
         public LicenseViewModel()
         {
-            License.PropertyChanged += License_PropertyChanged;
+            License = new TestLicense();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void License_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            BaseLicense _license = sender as BaseLicense;
-
         }
     }
 }

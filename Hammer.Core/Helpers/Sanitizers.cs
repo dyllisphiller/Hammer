@@ -9,7 +9,7 @@ namespace Hammer.Core.Helpers
         {
             if (string.IsNullOrWhiteSpace(callsign))
             {
-                throw new ArgumentNullException(nameof(callsign), "callsign cannot be null, empty, or white space");
+                throw new ArgumentException($"{nameof(callsign)} cannot be null, empty, or white space", nameof(callsign));
             }
             return Regex.Replace(callsign.ToUpperInvariant(), @"[^\p{Lu}\p{Nd}]", "");
         }

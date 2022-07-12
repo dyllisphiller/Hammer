@@ -1,4 +1,4 @@
-﻿namespace Hammer.Core.Helpers
+﻿namespace Hammer.Core
 {
     public interface IClipboard
     {

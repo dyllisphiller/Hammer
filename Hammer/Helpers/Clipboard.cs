@@ -1,3 +1,4 @@
+using Hammer.Core;
 using Hammer.Core.Helpers;
 using Windows.ApplicationModel.DataTransfer;
 

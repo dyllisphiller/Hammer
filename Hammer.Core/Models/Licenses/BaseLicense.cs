@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Hammer.Core.Maps;
+using Hammer.Core.Helpers;
 
 namespace Hammer.Core.Models
 {
@@ -10,6 +9,7 @@ namespace Hammer.Core.Models
     {
         private Guid id;
         private Callsign callsign;
+        private Callsign previousCallsign;
         private string name;
         private LicenseStatus status;
         private LicenseeTypes licenseeType;
@@ -43,7 +43,17 @@ namespace Hammer.Core.Models
             set
             {
                 callsign = value;
-                RaisePropertyChanged(nameof(Callsign));
+                RaisePropertyChanged();
+            }
+        }
+
+        public Callsign PreviousCallsign
+        {
+            get => previousCallsign;
+            set
+            {
+                previousCallsign = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -56,7 +66,7 @@ namespace Hammer.Core.Models
             set
             {
                 name = value;
-                RaisePropertyChanged(nameof(Name));
+                RaisePropertyChanged();
             }
         }
 
@@ -69,7 +79,7 @@ namespace Hammer.Core.Models
             set
             {
                 status = value;
-                RaisePropertyChanged(nameof(Status));
+                RaisePropertyChanged();
             }
         }
 
@@ -91,7 +101,7 @@ namespace Hammer.Core.Models
             set
             {
                 frn = value;
-                RaisePropertyChanged(nameof(FRN));
+                RaisePropertyChanged();
             }
         }
 
@@ -104,7 +114,7 @@ namespace Hammer.Core.Models
             set
             {
                 ulsUri = value;
-                RaisePropertyChanged(nameof(UlsUri));
+                RaisePropertyChanged();
             }
         }
 
@@ -117,7 +127,7 @@ namespace Hammer.Core.Models
             set
             {
                 grantDate = value;
-                RaisePropertyChanged(nameof(GrantDate));
+                RaisePropertyChanged();
             }
         }
 
@@ -130,7 +140,7 @@ namespace Hammer.Core.Models
             set
             {
                 expiryDate = value;
-                RaisePropertyChanged(nameof(ExpiryDate));
+                RaisePropertyChanged();
             }
         }
 
@@ -143,7 +153,7 @@ namespace Hammer.Core.Models
             set
             {
                 modifiedDate = value;
-                RaisePropertyChanged(nameof(ModifiedDate));
+                RaisePropertyChanged();
             }
         }
 
@@ -157,7 +167,7 @@ namespace Hammer.Core.Models
             set
             {
                 location = value;
-                RaisePropertyChanged(nameof(Location));
+                RaisePropertyChanged();
             }
         }
 
@@ -170,7 +180,7 @@ namespace Hammer.Core.Models
             set
             {
                 gridSquare = value;
-                RaisePropertyChanged(nameof(GridSquare));
+                RaisePropertyChanged();
             }
         }
 
@@ -183,7 +193,7 @@ namespace Hammer.Core.Models
             set
             {
                 addressLine1 = value;
-                RaisePropertyChanged(nameof(AddressLine1));
+                RaisePropertyChanged();
             }
         }
 
@@ -196,7 +206,7 @@ namespace Hammer.Core.Models
             set
             {
                 addressLine2 = value;
-                RaisePropertyChanged(nameof(AddressLine2));
+                RaisePropertyChanged();
             }
         }
 
@@ -209,7 +219,7 @@ namespace Hammer.Core.Models
             set
             {
                 addressAttn = value;
-                RaisePropertyChanged(nameof(AddressAttn));
+                RaisePropertyChanged();
             }
         }
 
@@ -222,7 +232,7 @@ namespace Hammer.Core.Models
             set
             {
                 country = value;
-                RaisePropertyChanged(nameof(Country));
+                RaisePropertyChanged();
             }
         }
 

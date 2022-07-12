@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Hammer.Core.Helpers;
+using Hammer.Core.Models;
 using Windows.Storage;
 
 namespace Hammer.Settings
