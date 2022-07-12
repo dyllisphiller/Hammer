@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hammer.Core.Helpers
+namespace Hammer.Core.Models
 {
     public static class ListExtensions
     {

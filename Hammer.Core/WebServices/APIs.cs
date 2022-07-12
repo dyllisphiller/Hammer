@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Hammer.Core.Models;
 
 namespace Hammer.Core.WebServices
 {
@@ -32,18 +33,18 @@ namespace Hammer.Core.WebServices
         /// <param name="callsign">The callsign to look up.</param>
         /// <param name="uri">When this method returns, contains the formatted URI; otherwise, returns null.</param>
         /// <returns>true if the Uri was successfully created; otherwise, false.</returns>
-        public static bool TryMakeUri(string region, string callsign, out Uri uri)
+        public static bool TryMakeUri(Callsign callsign, out Uri uri)
         {
             try
             {
-                if (ApiUriFormulary.TryGetValue(region, out string formula))
+                if (ApiUriFormulary.TryGetValue(callsign.Region, out string formula))
                 {
-                    uri = new Uri(string.Format(CultureInfo.InvariantCulture, formula, callsign));
+                    uri = new Uri(string.Format(CultureInfo.InvariantCulture, formula, callsign.Sign));
                     return true;
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException(nameof(region), $"An API formula for {region} could not be found.");
+                    throw new ArgumentOutOfRangeException(nameof(callsign), $"An API formula for {callsign} (region {callsign.Region}) could not be found.");
                 }
             }
             catch (Exception ex)
