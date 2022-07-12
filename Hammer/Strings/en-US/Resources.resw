@@ -143,6 +143,15 @@
   <data name="ErrorUnknown.Text" xml:space="preserve">
     <value>Oops. There was an unknown error. Try again later, or if the problem persists, file a bug report.</value>
   </data>
+  <data name="LabelGridSquare.Text" xml:space="preserve">
+    <value>Grid Square</value>
+  </data>
+  <data name="LabelLatitude.Text" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="LabelLongitude.Text" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
   <data name="NavViewItem_Home.AccessKey" xml:space="preserve">
     <value>H</value>
     <comment>The access key for the NavigationView's Home page item</comment>
